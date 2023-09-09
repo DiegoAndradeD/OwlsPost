@@ -10,6 +10,11 @@ export class UserController {
 
     }
 
+    @Get()
+    async getAllUsers(): Promise<User[]> {
+        return this.userService.getAllUsers();
+    }
+
     @Post('Signup')
     async registerUser(@Body() userDTO: UserDTO): Promise<User> {
         return this.userService.registerUser(userDTO);

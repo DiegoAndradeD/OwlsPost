@@ -7,12 +7,12 @@ export class User {
     id: Number;
 
     @Column({name: 'username', nullable: false, unique: true})
-    usernmae: string;
+    username: string;
 
     @Column({name: 'email', nullable: false})
     email: string;
 
-    @Column({name: 'passoword', nullable: false})
+    @Column({name: 'password', nullable: false})
     password: string;
 
     @Column({name: 'created_at'})

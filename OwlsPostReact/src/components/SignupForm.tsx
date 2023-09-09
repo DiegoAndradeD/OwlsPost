@@ -35,9 +35,10 @@ const SignupForm: React.FC = () => {
         formData.append('username', cleanedUsername);
         formData.append('email', cleanedEmail);
         formData.append('password', state.password);
-
+        
         try {
-            await axios.post('#', formData, {
+          
+            await axios.post('http://localhost:3000/user/Signup', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
