@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Navbar from './components/Navbar';
 import SignupForm from './components/SignupForm';
+import LoginForm from './components/LoginForm';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path='Signup' element={<SignupForm/>} />
         <Route path='/' element/>
+        <Route path='login' element={<LoginForm />}/>
       </Routes>
     </Router>
   )
