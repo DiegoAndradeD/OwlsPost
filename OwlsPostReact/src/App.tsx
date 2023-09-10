@@ -11,6 +11,7 @@ import SignupForm from './components/SignupForm';
 import Index from './components/Index';
 import StoryForm from './components/StoryForm';
 import UserStories from './components/UserStories';
+import StoryPage from './components/StoryPage';
 
 const App: React.FC = () => {
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route path='login' element={<LoginForm />}/>
         <Route path='addStory' element={<StoryForm />}/>
         <Route path='user_stories' element={<UserStories />}/>
+        <Route path='/story/:id' element={<StoryPage />}/>
       </Routes>
     </Router>
     

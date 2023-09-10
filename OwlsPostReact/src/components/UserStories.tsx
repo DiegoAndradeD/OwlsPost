@@ -68,12 +68,12 @@ const UserStories: React.FC = () => {
 
     return (
         <div>
-            <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Alternar Cores</button>
+            <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Change Colors</button>
             <div className={mainContainerClass} id='mainStoriesContainer'>
             {state.stories.map(story => {
                 return (
                     <div key={story.id} className='container' id='storyContainer'>
-                    <Link to={'/'} id='storyLink'>
+                    <Link to={`/story/${story.id}`} id='storyLink'>
                       <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
                     </Link>
                     <p className={pClass}>{story.description}</p>

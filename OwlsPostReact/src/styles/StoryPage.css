@@ -1,0 +1,15 @@
+#deleteBtn {
+    background: rgba(221, 7, 7, 0.672);
+    color: white;
+    margin: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.448);
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    width: 200px;
+}
+
+#deleteBtn:hover {
+    font-weight: 700;
+    background-color: red;
+}

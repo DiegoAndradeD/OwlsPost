@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
@@ -24,6 +24,16 @@ export class StoryController {
     @Get('get_user_stories/:userId')
     async getUserStories(@Param('userId') userId: number) {
         return this.storyService.getUserStories(userId);
+    }
+
+    @Get('user/:userId/get_story/:id')
+    async getStoryById(@Param('userId') userId: number, @Param('id') id: number) {
+        return this.storyService.getStoryById(userId, id);
+    }
+
+    @Delete('user/:userId/delete_story/:id')
+    async deleteStoryById(@Param('userId') userId: number, @Param('id') id: number) {
+        return this.storyService.deleteStory(userId, id);
     }
 
 }

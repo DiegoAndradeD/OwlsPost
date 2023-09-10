@@ -23,12 +23,40 @@ export class StoryService {
     }
 
     async getUserStories(userId: number): Promise<Story[]> {
-        const entityManager = this.storyRepository.manager; 
+        const entityManager = this.storyRepository.manager;
         const query = `
-            SELECT * FROM stories
-            WHERE userId = $1
+          SELECT *
+          FROM stories
+          WHERE userId = $1
         `;
-        return entityManager.query(query, [userId]);
+        const result = await entityManager.query(query, [userId]);
+      
+        if (Array.isArray(result) && result.length > 0) {
+          return result;
+        }
+      
+        return [];
+      }
+
+    async getStoryById(userId: number, id: number):Promise<Story> {
+        const entityManager = this.storyRepository.manager;
+        const query = `SELECT *
+        FROM stories
+        WHERE userId = $1 AND stories.id = $2`;
+        const result = await entityManager.query(query, [userId, id]);
+        if(result && result.length > 0) {
+            return result[0];
+        }
+        return null;
+    }
+
+    //TODO - Error and exception treatment and authentication to delete story
+    async deleteStory(userId: number, id: number):Promise<void> {
+        const entityManager = this.storyRepository.manager;
+        const query = `DELETE
+        FROM stories
+        WHERE userId = $1 AND stories.id = $2`;
+        return await entityManager.query(query, [userId, id]);
     }
 }
 
