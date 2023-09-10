@@ -13,30 +13,49 @@ interface NavbarState {
 }
 
 const Navbar: React.FC = ({}) => {
-    const navigate = useNavigate();
-    const cookieInstance = new Cookies();
-    const cookies = cookieInstance.cookies;
-    const accessToken = cookies.accessToken;  
+  const navigate = useNavigate();
+  const cookieInstance = new Cookies();
+  const accessToken = cookieInstance.get('accessToken');
 
-    const [state, setState] = useState<NavbarState>({
-      isLoggedIn: false,
-      username: '',
-  });   
-    
+  const [state, setState] = useState<NavbarState>({
+    isLoggedIn: false,
+    username: '',
+  });
+
   useEffect(() => {
+    
+
     const checkUserCookie = () => {
-      const accessTokenCookie = cookies.accessToken; 
-      if (accessTokenCookie) {
-        const tokenData = JSON.parse(accessToken);
-        const cookieUsername = tokenData.username;
-        const cookieToken = tokenData.access_token;
+      if (accessToken) {
+        const cookieUsername = accessToken.username;
+        const cookieToken = accessToken.access_token;
+
         if (cookieUsername != null && cookieToken != null) {
           setState({ isLoggedIn: true, username: cookieUsername });
         }
       }
     };
-  
-    checkUserCookie();
+
+    const isUserRegistered = async () =>  {
+      const cookies = new Cookies();
+      const accessToken = cookies.get('accessToken');
+      if(accessToken) {
+        const id = accessToken.id;
+        const username = accessToken.username;
+        try {
+          const response = await axios.post('http://localhost:3000/auth/check_user', { id, username });
+          console.log(response.data);
+          setState({ isLoggedIn: true, username: accessToken.username });
+        } catch (error) {
+          console.error(error);
+          setState({ isLoggedIn: false, username: '' });
+        }
+      } 
+ 
+    }
+
+    checkUserCookie(),
+    isUserRegistered();
   }, []);
    
 

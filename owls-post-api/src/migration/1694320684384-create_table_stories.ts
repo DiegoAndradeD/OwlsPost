@@ -22,12 +22,12 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
-                        name: "authorId",
+                        name: "userId",
                         type: "integer",
                         isNullable: false,
                     },
                     {
-                        name: "authorName",
+                        name: "username",
                         type: "varchar",
                         isNullable: false,
                     },

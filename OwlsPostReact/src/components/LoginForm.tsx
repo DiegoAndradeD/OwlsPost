@@ -40,10 +40,11 @@ const LoginForm: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
             });
-            const { access_token: token, username } = response.data;
+            const { access_token: token, username, id } = response.data;
             const cookieData = {
                 access_token: token,
                 username: username,
+                id: id,
             };
             console.log(response.data);
             

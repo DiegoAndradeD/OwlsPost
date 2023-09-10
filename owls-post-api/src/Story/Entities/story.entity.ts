@@ -12,11 +12,11 @@ export class Story {
     @Column({name: 'description', nullable: false})
     description: string;
 
-    @Column({name: 'authorId', nullable: false})
-    authorId: number;
+    @Column({name: 'userId', nullable: false})
+    userId: number;
 
-    @Column({name: 'authorName', nullable: false})
-    authorName: string;
+    @Column({name: 'username', nullable: false})
+    username: string;
 
     @Column({name: 'created_at'})
     created_at: Date;

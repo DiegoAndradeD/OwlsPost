@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, Post, UnauthorizedException, HttpStatus, Res, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { UserService } from 'src/User/Services/user.service';
 import { SignInDTO } from '../Dto/signInDto.dto';
 import { AuthService } from '../Services/auth.service';
-import { UserService } from 'src/User/Services/user.service';
-import { Response, Request } from 'express'; 
 
 
 @Controller('auth')
@@ -17,12 +17,36 @@ export class AuthController {
             throw new UnauthorizedException('Invalid credentials');
         }
         const user = await this.userService.findOne(signInDto.username);
+        console.log(user)
         const maxAgeInMilliseconds = 3600000;
         res.cookie('username', user.username, {
             httpOnly: true,
             maxAge: maxAgeInMilliseconds,
         });
-        res.json({ access_token: token, username: user.username });
+        res.cookie('id', user.id, {
+            httpOnly: true,
+            maxAge: maxAgeInMilliseconds,
+        });
+        res.json({ access_token: token, username: user.username, id: user.id });
+    }
+
+    @Post('check_user')
+    async isUserRegistered(@Body() body: { id: string; username: string }, @Res() res: Response, @Req() req: Request):Promise<void> {
+        try {
+            const { id, username } = body;
+            if(!id || !username) {
+                throw new UnauthorizedException('Authentication Cookie not Found');
+            }
+            //TODO - Creact a findOne by username and id function
+            const user = await this.userService.findOne(username);
+            if(!user) {
+                throw new UnauthorizedException('User Not Found');
+            }
+
+            res.status(HttpStatus.OK).json({message: 'User Exists'})
+        } catch (error) {
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+          }
     }
 
     @Post('logout')
@@ -30,4 +54,5 @@ export class AuthController {
         res.clearCookie('access_token');
         return res.status(200).send('Logout successfull');
     }
+    
 }
