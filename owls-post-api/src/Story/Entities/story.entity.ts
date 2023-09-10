@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/User/Entities/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'stories'})
 export class Story {
@@ -12,8 +13,10 @@ export class Story {
     @Column({name: 'description', nullable: false})
     description: string;
 
-    @Column({name: 'userId', nullable: false})
-    userId: number;
+    
+    @ManyToOne(() => User, (User) => User.id, {cascade: true})
+    @JoinColumn({name: 'userid'})
+    userid: number;
 
     @Column({name: 'username', nullable: false})
     username: string;

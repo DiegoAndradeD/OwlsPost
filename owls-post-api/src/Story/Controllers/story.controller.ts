@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
@@ -18,8 +18,12 @@ export class StoryController {
 
     @Post('add_story')
     async registerStory(@Body() storyDto: StoryDTO): Promise<Story> {
-        console.log(storyDto);
         return this.storyService.registerStory(storyDto);
+    }
+
+    @Get('get_user_stories/:userId')
+    async getUserStories(@Param('userId') userId: number) {
+        return this.storyService.getUserStories(userId);
     }
 
 }

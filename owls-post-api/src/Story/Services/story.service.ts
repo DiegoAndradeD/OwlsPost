@@ -13,7 +13,6 @@ export class StoryService {
     ){}
 
     async registerStory(storyDto: StoryDTO):Promise<Story> {
-        console.log(storyDto)
         return this.storyRepository.save({
             ...storyDto,
         });
@@ -23,4 +22,13 @@ export class StoryService {
         return this.storyRepository.find();
     }
 
+    async getUserStories(userId: number): Promise<Story[]> {
+        const entityManager = this.storyRepository.manager; 
+        const query = `
+            SELECT * FROM stories
+            WHERE userId = $1
+        `;
+        return entityManager.query(query, [userId]);
+    }
 }
+

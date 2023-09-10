@@ -1,7 +1,7 @@
 export interface StoryDTO {
     title: string;
     description: string;
-    userId: number;
+    userid: number;
     username: string
 
 }

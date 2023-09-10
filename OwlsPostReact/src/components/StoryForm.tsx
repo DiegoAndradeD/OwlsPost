@@ -43,9 +43,6 @@ const StoryForm: React.FC = () => {
         }
        
         
-        console.log(accessToken);
-        console.log(accessToken.id)
-        console.log(state.userId)
     }, [])
 
     const handleFormSubmit =async () => {
@@ -55,8 +52,9 @@ const StoryForm: React.FC = () => {
 
         formData.append('title', cleanedTitle);
         formData.append('description', cleanedDescription);
-        formData.append('userId', String(state.userId));
+        formData.append('userid', String(state.userId));
         formData.append('username', state.username);
+        console.log(String(state.userId));
 
         try {
             const response = await axios.post('http://localhost:3000/story/add_story', 

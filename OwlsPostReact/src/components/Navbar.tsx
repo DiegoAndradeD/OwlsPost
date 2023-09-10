@@ -13,8 +13,7 @@ interface NavbarState {
     username: string;
 }
 
-const Navbar: React.FC = ({}) => {
-  const navigate = useNavigate();
+const Navbar: React.FC = () => {
   const cookieInstance = new Cookies();
   const accessToken = cookieInstance.get('accessToken');
 
@@ -22,6 +21,8 @@ const Navbar: React.FC = ({}) => {
     isLoggedIn: false,
     username: '',
   });
+
+  const destination = state.isLoggedIn ? "/addStory" : "login";
 
   useEffect(() => {
     
@@ -88,12 +89,13 @@ const Navbar: React.FC = ({}) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/" id='navText'>Explore</Link>
+                <Link className="nav-link" to="" id='navText'>Explore</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="addStory" id='navText'>Write</Link>
+                <Link className="nav-link" to={destination} id='navText'>Write</Link>
               </li>
               {state.isLoggedIn ? (
+                
                 <li className="nav-link dropdown">
                   <button
                     className="dropdown-toggle"
@@ -104,15 +106,40 @@ const Navbar: React.FC = ({}) => {
                   >
                     {state.username}
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                  <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" id="menuDrop">
                     <li>
-                      <Link className="dropdown-item" to="/favorites" id="navText">Favorites</Link>
-                    </li>
-                    <li>
-                      <button className="dropdown-item" id="navText" onClick={Logout}>Logout</button>
-                    </li>
-                  </ul>
+                    <Link to={'user_stories'}className="dropdown-item">
+                      <i className="fa-solid fa-book-open"></i> My Stories
+                    </Link>
                 </li>
+                  <li>
+                    <a href="#" className="dropdown-item">
+                      <i className="fa-solid fa-pen-nib"></i> Create Story
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="dropdown-item">
+                      <i className="fa-solid fa-users"></i> Following
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="dropdown-item">
+                      <i className="fa-solid fa-star"></i> Favorites
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="dropdown-item">
+                      <i className="fa-solid fa-gear"></i> Settings
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="dropdown-item" onClick={Logout}>
+                      <i className="fa-solid fa-right-from-bracket"></i> LogOut
+                    </a>
+                  </li>
+                    </ul>
+                  </li>
+                
               ) : (
                 <>
                   <li className="nav-item">
@@ -121,45 +148,9 @@ const Navbar: React.FC = ({}) => {
                   <li className="nav-item">
                     <Link className="nav-link" id='navText' to="/login">Login</Link>
                   </li>
+                  
                 </>
               )}
-              <button id="menuDrop" className="nav-item dropdown">
-                <i
-                  className="nav-link dropdown-toggle fa-solid fa-bars"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                </i>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a href="#" className="dropdown-item">
-                    <i className="fa-solid fa-book-open"></i> My Stories
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="dropdown-item">
-                    <i className="fa-solid fa-pen-nib"></i> Create Story
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="dropdown-item">
-                    <i className="fa-solid fa-users"></i> Following
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="dropdown-item">
-                    <i className="fa-solid fa-star"></i> Favorites
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="dropdown-item">
-                    <i className="fa-solid fa-gear"></i> Settings
-                  </a>
-                </li>
-              </ul>
-              </button>
             </ul>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
 export class CreateTableStories1694320684384 implements MigrationInterface {
 
@@ -22,7 +22,7 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
-                        name: "userId",
+                        name: "userid",
                         type: "integer",
                         isNullable: false,
                     },
@@ -38,9 +38,20 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                     },
                 ],
             }));
-        }
+                await queryRunner.query(`
+                ALTER TABLE stories
+                ADD CONSTRAINT fk_user
+                FOREIGN KEY (userId)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE
+            `);
+    }
     
-        public async down(queryRunner: QueryRunner): Promise<void> {
-            await queryRunner.dropTable("stories");
-        }
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`
+            ALTER TABLE stories
+            DROP CONSTRAINT fk_user
+        `);
+    }
     }
