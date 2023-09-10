@@ -69,6 +69,9 @@ const Navbar: React.FC = ({}) => {
               <li className="nav-item">
                 <Link className="nav-link" to="/" id='navText'>Explore</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="addStory" id='navText'>Write</Link>
+              </li>
               {state.isLoggedIn ? (
                 <li className="nav-link dropdown">
                   <button
