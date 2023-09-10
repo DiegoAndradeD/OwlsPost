@@ -2,5 +2,5 @@ body {
     background-image: url('../assets/SiteBackground.png');
     background-repeat: no-repeat; 
     background-size: cover; 
-
+    position: relative;
 }

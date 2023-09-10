@@ -25,29 +25,35 @@ const Navbar: React.FC = ({}) => {
     
   useEffect(() => {
     const checkUserCookie = () => {
-      const tokenData = JSON.parse(accessToken);
-      const cookieUsername = tokenData.username;
-      const cookieToken = tokenData.access_token;
-      if(cookieUsername != null && cookieToken != null) {
-        setState({ isLoggedIn: true, username: cookieUsername });
-    }
-      
+      const accessTokenCookie = cookies.accessToken; 
+      if (accessTokenCookie) {
+        const tokenData = JSON.parse(accessToken);
+        const cookieUsername = tokenData.username;
+        const cookieToken = tokenData.access_token;
+        if (cookieUsername != null && cookieToken != null) {
+          setState({ isLoggedIn: true, username: cookieUsername });
+        }
+      }
     };
-
+  
     checkUserCookie();
-  }, [])
+  }, []);
    
 
 
-    const Logout = async () => {
-        try {
-            await axios.post("#", { withCredentials: true });
-            navigate("/")
-            window.location.reload(); 
-        } catch(error) {
-            console.error(error);
-        }
+  const Logout = async () => {
+    try {
+      await axios.post("http://localhost:3000/auth/logout");
+      
+
+      const cookies = new Cookies();
+      cookies.remove('accessToken', { path: '/' });
+ 
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
     }
+  };
 
     
     
@@ -86,10 +92,10 @@ const Navbar: React.FC = ({}) => {
               ) : (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" id='HeaderText'  to="/signup">Signup</Link>
+                    <Link className="nav-link" id='navText'  to="/signup">Signup</Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" id='HeaderText' to="/login">Login</Link>
+                    <Link className="nav-link" id='navText' to="/login">Login</Link>
                   </li>
                 </>
               )}

@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, Post, UnauthorizedException, HttpStatus, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UnauthorizedException, HttpStatus, Res, Req } from '@nestjs/common';
 import { SignInDTO } from '../Dto/signInDto.dto';
 import { AuthService } from '../Services/auth.service';
 import { UserService } from 'src/User/Services/user.service';
-import { Response } from 'express'; 
+import { Response, Request } from 'express'; 
 
 
 @Controller('auth')
@@ -23,5 +23,11 @@ export class AuthController {
             maxAge: maxAgeInMilliseconds,
         });
         res.json({ access_token: token, username: user.username });
+    }
+
+    @Post('logout')
+    async logout(@Req() req: Request, @Res() res: Response) {
+        res.clearCookie('access_token');
+        return res.status(200).send('Logout successfull');
     }
 }
