@@ -77,7 +77,8 @@ const Navbar: React.FC = ({}) => {
     
     
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark" id="navbar">
+      <div>
+      <nav className="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div className="container">
           <Link className="navbar-brand d-flex align-items-center" to="/" id='HeaderTitle'><img id="owlIcon" src={owlIcon} alt="owlIcon" /></Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,14 +95,14 @@ const Navbar: React.FC = ({}) => {
               {state.isLoggedIn ? (
                 <li className="nav-link dropdown">
                   <button
-                        className="dropdown-toggle"
-                        role="button"
-                        id="navText"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        {state.username}
-                      </button>
+                    className="dropdown-toggle"
+                    role="button"
+                    id="navText"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {state.username}
+                  </button>
                   <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                     <li>
                       <Link className="dropdown-item" to="/favorites" id="navText">Favorites</Link>
@@ -121,10 +122,48 @@ const Navbar: React.FC = ({}) => {
                   </li>
                 </>
               )}
+              <button id="menuDrop" className="nav-item dropdown">
+                <i
+                  className="nav-link dropdown-toggle fa-solid fa-bars"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                </i>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a href="#" className="dropdown-item">
+                    <i className="fa-solid fa-book-open"></i> My Stories
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="dropdown-item">
+                    <i className="fa-solid fa-pen-nib"></i> Create Story
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="dropdown-item">
+                    <i className="fa-solid fa-users"></i> Following
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="dropdown-item">
+                    <i className="fa-solid fa-star"></i> Favorites
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="dropdown-item">
+                    <i className="fa-solid fa-gear"></i> Settings
+                  </a>
+                </li>
+              </ul>
+              </button>
             </ul>
           </div>
         </div>
       </nav>
+    </div>
     )
 }
 

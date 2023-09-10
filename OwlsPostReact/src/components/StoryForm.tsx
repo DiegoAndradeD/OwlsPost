@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Cookies from 'universal-cookie';
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 interface StoryFormState {
     title: string;
@@ -20,14 +22,17 @@ const StoryForm: React.FC = () => {
     useEffect(() => {
         const cookies = new Cookies();
         const accessToken = cookies.get('accessToken');
-        setState({...state, userId: accessToken.id})
+        setState({...state, userId: accessToken.id});
+        setState({...state, username : accessToken.username});
         
         console.log(accessToken);
     }, [])
 
     console.log(state.userId);
     return (
-        <div></div>
+        <div className="sidebarContainer">
+            
+    </div>
     )
 }
 

@@ -48,8 +48,7 @@ const SignupForm: React.FC = () => {
                 },
             });
             setState({...state, message: 'User Registered'});
-            navigate('/login');
-            window.location.reload();    
+            navigate('/login');  
         } catch (error) {
             setState({...state, message: 'Error ' + error});
         }
