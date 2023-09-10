@@ -15,7 +15,7 @@ interface NavbarState {
 const Navbar: React.FC = ({}) => {
     const navigate = useNavigate();
     const cookieInstance = new Cookies();
-    
+    const cookies = cookieInstance.cookies;
     const accessToken = cookies.accessToken;  
 
     const [state, setState] = useState<NavbarState>({
@@ -52,7 +52,7 @@ const Navbar: React.FC = ({}) => {
     
     
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div className="container">
           <Link className="navbar-brand d-flex align-items-center" to="/" id='HeaderTitle'><img id="owlIcon" src={owlIcon} alt="owlIcon" /></Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,14 +61,14 @@ const Navbar: React.FC = ({}) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/" id='HeaderText'>Explore</Link>
+                <Link className="nav-link" to="/" id='navText'>Explore</Link>
               </li>
               {state.isLoggedIn ? (
                 <li className="nav-link dropdown">
                   <button
                         className="dropdown-toggle"
                         role="button"
-                        id="userMenu"
+                        id="navText"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
@@ -76,10 +76,10 @@ const Navbar: React.FC = ({}) => {
                       </button>
                   <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                     <li>
-                      <Link className="dropdown-item" to="/favorites">Favorites</Link>
+                      <Link className="dropdown-item" to="/favorites" id="navText">Favorites</Link>
                     </li>
                     <li>
-                      <button className="dropdown-item" onClick={Logout}>Logout</button>
+                      <button className="dropdown-item" id="navText" onClick={Logout}>Logout</button>
                     </li>
                   </ul>
                 </li>
