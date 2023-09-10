@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Cookies from 'universal-cookie';
-import '@fortawesome/fontawesome-free/css/all.css';
+import axios from "axios";
+import DOMPurify from "dompurify";
+import '../styles/StoryForm.css'
 
 
 interface StoryFormState {
@@ -8,6 +10,7 @@ interface StoryFormState {
     description: string;
     userId: number;
     username: string;
+    remainingChars: number;
 
 }
 
@@ -17,22 +20,94 @@ const StoryForm: React.FC = () => {
         description: '',
         userId: 0,
         username: '',
+        remainingChars: 2000,
     });
+
+    const maxLenght = 2000;
+
+    const handleDescription = (e: any) => {
+        const newDescription = e.target.value;
+        const currentLength = newDescription.length;
+        const remaining = maxLenght - currentLength;
+
+        if (remaining >= 0) {
+            setState({ ...state, description: newDescription, remainingChars: remaining });
+        }
+    }
 
     useEffect(() => {
         const cookies = new Cookies();
         const accessToken = cookies.get('accessToken');
-        setState({...state, userId: accessToken.id});
-        setState({...state, username : accessToken.username});
+        if(accessToken) {
+            setState({...state, userId: accessToken.id, username : accessToken.username});
+        }
+       
         
         console.log(accessToken);
+        console.log(accessToken.id)
+        console.log(state.userId)
     }, [])
 
-    console.log(state.userId);
+    const handleFormSubmit =async () => {
+        const formData = new FormData();
+        const cleanedTitle = DOMPurify.sanitize(state.title);
+        const cleanedDescription = DOMPurify.sanitize(state.description);
+
+        formData.append('title', cleanedTitle);
+        formData.append('description', cleanedDescription);
+        formData.append('userId', String(state.userId));
+        formData.append('username', state.username);
+
+        try {
+            const response = await axios.post('http://localhost:3000/story/add_story', 
+            formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <div className="sidebarContainer">
-            
-    </div>
+        <div className="container" id="storyFormContainer">
+            <div className="row justify-content-center">
+                <div className="col-md-6" id="storyFormWrapper">
+                    <form onSubmit={handleFormSubmit}>
+                        <h2 className="mb-4">New Story</h2>
+                        <div className="mb-3"  id="dataContainer">
+                            <label htmlFor="title" className="col-sm-2 col-form-label">TITLE</label>
+                            <div className="col-sm-10">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="title"
+                                    placeholder="Title"
+                                    value={state.title}
+                                    onChange={(e) => setState({ ...state, title: e.target.value })}
+                                />
+                            </div>
+                        </div>
+                        <div className="mb-3 row" id="dataContainer">
+                            <label htmlFor="description" className="col-sm-2 col-form-label">DESCRIPTION</label>
+                            <div className="col-sm-10">
+                                <textarea
+                                    className="form-control"
+                                    id="description"
+                                    placeholder="Story Description"
+                                    rows={10}
+                                    value={state.description}
+                                    onChange={handleDescription}
+                                ></textarea>
+                                 <p>Description Max Length: <span>{state.remainingChars}</span></p>
+                            </div>
+                        </div>
+                        <button type="submit" className="">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     )
 }
 

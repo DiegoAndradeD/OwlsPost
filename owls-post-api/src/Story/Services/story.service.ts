@@ -13,7 +13,7 @@ export class StoryService {
     ){}
 
     async registerStory(storyDto: StoryDTO):Promise<Story> {
-
+        console.log(storyDto)
         return this.storyRepository.save({
             ...storyDto,
         });

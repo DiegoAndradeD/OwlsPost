@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import owlIcon from '../assets/owlIcon.png';
 import '../styles/Navbar.css';
 import Cookies from 'universal-cookie';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 
 interface NavbarState {
