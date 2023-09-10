@@ -12,13 +12,15 @@ interface Story {
 
 interface UserStoriesStates {
     userId: number;
-    stories: Story[]
+    stories: Story[],
+    invertedColors: boolean,
 }
 
 const UserStories: React.FC = () => {
     const [state, setState] = useState<UserStoriesStates>({
         userId: 0,
         stories: [],
+        invertedColors: false,
     });
 
     useEffect(() => {
@@ -48,26 +50,36 @@ const UserStories: React.FC = () => {
         }
     }, []);
 
+    const toggleColors = () => {
+        setState({...state, invertedColors: !state.invertedColors});
+    };
+
     const capitalizeFirstLetter = (str: string) => {
         return str.split(' ').map(word => word.charAt(0).toLocaleUpperCase() + word.slice(1)).join(' ');
     }
 
+    const mainContainerClass = state.invertedColors
+    ? 'container invertedColors'
+    : 'container';
+
+    const h1Class = state.invertedColors ? 'invertedColors' : '';
+    const pClass = state.invertedColors ? 'invertedColors' : '';
 
 
     return (
         <div>
-            <div className="container" id='mainStoriesContainer'>
-                {state.stories.map(story => {
-                    return (
-                        
-                            <div key={story.id} className='container' id='storyContainer'>
-                                <Link to={'/'} id='storyLink'>
-                                <h1>{capitalizeFirstLetter(story.title)}</h1>
-                                </Link>
-                                <p>{story.description}</p>
-                            </div>
-                     )
-                })}
+            <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Alternar Cores</button>
+            <div className={mainContainerClass} id='mainStoriesContainer'>
+            {state.stories.map(story => {
+                return (
+                    <div key={story.id} className='container' id='storyContainer'>
+                    <Link to={'/'} id='storyLink'>
+                      <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
+                    </Link>
+                    <p className={pClass}>{story.description}</p>
+                  </div>
+                );
+            })}
             </div>
         </div>
     )
