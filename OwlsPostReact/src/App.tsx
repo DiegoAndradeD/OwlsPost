@@ -1,17 +1,19 @@
-import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
 import SignupForm from './components/SignupForm';
-import LoginForm from './components/LoginForm';
 
-function App() {
+
+const App: React.FC = () => {
 
 
   return (
     <Router>
-      <Navbar/>
+      <Navbar/> 
       <Routes>
         <Route path='Signup' element={<SignupForm/>} />
         <Route path='/' element/>

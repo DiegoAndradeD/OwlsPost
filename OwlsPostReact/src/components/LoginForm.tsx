@@ -1,6 +1,7 @@
 import DOMPurify from 'dompurify';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import Cookies from "universal-cookie";
 
 interface LoginFormState {
     username: string;
@@ -15,6 +16,8 @@ const LoginForm: React.FC = () => {
         message: '',
     });
 
+    const cookies = new Cookies();
+
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const cleanedUsername = DOMPurify.sanitize(state.username);
@@ -26,17 +29,32 @@ const LoginForm: React.FC = () => {
         try {
             console.log(cleanedUsername)
             console.log(state.password);
-            await axios.post('http://localhost:3000/auth/login', 
+            const response = await axios.post('http://localhost:3000/auth/login', 
             formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
+            const { access_token: token, username } = response.data;
+            const cookieData = {
+                access_token: token,
+                username: username,
+            };
+            console.log(response.data);
+            
+            cookies.set('accessToken', JSON.stringify(cookieData), { path: '/' });
+            console.log(cookies)
             setState({ ...state, message: 'User Logged In' });
+            window.location.reload(); 
         } catch (error) {
             setState({...state, message: "Error " + error});
         }
     };
+
+        
+  
+
+
 
     return (
         <div className="container">

@@ -1,25 +1,43 @@
 
-import React, {useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import owlIcon from '../assets/owlIcon.png'
-import '../styles/Navbar.css'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import owlIcon from '../assets/owlIcon.png';
+import '../styles/Navbar.css';
+import Cookies from 'universal-cookie';
+
 
 interface NavbarState {
     isLoggedIn: boolean;
-    userName: string;
-    typeUser: string[]
+    username: string;
 }
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = ({}) => {
     const navigate = useNavigate();
+    const cookieInstance = new Cookies();
+    
+    const accessToken = cookies.accessToken;  
 
     const [state, setState] = useState<NavbarState>({
-        isLoggedIn: false,
-        userName: '',
-        typeUser: []
+      isLoggedIn: false,
+      username: '',
+  });   
+    
+  useEffect(() => {
+    const checkUserCookie = () => {
+      const tokenData = JSON.parse(accessToken);
+      const cookieUsername = tokenData.username;
+      const cookieToken = tokenData.access_token;
+      if(cookieUsername != null && cookieToken != null) {
+        setState({ isLoggedIn: true, username: cookieUsername });
+    }
+      
+    };
 
-    });
+    checkUserCookie();
+  }, [])
+   
+
 
     const Logout = async () => {
         try {
@@ -30,6 +48,8 @@ const Navbar: React.FC = () => {
             console.error(error);
         }
     }
+
+    
     
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,23 +67,17 @@ const Navbar: React.FC = () => {
                 <li className="nav-link dropdown">
                   <button
                         className="dropdown-toggle"
-                        ref="#"
                         role="button"
                         id="userMenu"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        {state.userName}
+                        {state.username}
                       </button>
                   <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                     <li>
                       <Link className="dropdown-item" to="/favorites">Favorites</Link>
                     </li>
-                    {state.typeUser.includes("ROLE_ADMIN") && (
-                      <li>
-                        <Link className="dropdown-item" to="/add-game">AddGame</Link>
-                      </li>
-                    )}
                     <li>
                       <button className="dropdown-item" onClick={Logout}>Logout</button>
                     </li>
