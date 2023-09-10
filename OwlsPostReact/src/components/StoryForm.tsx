@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import axios from "axios";
 import DOMPurify from "dompurify";
 import '../styles/StoryForm.css'
+import { useNavigate } from "react-router-dom";
 
 
 interface StoryFormState {
@@ -22,7 +23,8 @@ const StoryForm: React.FC = () => {
         username: '',
         remainingChars: 2000,
     });
-
+    
+    const navigate = useNavigate();
     const maxLenght = 2000;
 
     const handleDescription = (e: any) => {
@@ -63,6 +65,7 @@ const StoryForm: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
             });
+            navigate('/user_stories');
         } catch (error) {
             console.log(error);
         }

@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import '../styles/UserStories.css'
+import { Link } from 'react-router-dom';
 
 interface Story {
     id: number;
@@ -18,8 +20,6 @@ const UserStories: React.FC = () => {
         userId: 0,
         stories: [],
     });
-
-    
 
     useEffect(() => {
         const cookies = new Cookies();
@@ -48,11 +48,27 @@ const UserStories: React.FC = () => {
         }
     }, []);
 
+    const capitalizeFirstLetter = (str: string) => {
+        return str.split(' ').map(word => word.charAt(0).toLocaleUpperCase() + word.slice(1)).join(' ');
+    }
+
 
 
     return (
         <div>
-
+            <div className="container" id='mainStoriesContainer'>
+                {state.stories.map(story => {
+                    return (
+                        
+                            <div key={story.id} className='container' id='storyContainer'>
+                                <Link to={'/'} id='storyLink'>
+                                <h1>{capitalizeFirstLetter(story.title)}</h1>
+                                </Link>
+                                <p>{story.description}</p>
+                            </div>
+                     )
+                })}
+            </div>
         </div>
     )
 }

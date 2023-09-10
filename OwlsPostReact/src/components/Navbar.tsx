@@ -113,9 +113,9 @@ const Navbar: React.FC = () => {
                     </Link>
                 </li>
                   <li>
-                    <a href="#" className="dropdown-item">
+                    <Link to={destination} className="dropdown-item">
                       <i className="fa-solid fa-pen-nib"></i> Create Story
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="#" className="dropdown-item">
