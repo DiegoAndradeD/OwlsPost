@@ -1,6 +1,8 @@
 body {
     background-image: url('../assets/SiteBackground.png');
-    background-repeat: no-repeat; 
-    background-size: cover; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     position: relative;
 }
+
