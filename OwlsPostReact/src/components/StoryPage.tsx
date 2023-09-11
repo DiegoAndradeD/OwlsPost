@@ -104,7 +104,7 @@ const StoryPage: React.FC = () => {
   //TODO - ADD backend validation to both delete and add chapter buttons
   const handleStoryDelete =async () => {
     try {
-        const response = await axios.delete(`http://localhost:3000/story/user/${story.userId}/delete_story/${id}`, {
+        const response = await axios.delete(/*`http://localhost:3000/story/user/${story.userId}/delete_story/${id}`*/ '', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -162,9 +162,9 @@ const formattedDate = `${date} | ${time}h`;
         <div>
           <h2>Chapters</h2>
           <ul className='chaptersList'>
-            {chapters.map((chapter) => (
+            {chapters.map((chapter, index) => (
               <li key={chapter.id}>
-                <Link className={h1Class} to={`/chapter/${chapter.id}`}>{chapter.title} </Link>
+                <Link className={h1Class} to={`/chapter/${chapter.id}`}>Chapter {index + 1}: {chapter.title}</Link>
               </li>
             ))}
           </ul>

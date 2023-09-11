@@ -28,6 +28,7 @@ const LoginForm: React.FC = () => {
         const cleanedUsername = DOMPurify.sanitize(state.username);
 
         const formData = new FormData();
+        //TODO - Remove outter spaces from username
         formData.append('username', cleanedUsername);
         formData.append('password', state.password);
         
