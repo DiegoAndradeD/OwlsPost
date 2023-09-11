@@ -35,13 +35,16 @@ const StoryPage: React.FC = () => {
 
   const [chapters, setChapters] = useState<Chapter[]>([]);
 
+  const cookies = new Cookies();
+  const accessToken = cookies.get('accessToken');
+  console.log(accessToken)
+
   useEffect(() => {
-    const cookies = new Cookies();
-    const accessToken = cookies.get('accessToken');
+    
   
-    if (accessToken) {
-      const fetchData = async () => {
-        try {
+    const fetchData = async () => {
+      try {
+        if (accessToken) {
           const storyResponse = await axios.get(
             `http://localhost:3000/story/user/${accessToken.id}/get_story/${id}`,
             {
@@ -59,27 +62,46 @@ const StoryPage: React.FC = () => {
             description: storyResponse.data.description,
             created_at: storyResponse.data.created_at,
           });
-          const chaptersResponse = await axios.get(
-            
-            `http://localhost:3000/chapter/getStory/${id}/chapters`,
+        } else {
+          const storyResponse = await axios.get(
+            `http://localhost:3000/story/get_story/${id}`,
             {
               headers: {
                 'Content-Type': 'application/json',
               },
             }
           );
-          setChapters(chaptersResponse.data);
-        } catch (error) {
-          console.log(error);
+          console.log(storyResponse.data);
+          setStory({
+            ...story,
+            id: Number(id),
+            title: storyResponse.data.title,
+            description: storyResponse.data.description,
+            created_at: storyResponse.data.created_at,
+          });
         }
-      };
   
-      fetchData();
-    }
+        const chaptersResponse = await axios.get(
+          `http://localhost:3000/chapter/getStory/${id}/chapters`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        setChapters(chaptersResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
   }, [id]);
+  
 
   //TODO - TREAT ERRORS: Navigate to another page after delete
   //TODO - Put confirmation before deleting
+  //TODO - ADD backend validation to both delete and add chapter buttons
   const handleStoryDelete =async () => {
     try {
         const response = await axios.delete(`http://localhost:3000/story/user/${story.userId}/delete_story/${id}`, {
@@ -117,16 +139,17 @@ const formattedDate = `${date} | ${time}h`;
 
   return (
     <div>
-      <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Change Colors</button>
-      <div className={mainContainerClass} id="mainStoriesContainer">
-        <div key={story.id} className="container" id="storyContainer">
-          <Link to={'/'} id="storyLink">
-            <h1 className={h1Class}>
-              {capitalizeFirstLetter(story.title)}
-            </h1>
-          </Link>
-          <p className={pClass}>{story.description}</p>
-          <p className={pClass}>Created At: {formattedDate}</p>
+    <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Change Colors</button>
+    <div className={mainContainerClass} id="mainStoriesContainer">
+      <div key={story.id} className="container" id="storyContainer">
+        <Link to={'/'} id="storyLink">
+          <h1 className={h1Class}>
+            {capitalizeFirstLetter(story.title)}
+          </h1>
+        </Link>
+        <p className={pClass}>{story.description}</p>
+        <p className={pClass}>Created At: {formattedDate}</p>
+        {accessToken && (
           <div className='buttonsContainer'>
             <button id="deleteBtn" onClick={handleStoryDelete}>
               Delete Story
@@ -135,20 +158,20 @@ const formattedDate = `${date} | ${time}h`;
               Add Chapter
             </Link>
           </div>
-          <div>
-        <h2>Chapters</h2>
-        <ul className='chaptersList'>
-          {chapters.map((chapter) => (
-            <li key={chapter.id}>
-              <Link className={h1Class} to={`/chapter/${chapter.id}`}>{chapter.title} </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+        )}
+        <div>
+          <h2>Chapters</h2>
+          <ul className='chaptersList'>
+            {chapters.map((chapter) => (
+              <li key={chapter.id}>
+                <Link className={h1Class} to={`/chapter/${chapter.id}`}>{chapter.title} </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-      
     </div>
+  </div>
   );
 }
 

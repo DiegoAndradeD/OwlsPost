@@ -50,6 +50,18 @@ export class StoryService {
         return null;
     }
 
+    async getStoryOnlyByStoryId(id: number):Promise<Story> {
+        const entityManager = this.storyRepository.manager;
+        const query = `SELECT *
+        FROM stories
+        WHERE stories.id = $1`;
+        const result = await entityManager.query(query, [id]);
+        if(result && result.length > 0) {
+            return result[0];
+        }
+        return null;
+    }
+
     //TODO - Error and exception treatment and authentication to delete story
     async deleteStory(userId: number, id: number):Promise<void> {
         const entityManager = this.storyRepository.manager;
@@ -58,5 +70,6 @@ export class StoryService {
         WHERE userId = $1 AND stories.id = $2`;
         return await entityManager.query(query, [userId, id]);
     }
+
 }
 

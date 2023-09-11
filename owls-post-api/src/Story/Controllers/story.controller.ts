@@ -11,7 +11,7 @@ export class StoryController {
 
     }
 
-    @Get()
+    @Get('all')
     async getAllStories(): Promise<Story[]> {
         return this.storyService.getAllStories();
     }
@@ -29,6 +29,11 @@ export class StoryController {
     @Get('user/:userId/get_story/:id')
     async getStoryById(@Param('userId') userId: number, @Param('id') id: number) {
         return this.storyService.getStoryById(userId, id);
+    }
+
+    @Get('get_story/:id')
+    async getStoryOnlyByStoryId(@Param('id') id: number) {
+        return this.storyService.getStoryOnlyByStoryId( id);
     }
 
     @Delete('user/:userId/delete_story/:id')
