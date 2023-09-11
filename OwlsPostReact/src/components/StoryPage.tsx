@@ -132,11 +132,9 @@ const formattedDate = `${date} | ${time}h`;
           <Link to={`/add-chapter/${id}`} id="addChapterLink">
             Add Chapter
           </Link>
-        </div>
-      </div>
-      <div>
+          <div>
         <h2>Chapters</h2>
-        <ul>
+        <ul className='chaptersList'>
           {chapters.map((chapter) => (
             <li key={chapter.id}>
               <Link to={`/chapter/${chapter.id}`}>{chapter.title}</Link>
@@ -144,6 +142,9 @@ const formattedDate = `${date} | ${time}h`;
           ))}
         </ul>
       </div>
+        </div>
+      </div>
+      
     </div>
   );
 }

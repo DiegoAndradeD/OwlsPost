@@ -31,3 +31,24 @@
     font-weight: 700;
     background-color: blue;
 }
+
+.chaptersList {
+    text-decoration: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+.chaptersList li a {
+    text-decoration: none;
+    color: white;
+    font-size: 36px;
+}
+
+.chaptersList li a:hover {
+    padding-left: 10px;
+    font-style: italic;
+    color: rgb(234, 233, 233);
+}
