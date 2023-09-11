@@ -13,3 +13,21 @@
     font-weight: 700;
     background-color: red;
 }
+
+#addChapterLink {
+    background: rgba(0, 0, 255, 0.579);
+    color: white;
+    margin: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.448);
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    width: 200px;
+    text-decoration: none;
+    text-align: center;
+}
+
+#addChapterLink:hover {
+    font-weight: 700;
+    background-color: blue;
+}

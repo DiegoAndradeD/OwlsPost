@@ -67,6 +67,7 @@ const UserStories: React.FC = () => {
 
 
     return (
+        //Todo - create route/function to get story's chapters
         <div>
             <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Change Colors</button>
             <div className={mainContainerClass} id='mainStoriesContainer'>
