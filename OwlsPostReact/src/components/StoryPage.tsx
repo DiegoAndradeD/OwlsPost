@@ -79,6 +79,7 @@ const StoryPage: React.FC = () => {
   }, [id]);
 
   //TODO - TREAT ERRORS: Navigate to another page after delete
+  //TODO - Put confirmation before deleting
   const handleStoryDelete =async () => {
     try {
         const response = await axios.delete(`http://localhost:3000/story/user/${story.userId}/delete_story/${id}`, {
@@ -126,18 +127,20 @@ const formattedDate = `${date} | ${time}h`;
           </Link>
           <p className={pClass}>{story.description}</p>
           <p className={pClass}>Created At: {formattedDate}</p>
-          <button id="deleteBtn" onClick={handleStoryDelete}>
-            Delete Story
-          </button>
-          <Link to={`/add-chapter/${id}`} id="addChapterLink">
-            Add Chapter
-          </Link>
+          <div className='buttonsContainer'>
+            <button id="deleteBtn" onClick={handleStoryDelete}>
+              Delete Story
+            </button>
+            <Link to={`/add-chapter/${id}`} id="addChapterLink">
+              Add Chapter
+            </Link>
+          </div>
           <div>
         <h2>Chapters</h2>
         <ul className='chaptersList'>
           {chapters.map((chapter) => (
             <li key={chapter.id}>
-              <Link to={`/chapter/${chapter.id}`}>{chapter.title}</Link>
+              <Link className={h1Class} to={`/chapter/${chapter.id}`}>{chapter.title} </Link>
             </li>
           ))}
         </ul>
