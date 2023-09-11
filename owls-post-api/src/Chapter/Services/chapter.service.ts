@@ -15,6 +15,7 @@ export class ChapterService {
     }
 
     async addChapter(chapterDto: ChapterDto):Promise<Chapter> {
+        
         const entityManager = this.chapterRepository.manager;
         const query = `INSERT INTO chapters (title, content, storyid)
         VALUES
@@ -23,7 +24,6 @@ export class ChapterService {
     }
 
     async getChaptersById(id: number): Promise<Chapter[]> {
-        console.log(id)
         const entityManager = this.chapterRepository.manager;
         const query = `
         SELECT * FROM chapters WHERE storyid = $1
@@ -38,7 +38,6 @@ export class ChapterService {
     }
 
     async getChapterById(id: number): Promise<Chapter> {
-        console.log(id)
         const entityManager = this.chapterRepository.manager;
         const query = `
         SELECT * FROM chapters WHERE id = $1

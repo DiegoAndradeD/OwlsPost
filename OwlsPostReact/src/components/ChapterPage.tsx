@@ -21,26 +21,29 @@ const ChapterPage: React.FC = () => {
       try {
         const response = await axios.get(`http://localhost:3000/chapter/getChapter/${chapterId}`);
         setStoryId(response.data.storyid);
-        console.log(response.data.storyid)
         setChapter(response.data);
       } catch (error) {
         console.error(error);
       }
     };
-
-    const fetchChapters = async () => {
+  
+    fetchChapter();
+  }, [chapterId]);
+  
+  useEffect(() => {
+    if (storyId !== null) {
+      const fetchChapters = async () => {
         try {
           const response = await axios.get(`http://localhost:3000/chapter/getStory/${storyId}/chapters`);
-          console.log(response.data)
           setChapters(response.data);
         } catch (error) {
           console.error(error);
         }
       };
-
-    fetchChapter();
-    fetchChapters();
-  }, [chapterId, storyId]);
+  
+      fetchChapters();
+    }
+  }, [storyId]);
 
   if (!chapter || chapters.length === 0) {
     return <div>Loading...</div>;

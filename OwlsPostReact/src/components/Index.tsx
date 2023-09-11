@@ -12,11 +12,12 @@ interface Story {
     id: number;
     title: string;
     description: string;
+    userid: number;
 }
 
 interface UserStoriesStates {
     search: string;
-    userId: number;
+    userid: number;
     stories: Story[],
     invertedColors: boolean,
 }
@@ -26,7 +27,7 @@ const Index: React.FC = () => {
 
     const [state, setState] = useState<UserStoriesStates>({
         search: '',
-        userId: 0,
+        userid: 0,
         stories: [],
         invertedColors: false,
     });
@@ -54,7 +55,7 @@ const Index: React.FC = () => {
             };
             
             fetchData(); 
-        
+            
     }, []);
 
     const toggleColors = () => {
@@ -99,7 +100,7 @@ const Index: React.FC = () => {
                 {state.stories.map(story => {
                 return (
                     <div key={story.id} className='container' id='storyContainer'>
-                    <Link to={`/story/${story.id}`} id='storyLink'>
+                    <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
                       <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
                     </Link>
                     <p className={pClass}>{story.description}</p>

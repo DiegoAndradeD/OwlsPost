@@ -17,7 +17,6 @@ export class AuthController {
             throw new UnauthorizedException('Invalid credentials');
         }
         const user = await this.userService.findOne(signInDto.username);
-        console.log(user)
         const maxAgeInMilliseconds = 3600000;
         res.cookie('username', user.username, {
             httpOnly: true,

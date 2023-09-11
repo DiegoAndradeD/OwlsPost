@@ -22,7 +22,7 @@ interface Chapter {
 }
 
 const StoryPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, userid } = useParams<{ id: string, userid: string }>();
 
   const [story, setStory] = useState<StoryStates>({
     userId: 0,
@@ -37,14 +37,16 @@ const StoryPage: React.FC = () => {
 
   const cookies = new Cookies();
   const accessToken = cookies.get('accessToken');
-  console.log(accessToken)
+  console.log(accessToken.id)
+  console.log(userid);
+  console.log(accessToken.id === Number(userid));
 
   useEffect(() => {
     
   
     const fetchData = async () => {
       try {
-        if (accessToken) {
+        if (accessToken && accessToken.id === userid) {
           const storyResponse = await axios.get(
             `http://localhost:3000/story/user/${accessToken.id}/get_story/${id}`,
             {
@@ -71,7 +73,6 @@ const StoryPage: React.FC = () => {
               },
             }
           );
-          console.log(storyResponse.data);
           setStory({
             ...story,
             id: Number(id),
@@ -149,7 +150,7 @@ const formattedDate = `${date} | ${time}h`;
         </Link>
         <p className={pClass}>{story.description}</p>
         <p className={pClass}>Created At: {formattedDate}</p>
-        {accessToken && (
+        {accessToken && accessToken.id === Number(userid) &&(
           <div className='buttonsContainer'>
             <button id="deleteBtn" onClick={handleStoryDelete}>
               Delete Story

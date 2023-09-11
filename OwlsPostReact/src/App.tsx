@@ -27,7 +27,7 @@ const App: React.FC = () => {
         <Route path='login' element={<LoginForm />}/>
         <Route path='addStory' element={<StoryForm />}/>
         <Route path='user_stories' element={<UserStories />}/>
-        <Route path='/story/:id' element={<StoryPage />}/>
+        <Route path='/story/:id/author/:userid' element={<StoryPage />}/>
         <Route path='/add-chapter/:id' element={<AddChapterPage />}/>
         <Route path='/chapter/:chapterId' element={<ChapterPage />}/>
       </Routes>
