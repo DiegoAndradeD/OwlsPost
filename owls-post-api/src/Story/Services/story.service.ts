@@ -19,7 +19,7 @@ export class StoryService {
     }
 
     async getAllStories(): Promise<Story[]> {
-        return this.storyRepository.find();
+        return this.storyRepository.query('SELECT * FROM stories ORDER BY RANDOM()');
     }
 
     async getUserStories(userId: number): Promise<Story[]> {
