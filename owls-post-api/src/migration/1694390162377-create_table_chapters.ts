@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateTableStories1694320684384 implements MigrationInterface {
+export class CreateChaptersTable1694320684385 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: "stories",
+            name: "chapters",
             columns: [
                 {
                     name: "id",
@@ -17,18 +17,8 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                     isNullable: false,
                 },
                 {
-                    name: "description",
-                    type: "varchar",
-                    isNullable: false,
-                },
-                {
-                    name: "userid",
-                    type: "integer",
-                    isNullable: false,
-                },
-                {
-                    name: "username",
-                    type: "varchar",
+                    name: "content",
+                    type: "text",
                     isNullable: false,
                 },
                 {
@@ -36,20 +26,25 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                     type: "timestamp",
                     default: "now()",
                 },
+                {
+                    name: "storyid",
+                    type: "integer",
+                    isNullable: false,
+                },
             ],
         }));
 
-        await queryRunner.createForeignKey("stories", new TableForeignKey({
-            columnNames: ["userid"],
+        await queryRunner.createForeignKey("chapters", new TableForeignKey({
+            columnNames: ["storyid"],
             referencedColumnNames: ["id"],
-            referencedTableName: "users",
+            referencedTableName: "stories",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
         }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey("stories", "FK_stories_users");
-        await queryRunner.dropTable("stories");
+        await queryRunner.dropForeignKey("chapters", "FK_chapters_stories");
+        await queryRunner.dropTable("chapters");
     }
 }

@@ -1,5 +1,6 @@
+import { Chapter } from "src/Chapter/Entities/chapter.entity";
 import { User } from "src/User/Entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'stories'})
 export class Story {
@@ -17,6 +18,9 @@ export class Story {
     @ManyToOne(() => User, (User) => User.id, {cascade: true})
     @JoinColumn({name: 'userid'})
     userid: number;
+
+    @OneToMany(() => Chapter, (chapter) => chapter.story)
+    chapters: Chapter[];
 
     @Column({name: 'username', nullable: false})
     username: string;
