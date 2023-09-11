@@ -37,9 +37,6 @@ const StoryPage: React.FC = () => {
 
   const cookies = new Cookies();
   const accessToken = cookies.get('accessToken');
-  console.log(accessToken.id)
-  console.log(userid);
-  console.log(accessToken.id === Number(userid));
 
   useEffect(() => {
     
