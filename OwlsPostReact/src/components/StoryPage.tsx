@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import '../styles/UserStories.css';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/StoryPage.css';
 
 interface StoryStates {
@@ -22,6 +22,7 @@ interface Chapter {
 }
 
 const StoryPage: React.FC = () => {
+  const navigate = useNavigate();
   const { id, userid } = useParams<{ id: string, userid: string }>();
 
   const [story, setStory] = useState<StoryStates>({
@@ -98,19 +99,21 @@ const StoryPage: React.FC = () => {
   
 
   //TODO - TREAT ERRORS: Navigate to another page after delete
-  //TODO - Put confirmation before deleting
   //TODO - ADD backend validation to both delete and add chapter buttons
   const handleStoryDelete =async () => {
-    try {
-        const response = await axios.delete(/*`http://localhost:3000/story/user/${story.userId}/delete_story/${id}`*/ '', {
+    if(confirm("Are you sure you want to delete this story?")) {
+      try {
+        const response = await axios.delete(`http://localhost:3000/story/user/${userid}/delete_story/${id}`, {
           headers: {
             'Content-Type': 'application/json',
           },
         }); 
+        navigate('/user_stories');
     }
     catch(error) {
         console.log(error);
     }
+    } 
   }
 
   const toggleColors = () => {
@@ -158,11 +161,11 @@ const formattedDate = `${date} | ${time}h`;
           </div>
         )}
         <div>
-          <h2>Chapters</h2>
+          <h2 className={h1Class} >Chapters</h2>
           <ul className='chaptersList'>
             {chapters.map((chapter, index) => (
-              <li key={chapter.id}>
-                <Link className={h1Class} to={`/chapter/${chapter.id}`}>Chapter {index + 1}: {chapter.title}</Link>
+              <li key={chapter.id} className={h1Class}>
+                <Link id='chaptersLink' to={`/chapter/${chapter.id}`}>Chapter {index + 1}: {chapter.title}</Link>
               </li>
             ))}
           </ul>

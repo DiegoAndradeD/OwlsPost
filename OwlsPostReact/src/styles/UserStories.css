@@ -68,7 +68,7 @@
     color: white;
 }
 
-#mainStoriesContainer.invertedColors h1{
+#mainStoriesContainer.invertedColors h1, #mainStoriesContainer.invertedColors #chaptersLink, #mainStoriesContainer.invertedColors h2{
     color: black;
   }
   

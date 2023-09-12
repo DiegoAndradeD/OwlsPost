@@ -16,6 +16,7 @@ interface StoryFormState {
 }
 
 const StoryForm: React.FC = () => {
+    const navigate = useNavigate();
     const [state, setState] = useState<StoryFormState>({
         title: '',
         description: '',
@@ -24,9 +25,10 @@ const StoryForm: React.FC = () => {
         remainingChars: 2000,
     });
     
-    const navigate = useNavigate();
+    
     const maxLenght = 2000;
 
+    //TODO - Create alert to max lenght
     const handleDescription = (e: any) => {
         const newDescription = e.target.value;
         const currentLength = newDescription.length;
@@ -47,7 +49,8 @@ const StoryForm: React.FC = () => {
         
     }, [])
 
-    const handleFormSubmit =async () => {
+    const handleFormSubmit = async (event: any) => {
+        event.preventDefault(); 
         const formData = new FormData();
         const cleanedTitle = DOMPurify.sanitize(state.title);
         const cleanedDescription = DOMPurify.sanitize(state.description);
@@ -59,16 +62,17 @@ const StoryForm: React.FC = () => {
         console.log(String(state.userId));
 
         try {
-            const response = await axios.post('http://localhost:3000/story/add_story', 
+            await axios.post('http://localhost:3000/story/add_story', 
             formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            navigate('/user_stories');
         } catch (error) {
             console.log(error);
         }
+
+        navigate('/user_stories');
     }
 
     return (

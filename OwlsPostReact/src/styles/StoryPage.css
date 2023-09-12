@@ -38,15 +38,19 @@
     text-decoration: none;
     list-style: none;
     display: flex;
-    align-items: center;
     flex-direction: column;
     
+}
+
+.chaptersList li  {
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
 }
 
 .chaptersList li a {
     text-decoration: none;
     color: white;
-    font-size: 36px;
+    font-size: 30px;
 }
 
 .chaptersList li a:hover {
