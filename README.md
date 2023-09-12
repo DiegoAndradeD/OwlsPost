@@ -78,25 +78,25 @@ Are you an aspiring author? OwlsPost provides an intuitive story creation sectio
 
 ## Upcoming Features
 
-- Personalized Dashboard
+- Personalized Dashboard:
 Your dashboard is your personal hub on OwlsPost. It showcases your profile information and offers quick access to your stories, ensuring a user-centric experience.
 
-- Discovering Captivating Stories
+- Discovering Captivating Stories:
 Finding the perfect story is a breeze with our intuitive search bar and categorization system. Explore a world of stories that match your interests effortlessly.
 
-- Immersive Reading Experience
+- Immersive Reading Experience:
 Customize your reading experience with font adjustments, background settings, and night mode to enjoy stories the way you like.
 
-- Effortless Chapter Management
+- Effortless Chapter Management:
 Managing your stories is a breeze. Add, edit, or delete chapters as you refine your narrative. Keep track of changes with our version history feature.
 
-- Engage with the Community
+- Engage with the Community:
 Connect with fellow readers and authors by liking, commenting on, and sharing stories. Join discussions and provide feedback through dedicated comment sections.
 
-- Showcase Your Profile
+- Showcase Your Profile:
 Your public profile is your literary identity. Share your authored stories and showcase your reading preferences. Personalize your profile with pictures and bios to make it uniquely yours.
 
-- Privacy and Security
+- Privacy and Security:
 Rest easy knowing that your privacy and security are our top priorities. We employ robust measures to protect your data and content. Control the privacy settings of your stories with ease.
 
 
