@@ -14,12 +14,6 @@ h2 {
     font-family: 'Anton', sans-serif;
     font-size: 46px;
 
-    background-image: linear-gradient(45deg, #FF6B6B, #4A4E69, #F7F7F7); 
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    background-size: 200% 100%; 
-    animation: shine 5s linear infinite; 
 }
 
 #wrapper {

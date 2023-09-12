@@ -36,3 +36,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
+#chapterTitle {
+    color: black;
+}

@@ -75,7 +75,7 @@ const UserStories: React.FC = () => {
             {state.stories.map(story => {
                 return (
                     <div key={story.id} className='container' id='storyContainer'>
-                    <Link to={`/story/${story.id}/author/${story.userid}}`} id='storyLink'>
+                    <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
                       <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
                     </Link>
                     <p className={pClass}>{story.description}</p>

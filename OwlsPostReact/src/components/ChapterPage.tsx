@@ -74,7 +74,7 @@ const ChapterPage: React.FC = () => {
 
   return (
     <div className="chapterContainer">
-      <h2>{chapter.title}</h2>
+      <h2 id='chapterTitle'>{chapter.title}</h2>
       <div className="chapter-content">{chapter.content}</div>
       <div className="chapter-navigation">
         {hasPrevChapter && (
