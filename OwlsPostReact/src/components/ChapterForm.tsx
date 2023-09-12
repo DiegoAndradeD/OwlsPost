@@ -46,7 +46,7 @@ const AddChapterPage: React.FC = () => {
     element.style.height = 'auto';
     element.style.height = element.scrollHeight + 'px';
   };
-
+  //TODO - ADD TEXT FORMATATION TO FORM: tittle, center, etc...
   return (
     <div className="" id="chapterFormContainer">
       <div className="col-md-6" id="chapterFormWrapper">

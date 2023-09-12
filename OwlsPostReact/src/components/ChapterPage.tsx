@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import '../styles/ChapterPage.css'
+import '../styles/ChapterPage.css';
 
 interface Chapter {
   id: number;
@@ -13,8 +13,7 @@ const ChapterPage: React.FC = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
-  const [storyId, setStoryId] = useState<number | null>(null); 
-
+  const [storyId, setStoryId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -26,10 +25,10 @@ const ChapterPage: React.FC = () => {
         console.error(error);
       }
     };
-  
+
     fetchChapter();
   }, [chapterId]);
-  
+
   useEffect(() => {
     if (storyId !== null) {
       const fetchChapters = async () => {
@@ -40,7 +39,7 @@ const ChapterPage: React.FC = () => {
           console.error(error);
         }
       };
-  
+
       fetchChapters();
     }
   }, [storyId]);
@@ -51,13 +50,25 @@ const ChapterPage: React.FC = () => {
 
   const currentIndex = chapters.findIndex((c) => c.id.toString() === chapterId);
   const nextIndex = currentIndex + 1;
+  const prevIndex = currentIndex - 1;
+
   const hasNextChapter = nextIndex < chapters.length;
+  const hasPrevChapter = prevIndex >= 0;
+
   const nextChapterId = hasNextChapter ? chapters[nextIndex].id : null;
+  const prevChapterId = hasPrevChapter ? chapters[prevIndex].id : null;
 
   const navigateToNextChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault(); 
+    event.preventDefault();
     if (nextChapterId) {
       window.location.href = `/chapter/${nextChapterId}`;
+    }
+  };
+
+  const navigateToPrevChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (prevChapterId) {
+      window.location.href = `/chapter/${prevChapterId}`;
     }
   };
 
@@ -65,15 +76,26 @@ const ChapterPage: React.FC = () => {
     <div className="chapterContainer">
       <h2>{chapter.title}</h2>
       <div className="chapter-content">{chapter.content}</div>
-      {hasNextChapter && (
-         <a
-         href={`/chapter/${nextChapterId}`}
-         className="nextChapterButton"
-         onClick={navigateToNextChapter}
-       >
-         Next Chapter
-       </a>
-      )}
+      <div className="chapter-navigation">
+        {hasPrevChapter && (
+          <a
+            href={`/chapter/${prevChapterId}`}
+            className="prevChapterButton"
+            onClick={navigateToPrevChapter}
+          >
+            Previous Chapter
+          </a>
+        )}
+        {hasNextChapter && (
+          <a
+            href={`/chapter/${nextChapterId}`}
+            className="nextChapterButton"
+            onClick={navigateToNextChapter}
+          >
+            Next Chapter
+          </a>
+        )}
+      </div>
     </div>
   );
 };
