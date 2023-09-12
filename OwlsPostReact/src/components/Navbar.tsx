@@ -123,7 +123,7 @@ const Navbar: React.FC = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="" id='navText'>Explore</Link>
+                <Link className="nav-link" to="/" id='navText'>Explore</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to={state.isLoggedIn ? "/addStory" : "login"} id='navText'>{state.isLoggedIn ? "Write" : "Write"}</Link>

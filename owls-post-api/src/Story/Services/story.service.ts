@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
 
@@ -70,6 +70,14 @@ export class StoryService {
         FROM stories
         WHERE userId = $1 AND stories.id = $2`;
         return await entityManager.query(query, [userId, id]);
+    }
+
+    async getStoryByTitle(title: string):Promise<Story[]> {
+        return this.storyRepository.find({
+            where: {
+                title: ILike(`%${title}%`),
+            }
+        })
     }
 
 }

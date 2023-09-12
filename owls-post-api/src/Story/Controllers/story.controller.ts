@@ -41,4 +41,9 @@ export class StoryController {
         return this.storyService.deleteStory(userId, id);
     }
 
+    @Get('getStorySearched/:title')
+    async getStoryByTitle(@Param('title') title: string): Promise<Story[]> {
+        return this.storyService.getStoryByTitle(title);
+    }
+
 }
