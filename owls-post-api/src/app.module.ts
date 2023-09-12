@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './Auth/Modules/auth.module';
 import { StoryModule } from './Story/Modules/story.module';
 import { ChapterModule } from './Chapter/Modules/chapter.module';
+import { FollowerModule } from './Follower/Modules/follower.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ChapterModule } from './Chapter/Modules/chapter.module';
     UserModule,
     AuthModule,
     StoryModule,
-    ChapterModule
+    ChapterModule,
+    FollowerModule
   ],
   controllers: [],
   providers: [],

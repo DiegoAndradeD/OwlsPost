@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
 
 export class CreateTableUser1694109858458 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
@@ -26,11 +26,22 @@ export class CreateTableUser1694109858458 implements MigrationInterface {
                     isNullable: false,
                 },
                 {
+                    name: "followers_count",
+                    type: "integer",
+                    default: 0,
+                },
+                {
                     name: "created_at",
                     type: "timestamp",
                     default: "now()",
                 },
             ],
+        }));
+
+        await queryRunner.createIndex("users", new TableIndex({
+            name: "IDX_USERNAME",
+            columnNames: ["username"],
+            isUnique: true,
         }));
     }
 
