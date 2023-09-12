@@ -1,17 +1,62 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import owlIcon from '../assets/owlIcon.png';
 import '../styles/Navbar.css';
 import Cookies from 'universal-cookie';
-import '@fortawesome/fontawesome-free/css/all.css';
-
 
 interface NavbarState {
-    isLoggedIn: boolean;
-    username: string;
+  isLoggedIn: boolean;
+  username: string;
 }
+
+const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ username, onLogout }) => {
+  return (
+    <li className="nav-link dropdown">
+      <button
+        className="dropdown-toggle"
+        role="button"
+        id="navText"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {username}
+      </button>
+      <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" id="menuDrop">
+        <li>
+          <Link to={'user_stories'} className="dropdown-item">
+            <i className="fa-solid fa-book-open"></i> My Stories
+          </Link>
+        </li>
+        <li>
+          <Link to="/addStory" className="dropdown-item">
+            <i className="fa-solid fa-pen-nib"></i> Create Story
+          </Link>
+        </li>
+        <li>
+          <a href="#" className="dropdown-item">
+            <i className="fa-solid fa-users"></i> Following
+          </a>
+        </li>
+        <li>
+          <a href="#" className="dropdown-item">
+            <i className="fa-solid fa-star"></i> Favorites
+          </a>
+        </li>
+        <li>
+          <a href="#" className="dropdown-item">
+            <i className="fa-solid fa-gear"></i> Settings
+          </a>
+        </li>
+        <li>
+          <a href="#" className="dropdown-item" onClick={onLogout}>
+            <i className="fa-solid fa-right-from-bracket"></i> LogOut
+          </a>
+        </li>
+      </ul>
+    </li>
+  );
+};
 
 const Navbar: React.FC = () => {
   const cookieInstance = new Cookies();
@@ -22,11 +67,9 @@ const Navbar: React.FC = () => {
     username: '',
   });
 
-  const destination = state.isLoggedIn ? "/addStory" : "login";
+  const navigate = useNavigate();
 
   useEffect(() => {
-    
-
     const checkUserCookie = () => {
       if (accessToken) {
         const cookieUsername = accessToken.username;
@@ -38,10 +81,9 @@ const Navbar: React.FC = () => {
       }
     };
 
-    const isUserRegistered = async () =>  {
-      const cookies = new Cookies();
-      const accessToken = cookies.get('accessToken');
-      if(accessToken) {
+    const isUserRegistered = async () => {
+      const accessToken = cookieInstance.get('accessToken');
+      if (accessToken) {
         const id = accessToken.id;
         const username = accessToken.username;
         try {
@@ -52,34 +94,26 @@ const Navbar: React.FC = () => {
           console.error(error);
           setState({ isLoggedIn: false, username: '' });
         }
-      } 
- 
-    }
+      }
+    };
 
-    checkUserCookie(),
+    checkUserCookie();
     isUserRegistered();
   }, []);
-   
 
-
-  const Logout = async () => {
+  const handleLogout = async () => {
     try {
       await axios.post("http://localhost:3000/auth/logout");
-      
 
-      const cookies = new Cookies();
-      cookies.remove('accessToken', { path: '/' });
- 
+      cookieInstance.remove('accessToken', { path: '/' });
       window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
 
-    
-    
-    return (
-      <div>
+  return (
+    <div>
       <nav className="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div className="container">
           <Link className="navbar-brand d-flex align-items-center" to="/" id='HeaderTitle'><img id="owlIcon" src={owlIcon} alt="owlIcon" /></Link>
@@ -92,63 +126,18 @@ const Navbar: React.FC = () => {
                 <Link className="nav-link" to="" id='navText'>Explore</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={destination} id='navText'>Write</Link>
+                <Link className="nav-link" to={state.isLoggedIn ? "/addStory" : "login"} id='navText'>{state.isLoggedIn ? "Write" : "Write"}</Link>
               </li>
               {state.isLoggedIn ? (
-                
-                <li className="nav-link dropdown">
-                  <button
-                    className="dropdown-toggle"
-                    role="button"
-                    id="navText"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {state.username}
-                  </button>
-                  <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" id="menuDrop">
-                    <li>
-                    <Link to={'user_stories'}className="dropdown-item">
-                      <i className="fa-solid fa-book-open"></i> My Stories
-                    </Link>
-                </li>
-                  <li>
-                    <Link to={destination} className="dropdown-item">
-                      <i className="fa-solid fa-pen-nib"></i> Create Story
-                    </Link>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown-item">
-                      <i className="fa-solid fa-users"></i> Following
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown-item">
-                      <i className="fa-solid fa-star"></i> Favorites
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown-item">
-                      <i className="fa-solid fa-gear"></i> Settings
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="dropdown-item" onClick={Logout}>
-                      <i className="fa-solid fa-right-from-bracket"></i> LogOut
-                    </a>
-                  </li>
-                    </ul>
-                  </li>
-                
+                <UserMenu username={state.username} onLogout={handleLogout} />
               ) : (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" id='navText'  to="/signup">Signup</Link>
+                    <Link className="nav-link" id='navText' to="/signup">Signup</Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" id='navText' to="/login">Login</Link>
                   </li>
-                  
                 </>
               )}
             </ul>
@@ -156,7 +145,7 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
     </div>
-    )
-}
+  );
+};
 
 export default Navbar;

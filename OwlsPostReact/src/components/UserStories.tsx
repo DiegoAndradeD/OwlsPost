@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import '../styles/UserStories.css'
@@ -13,9 +13,35 @@ interface Story {
 
 interface UserStoriesStates {
     userId: number;
-    stories: Story[],
-    invertedColors: boolean,
+    stories: Story[];
+    invertedColors: boolean;
 }
+
+const ToggleColorsButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+        <button onClick={onClick} id='toggleColorBtn'>
+            <i className="fa-solid fa-eye-dropper"></i> Change Colors
+        </button>
+    );
+};
+
+const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ story, invertedColors }) => {
+    const h1Class = invertedColors ? 'invertedColors' : '';
+    const pClass = invertedColors ? 'invertedColors' : '';
+
+    const capitalizeFirstLetter = (str: string) => {
+        return str.split(' ').map(word => word.charAt(0).toLocaleUpperCase() + word.slice(1)).join(' ');
+    }
+
+    return (
+        <div className='container' id='storyContainer'>
+            <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
+                <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
+            </Link>
+            <p className={pClass}>{story.description}</p>
+        </div>
+    );
+};
 
 const UserStories: React.FC = () => {
     const [state, setState] = useState<UserStoriesStates>({
@@ -27,7 +53,7 @@ const UserStories: React.FC = () => {
     useEffect(() => {
         const cookies = new Cookies();
         const accessToken = cookies.get('accessToken');
-        
+
         if (accessToken) {
             const fetchData = async () => {
                 try {
@@ -46,45 +72,33 @@ const UserStories: React.FC = () => {
                     console.log(error);
                 }
             };
-            
-            fetchData(); 
+
+            fetchData();
         }
     }, []);
 
     const toggleColors = () => {
-        setState({...state, invertedColors: !state.invertedColors});
+        setState({ ...state, invertedColors: !state.invertedColors });
     };
 
-    const capitalizeFirstLetter = (str: string) => {
-        return str.split(' ').map(word => word.charAt(0).toLocaleUpperCase() + word.slice(1)).join(' ');
-    }
-
     const mainContainerClass = state.invertedColors
-    ? 'container invertedColors'
-    : 'container';
-
-    const h1Class = state.invertedColors ? 'invertedColors' : '';
-    const pClass = state.invertedColors ? 'invertedColors' : '';
-
+        ? 'container invertedColors'
+        : 'container';
 
     return (
-        //Todo - create route/function to get story's chapters
         <div>
-            <button onClick={toggleColors} id='toggleColorBtn'><i className="fa-solid fa-eye-dropper"></i>Change Colors</button>
+            <ToggleColorsButton onClick={toggleColors} />
             <div className={mainContainerClass} id='mainStoriesContainer'>
-            {state.stories.map(story => {
-                return (
-                    <div key={story.id} className='container' id='storyContainer'>
-                    <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
-                      <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
-                    </Link>
-                    <p className={pClass}>{story.description}</p>
-                  </div>
-                );
-            })}
+                {state.stories.map(story => (
+                    <StoryContainer
+                        key={story.id}
+                        story={story}
+                        invertedColors={state.invertedColors}
+                    />
+                ))}
             </div>
         </div>
     )
 }
 
-export default UserStories
+export default UserStories;

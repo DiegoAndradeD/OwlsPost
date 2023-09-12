@@ -41,22 +41,23 @@
     text-decoration: none;
 }
 
-#storyContainer h1{
+#storyContainer h1 {
     font-family: 'Anton', sans-serif;
     color: white;
     border-bottom: 1px solid black;
     cursor: pointer;
+    overflow-wrap: break-word; 
 }
 
 #storyContainer h1:hover {
     font-style: italic;
 }
 
-#storyContainer p{
+#storyContainer p {
     font-size: 20px;
     color: white;
     font-weight: 500;
-
+    overflow-wrap: break-word;
 }
 
   

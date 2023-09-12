@@ -11,7 +11,8 @@ export class StoryService {
         @InjectRepository(Story)
         private readonly storyRepository: Repository<Story>
     ){}
-
+    
+    //Todo - Add validation to register story
     async registerStory(storyDto: StoryDTO):Promise<Story> {
         return this.storyRepository.save({
             ...storyDto,
