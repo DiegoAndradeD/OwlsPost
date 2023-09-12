@@ -12,7 +12,7 @@ interface NavbarState {
 
 const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ username, onLogout }) => {
   return (
-    <li className="nav-link dropdown">
+    <li className="nav-link dropdown" id='navText'>
       <button
         className="dropdown-toggle"
         role="button"

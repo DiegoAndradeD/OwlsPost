@@ -65,6 +65,7 @@ button {
     text-align: center;
     font-size: 30px;
     transition:  0.3s ease;
+
     
 }
 
@@ -76,6 +77,7 @@ button {
     background-size: 200% 100%; 
     animation: shine 1s linear infinite; 
 }
+
 
 @keyframes shine {
     0% {
