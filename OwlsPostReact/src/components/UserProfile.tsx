@@ -4,6 +4,8 @@ import axios from "axios";
 import '../styles/UserProfile.css';
 import Cookies from "universal-cookie";
 
+//Todo - block user to follow himself
+
 interface UserProfileStates {
   profile_user_id: number;
   username: string;
