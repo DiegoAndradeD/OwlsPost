@@ -23,6 +23,7 @@
 .profile_h1_text {
     color: white;
     font-size: 36px;
+    font-family: 'Imbue', serif;
 }
 
 .profile_h2_text {
@@ -48,6 +49,14 @@
     padding: 10px;
 }
 
+.profile_followersCount_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+
 .profile_followersCount_container, .profile_created_atContainer {
     width: 100%;
     text-align: left;
@@ -55,4 +64,19 @@
 
 .profile_followersCount_container h1, .profile_created_atContainer h1{
     font-size: 26px;
+}
+
+.profile_follow_btn {
+    font-size: 26px;
+    color: #038c3e;
+    background-color: #030F27;
+    padding: 0px 20px;
+    border-radius: 25px;
+    text-align: center;
+    font-family: 'Imbue', serif;
+}
+
+.profile_follow_btn:hover {
+    font-style: italic;
+    color: #F29F05;
 }

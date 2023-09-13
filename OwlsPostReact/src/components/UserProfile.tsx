@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import '../styles/UserProfile.css';
+import Cookies from "universal-cookie";
 
 interface UserProfileStates {
   id: number;
@@ -19,7 +20,7 @@ interface Story {
 }
 
 interface UserStoriesStates {
-  userId: number;
+  userAuthorId: number;
   stories: Story[];
   invertedColors: boolean;
 }
@@ -36,10 +37,13 @@ const UserProfile: React.FC = () => {
   });
 
   const [state, setState] = useState<UserStoriesStates>({
-    userId: 0,
+    userAuthorId: 0,
     stories: [],
     invertedColors: false,
   });
+
+  const cookies = new Cookies();
+  const accessToken = cookies.get('accessToken');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,7 +56,6 @@ const UserProfile: React.FC = () => {
             },
           }
         );
-        console.log(response.data)
         setUser({
           id: response.data.id,
           username: response.data.username,
@@ -69,11 +72,11 @@ const UserProfile: React.FC = () => {
                 headers: { 'Content-Type': 'application/json' },
               }
             );
-            setState({
-              ...state,
-              userId: response.data.id,
+            setState(prevState => ({
+              ...prevState,
+              userAuthorId: response.data.id,
               stories: storyResponse.data,
-            });
+            }));
           } catch (error) {
             console.log(error);
           }
@@ -84,7 +87,25 @@ const UserProfile: React.FC = () => {
       }
     };
     fetchUserData();
-  }, [userid, state]);
+  }, [userid]);
+
+  const handleFollowSubmit = async () => {
+    if(accessToken) {
+      try {
+        const response = await axios.post(`http://localhost:3000/follower/user/${user.id}/followUser/${accessToken.id}`, 
+        {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      navigate('login');
+    }
+    
+  }
+
 
   const formattedDate = new Date(user.created_at)
     .toLocaleString()
@@ -102,6 +123,7 @@ const UserProfile: React.FC = () => {
           </div>
           <div className="profile_followersCount_container">
             <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
+            <button className="profile_follow_btn" onClick={handleFollowSubmit}>Follow</button>
           </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Post } from "@nestjs/common";
 import { FollowerService } from "../Services/follower.service"; 
 import { Follower } from "../Entities/follower.entity";
 
@@ -16,8 +16,11 @@ export class FollowerController {
 
     @Get('getFollowingUsers/:userid')
     async getUserAllFollowing(@Param('userid') userid: number): Promise<Follower[]> {
-        console.log('here')
-        console.log(userid);
         return this.followerService.getUserAllFollowing(userid);
+    }
+
+    @Post('user/:userid/followUser/:followingid')
+    async followUser(@Param('userid') userid: number, @Param('followingid') followingid: number): Promise<void> {
+        return this.followerService.followUser(userid, followingid);
     }
 }
