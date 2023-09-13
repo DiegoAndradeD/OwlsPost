@@ -31,4 +31,15 @@ export class UserService {
     async findOne(username: string):Promise<User | undefined> {
         return this.userRepository.findOne({where: {username}});
     }
+
+    async getUserById(userid: number): Promise<User> {
+        const entityManager = this.userRepository.manager;
+        const query = `SELECT * FROM users WHERE id = $1;`;
+        const result = await entityManager.query(query, [userid]);
+        if(result && result.length > 0) {
+            return result[0];
+        }
+
+        return null;
+    }
 }

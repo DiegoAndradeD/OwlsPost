@@ -14,6 +14,7 @@ import UserStories from './components/UserStories';
 import StoryPage from './components/StoryPage';
 import AddChapterPage from './components/ChapterForm';
 import ChapterPage from './components/ChapterPage';
+import UserProfile from './components/UserProfile';
 
 const App: React.FC = () => {
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path='/story/:id/author/:userid' element={<StoryPage />}/>
         <Route path='/add-chapter/:id' element={<AddChapterPage />}/>
         <Route path='/chapter/:chapterId' element={<ChapterPage />}/>
+        <Route path='/getUserProfile/:userid' element={<UserProfile/>}/>
       </Routes>
     </Router>
     

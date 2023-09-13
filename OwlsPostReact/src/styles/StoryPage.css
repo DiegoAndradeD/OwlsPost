@@ -65,3 +65,14 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+a {
+    text-decoration: none;
+}
+
+#authorUsername {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 20px 0px;
+}

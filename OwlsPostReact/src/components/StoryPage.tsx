@@ -7,6 +7,8 @@ import '../styles/StoryPage.css';
 
 interface StoryStates {
   userId: number;
+  authorId: number;
+  username: string;
   id: number;
   title: string;
   description: string;
@@ -25,6 +27,8 @@ const StoryPage: React.FC = () => {
   const { id, userid } = useParams<{ id: string; userid: string }>();
   const [story, setStory] = useState<StoryStates>({
     userId: 0,
+    username: '',
+    authorId: 0,
     id: 0,
     title: '',
     description: '',
@@ -32,13 +36,13 @@ const StoryPage: React.FC = () => {
     created_at: new Date(),
   });
   const [chapters, setChapters] = useState<Chapter[]>([]);
-  const [accessToken, setAccessToken] = useState<any>(null); // Defina um estado inicial como null
+  const [accessToken, setAccessToken] = useState<any>(null); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = new Cookies().get('accessToken'); // Obtenha o token aqui
-        setAccessToken(token); // Defina o accessToken quando estiver disponível
+        const token = new Cookies().get('accessToken'); 
+        setAccessToken(token); 
 
         const storyResponse = await axios.get(
           token && token.id === userid
@@ -50,15 +54,19 @@ const StoryPage: React.FC = () => {
             },
           }
         );
+        console.log(storyResponse.data.userid)
 
         setStory((prevStory) => ({
           ...prevStory,
           userId: token ? token.id : 0,
+          authorId: storyResponse.data.userid,
+          username: storyResponse.data.username,
           id: Number(id),
           title: storyResponse.data.title,
           description: storyResponse.data.description,
           created_at: storyResponse.data.created_at,
         }));
+        console.log(story.userId);
 
         const chaptersResponse = await axios.get(
           `http://localhost:3000/chapter/getStory/${id}/chapters`,
@@ -162,6 +170,11 @@ const StoryPage: React.FC = () => {
             <h1 className={h1Class}>
               {capitalizeFirstLetter(story.title)}
             </h1>
+          </Link>
+          <Link to={`/getUserProfile/${story.authorId}`}>
+            <h3 className="h1Class" id='authorUsername'>
+            Author: {capitalizeFirstLetter(story.username)};
+            </h3>
           </Link>
           <p className={pClass}>{story.description}</p>
           <p className={pClass}>Created At: {formattedDate}</p>
