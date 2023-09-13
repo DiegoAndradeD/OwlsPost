@@ -35,7 +35,7 @@ const WelcomeText: React.FC<{ invertedColors: boolean }> = ({ invertedColors }) 
 
 const SearchBar: React.FC<{ search: string; onSearchChange: (value: string) => void; onSubmit: (e: React.FormEvent) => void }> = ({ search, onSearchChange, onSubmit }) => {
   return (
-    <div className="searchContainer">
+    <div className="searchContainer mb-4">
       <form onSubmit={onSubmit} className="searchBar">
         <input
           type="text"
