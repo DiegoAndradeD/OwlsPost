@@ -38,8 +38,8 @@ export class FollowerService {
     }
 
     //TODO - ADD validation to login if user is not logged to follow
-    async followUser(userid: number, followingid: number): Promise<void> {
-        const isUserFollowing = await this.checkUserFollowing(userid, followingid);
+    async followUser(userid: number, to_follow_userid: number): Promise<void> {
+        const isUserFollowing = await this.checkUserFollowing(to_follow_userid, userid);
         if (isUserFollowing === 0) {
             const entityManager = this.followerRepository.manager;
             const query = `
@@ -49,25 +49,22 @@ export class FollowerService {
             `;
     
             try {
-                await entityManager.query(query, [followingid, userid]);
+                await entityManager.query(query, [userid, to_follow_userid]);
             } catch (error) {
                 throw new Error("Error following the user: " + error.message);
             }
             try {
-                await this.updateUserFollowers(userid);
+                await this.updateUserFollowers(to_follow_userid);
             } catch (error) {
                 throw new Error("Error updating user's followers: " + error.message);
             }
 
-         
         } else {
             throw new Error("You Already Follow this user.");
         }
     }
     
-    
-
-    async checkUserFollowing(userid: number, followingid: number): Promise<number> {
+    async checkUserFollowing(userid: number, to_follow_userid: number): Promise<number> {
         const entityManager = this.followerRepository.manager;
         const query = `
           SELECT COUNT(*)
@@ -75,11 +72,11 @@ export class FollowerService {
           WHERE followerid = $1
           AND followingid = $2
         `;
-        const result = await entityManager.query(query, [followingid, userid]);
+        const result = await entityManager.query(query, [ userid, to_follow_userid]);
         return parseInt(result[0].count, 10); 
       }
 
-      async updateUserFollowers(userid: number): Promise<void> {
+      async updateUserFollowers(to_follow_userid: number): Promise<void> {
         try {
             const entityManager = this.followerRepository.manager;
             const query = `UPDATE users u
@@ -89,10 +86,28 @@ export class FollowerService {
                 WHERE f.followingid = u.id
             )
             WHERE u.id = $1;`;
-            await entityManager.query(query, [userid]);
+            await entityManager.query(query, [to_follow_userid]);
         } catch (error) {
             console.error('Error updating user followers:', error);
             throw error;
+        }
+    }
+
+    async unfollowUser(userid: number, to_follow_userid: number): Promise<void> {
+        const entityManager = this.followerRepository.manager;
+        const query = 
+        `DELETE FROM followers 
+        WHERE followers.followerid = $1 
+        AND followers.followingid = $2;`;
+        try {
+            await entityManager.query(query, [userid, to_follow_userid]);
+        } catch (error) {
+            throw new Error("Error unfollowing the user: " + error.message);
+        }
+        try {
+            await this.updateUserFollowers(to_follow_userid);
+        } catch (error) {
+            throw new Error("Error updating user's followers: " + error.message);
         }
     }
     

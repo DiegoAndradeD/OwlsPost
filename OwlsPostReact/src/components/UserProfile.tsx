@@ -5,7 +5,7 @@ import '../styles/UserProfile.css';
 import Cookies from "universal-cookie";
 
 interface UserProfileStates {
-  id: number;
+  profile_user_id: number;
   username: string;
   email: string;
   created_at: Date;
@@ -20,16 +20,19 @@ interface Story {
 }
 
 interface UserStoriesStates {
-  userAuthorId: number;
+  profile_user_id: number;
   stories: Story[];
   invertedColors: boolean;
+  isFollowed: number,
 }
 
 const UserProfile: React.FC = () => {
+
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
+
   const [user, setUser] = useState<UserProfileStates>({
-    id: 0,
+    profile_user_id: 0,
     username: "",
     email: "",
     created_at: new Date(),
@@ -37,14 +40,15 @@ const UserProfile: React.FC = () => {
   });
 
   const [state, setState] = useState<UserStoriesStates>({
-    userAuthorId: 0,
+    profile_user_id: 0,
     stories: [],
     invertedColors: false,
+    isFollowed: 0
   });
 
   const cookies = new Cookies();
   const accessToken = cookies.get('accessToken');
-  console.log(accessToken.id)
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,7 +62,7 @@ const UserProfile: React.FC = () => {
           }
         );
         setUser({
-          id: response.data.id,
+          profile_user_id: response.data.id,
           username: response.data.username,
           email: response.data.email,
           created_at: response.data.created_at,
@@ -75,7 +79,7 @@ const UserProfile: React.FC = () => {
             );
             setState(prevState => ({
               ...prevState,
-              userAuthorId: response.data.id,
+              profile_user_id: response.data.id,
               stories: storyResponse.data,
             }));
           } catch (error) {
@@ -87,30 +91,77 @@ const UserProfile: React.FC = () => {
         console.log(error);
       }
     };
-    fetchUserData();
-  }, [userid]);
 
-  const handleFollowSubmit = async () => {
-    if(accessToken) {
+    const getIsUserFollowing = async () => {
+      if (user.profile_user_id && accessToken) {
       try {
-        const response = await axios.post(`http://localhost:3000/follower/user/${user.id}/followUser/${accessToken.id}`, 
+        const response = await axios.get(`http://localhost:3000/follower/isUserFollowing/userid/${accessToken.id}/to_follow_userid/${user.profile_user_id}`, 
         {
           headers: { 'Content-Type': 'application/json' },
         });
+        console.log(response.data)
+        setState({...state, isFollowed: response.data})
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
+    getIsUserFollowing();
+    fetchUserData();
+  }, [userid, user.profile_user_id]);
+  
+  
+
+      
+
+  const handleFollowSubmit = async () => {
+    if (accessToken) {
+      console.log(accessToken.id) 
+      console.log(user.profile_user_id) 
+      try {
+        const response = await axios.post(
+          `http://localhost:3000/follower/userid/${accessToken.id}/to_follow_userid/${user.profile_user_id}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
         console.log(response);
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }
     } else {
       navigate('login');
     }
-    
-  }
+  };
+
+  const handleUnfollowSubmit = async () => {
+    if (accessToken) {
+      console.log(accessToken.id) 
+      console.log(user.profile_user_id) 
+      try {
+        const response = await axios.delete(
+          `http://localhost:3000/follower/userid/${accessToken.id}/to_unfollow_userid/${user.profile_user_id}`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        console.log(response);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      navigate('login');
+    }
+  };
 
 
   const formattedDate = new Date(user.created_at)
     .toLocaleString()
     .replace(',', ' |');
+
+  
 
   return (
     <div>
@@ -124,7 +175,10 @@ const UserProfile: React.FC = () => {
           </div>
           <div className="profile_followersCount_container">
             <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
-            <button className="profile_follow_btn" onClick={handleFollowSubmit}>Follow</button>
+            <button className="profile_follow_btn" onClick={state.isFollowed === 0 ? handleFollowSubmit : handleUnfollowSubmit}>
+              {state.isFollowed === 0 ? 'Follow' : 'Unfollow'}
+            </button>
+
           </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>
