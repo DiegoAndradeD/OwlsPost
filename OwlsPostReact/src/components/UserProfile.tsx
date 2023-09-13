@@ -44,6 +44,7 @@ const UserProfile: React.FC = () => {
 
   const cookies = new Cookies();
   const accessToken = cookies.get('accessToken');
+  console.log(accessToken.id)
 
   useEffect(() => {
     const fetchUserData = async () => {
