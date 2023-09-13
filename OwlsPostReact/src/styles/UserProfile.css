@@ -47,3 +47,12 @@
 .profile_storiesContainer p {
     padding: 10px;
 }
+
+.profile_followersCount_container, .profile_created_atContainer {
+    width: 100%;
+    text-align: left;
+}
+
+.profile_followersCount_container h1, .profile_created_atContainer h1{
+    font-size: 26px;
+}

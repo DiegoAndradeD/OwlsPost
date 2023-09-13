@@ -52,6 +52,7 @@ const UserProfile: React.FC = () => {
             },
           }
         );
+        console.log(response.data)
         setUser({
           id: response.data.id,
           username: response.data.username,
@@ -93,18 +94,20 @@ const UserProfile: React.FC = () => {
     <div>
       <div className="container">
         <div className="profile_wrapper">
-          <div className="profile_usernameContainer">
+          <div className="profile_usernameContainer mb-4">
             <h1 className="profile_h1_text">{user.username}</h1>
           </div>
           <div className="profile_created_atContainer">
             <h1 className="profile_h1_text">Member Since: {formattedDate}</h1>
+          </div>
+          <div className="profile_followersCount_container">
+            <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
           </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>
             <ul>
               {state.stories.map((story) => (
                 <li className="profile_storiesContainer" key={story.id}>
-                    {/* Make the Story Title a link to the story */}
                   <h2 className="profile_h2_text_title">{story.title}</h2>
                   <p>{story.description}</p>
                 </li>

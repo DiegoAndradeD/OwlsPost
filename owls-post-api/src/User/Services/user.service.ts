@@ -32,6 +32,7 @@ export class UserService {
         return this.userRepository.findOne({where: {username}});
     }
 
+    //TODO - FIX Query to not return user password
     async getUserById(userid: number): Promise<User> {
         const entityManager = this.userRepository.manager;
         const query = `SELECT * FROM users WHERE id = $1;`;
