@@ -80,5 +80,23 @@ export class StoryService {
         })
     }
 
+    async getStoriesByTags(tags: string[]): Promise<Story[]> {
+        const entityManager = this.storyRepository.manager;
+      
+        const query = `
+          SELECT DISTINCT stories.*
+          FROM stories
+          WHERE EXISTS (
+            SELECT 1
+            FROM UNNEST(tags) AS tag
+            WHERE ${tags.map((_, index) => `tag ILIKE '%' || $${index + 1} || '%'`).join(' OR ')}
+          )
+        `;
+      
+        const stories = await entityManager.query(query, tags);
+      
+        return stories;
+      }
+
 }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query } from "@nestjs/common";
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
@@ -44,6 +44,13 @@ export class StoryController {
     @Get('getStorySearched/:title')
     async getStoryByTitle(@Param('title') title: string): Promise<Story[]> {
         return this.storyService.getStoryByTitle(title);
+    }
+
+    @Get('getStoriesByTags')
+    async getStoriesByTags(@Query('tags') tags: string): Promise<Story[]> {
+      const tagsArray = tags.split(',').map(tag => tag.trim()); 
+      console.log(tagsArray)
+      return this.storyService.getStoriesByTags(tagsArray);
     }
 
 }
