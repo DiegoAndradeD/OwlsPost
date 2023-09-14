@@ -53,11 +53,16 @@ const SearchBar: React.FC<{
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
         />
-        <input
+        <button type="submit">
+          <img src={searchIcon} alt="searchIcon" id="searchIcon" />
+        </button>
+      </form>
+      <form onSubmit={onSubmit} className="searchBar">
+      <input
           type="text"
           name="filter"
           id="filter"
-          placeholder="Filter by tags (e.g., Fantasy, Secrets, Nature Magic)"
+          placeholder="Filter by tags (e.g., Fantasy)"
           value={filter}
           onChange={(e) => onFilterChange(e.target.value)}
         />
@@ -68,6 +73,7 @@ const SearchBar: React.FC<{
     </div>
   );
 };
+
 
 
 const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ story, invertedColors }) => {
@@ -169,6 +175,8 @@ const Index: React.FC = () => {
         setState({
           ...state,
           stories: response.data,
+          search: '',
+        filter: '',
         });
       }
     } catch (error) {

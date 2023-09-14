@@ -14,7 +14,8 @@ export class UserService {
         private readonly userRepository: Repository<User>
     ){}
 
-    async registerUser(userDTO: UserDTO):Promise<User> {
+    // Register a new user
+    async registerUser(userDTO: UserDTO): Promise<User> {
         const saltOrRounds = 10;
         const passwordHashed = await bcrypt.hash(userDTO.password, saltOrRounds);
 
@@ -24,20 +25,23 @@ export class UserService {
         });
     }
 
+    // Get all users
     async getAllUsers(): Promise<User[]> {
         return this.userRepository.find();
     }
 
-    async findOne(username: string):Promise<User | undefined> {
-        return this.userRepository.findOne({where: {username}});
+    // Find a user by username
+    async findOne(username: string): Promise<User | undefined> {
+        return this.userRepository.findOne({ where: { username } });
     }
 
-    //TODO - FIX Query to not return user password
+    // Get a user by user ID
+    // TODO: FIX Query to not return user password
     async getUserById(userid: number): Promise<User> {
         const entityManager = this.userRepository.manager;
         const query = `SELECT * FROM users WHERE id = $1;`;
         const result = await entityManager.query(query, [userid]);
-        if(result && result.length > 0) {
+        if (result && result.length > 0) {
             return result[0];
         }
 
