@@ -12,7 +12,7 @@ const AddChapterPage: React.FC = () => {
     title: '',
     content: '',
     storyid: id,
-  });
+});
 
 
   const handleChange = (

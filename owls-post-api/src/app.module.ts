@@ -6,6 +6,7 @@ import { AuthModule } from './Auth/Modules/auth.module';
 import { StoryModule } from './Story/Modules/story.module';
 import { ChapterModule } from './Chapter/Modules/chapter.module';
 import { FollowerModule } from './Follower/Modules/follower.module';
+import { FavoriteModule } from './Favorite/Module/favorite.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { FollowerModule } from './Follower/Modules/follower.module';
     AuthModule,
     StoryModule,
     ChapterModule,
-    FollowerModule
+    FollowerModule,
+    FavoriteModule,
   ],
   controllers: [],
   providers: [],
