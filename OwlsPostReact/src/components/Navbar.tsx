@@ -34,9 +34,9 @@ const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ userna
           </Link>
         </li>
         <li>
-          <a href="#" className="dropdown-item">
+          <Link to={'getFollowedUsers'} className="dropdown-item">
             <i className="fa-solid fa-users"></i> Following
-          </a>
+          </Link>
         </li>
         <li>
           <a href="#" className="dropdown-item">
@@ -106,6 +106,7 @@ const Navbar: React.FC = () => {
       await axios.post("http://localhost:3000/auth/logout");
 
       cookieInstance.remove('accessToken', { path: '/' });
+      navigate('/');
       window.location.reload();
     } catch (error) {
       console.error(error);

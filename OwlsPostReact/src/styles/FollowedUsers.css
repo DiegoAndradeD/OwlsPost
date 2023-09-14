@@ -1,0 +1,54 @@
+.FollowedUser_wrapper {
+    background: transparent;
+    width: 100%;
+    margin: auto;
+    margin-top: 30px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 1px 1px black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.FollowedUser_h1 {
+    color: white;
+    font-family: 'Imbue', serif;
+}
+
+.followedUsersContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+ 
+}
+
+.user-icon  {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.user-icon svg {
+    margin-right: 10px;
+}
+
+.followedUsersContainer a {
+    color: #038c3e;
+    border: 1px solid black;
+    margin: 10px;
+    border-radius: 25px;
+    font-family: 'Anton', sans-serif;
+}
+
+.followedUsersContainer a:hover {
+    color: #F29F05;
+    background-color: #2D3540;
+    font-style: italic;
+}
+  

@@ -27,10 +27,10 @@ export class FollowerService {
     async getUserAllFollowing(userid: number): Promise<Follower[]> {
         const entityManager = this.followerRepository.manager;
         const query = `
-            SELECT u.username AS following_username
-            FROM followers f
-            INNER JOIN users u ON f.followingid = u.id
-            WHERE f.followerid = $1`;
+        SELECT u.username AS following_username, u.id as userid
+        FROM followers f
+        INNER JOIN users u ON f.followingid = u.id
+        WHERE f.followerid = $1`;
         const result = await entityManager.query(query, [userid]);
         if (Array.isArray(result) && result.length > 0) {
             return result;
@@ -56,7 +56,7 @@ export class FollowerService {
             }
 
             try {
-                await this.updateUserFollowers(to_follow_userid);
+                await this.updateUserFollowers(to_follow_userid, userid);
             } catch (error) {
                 throw new Error("Error updating user's followers: " + error.message);
             }
@@ -75,11 +75,12 @@ export class FollowerService {
             AND followingid = $2
         `;
         const result = await entityManager.query(query, [userid, to_follow_userid]);
+        console.log(result)
         return parseInt(result[0].count, 10);
     }
 
     // Update user's followers count
-    async updateUserFollowers(to_follow_userid: number): Promise<void> {
+    async updateUserFollowers(to_follow_userid: number, userid: number): Promise<void> {
         try {
             const entityManager = this.followerRepository.manager;
             const query = `
@@ -91,6 +92,22 @@ export class FollowerService {
                 )
                 WHERE u.id = $1;`;
             await entityManager.query(query, [to_follow_userid]);
+        } catch (error) {
+            console.error('Error updating user followers:', error);
+            throw error;
+        }
+
+        try {
+            const entityManager = this.followerRepository.manager;
+            const query = `
+                UPDATE users u
+                SET followers_count = (
+                    SELECT COUNT(*)
+                    FROM followers f
+                    WHERE f.followingid = u.id
+                )
+                WHERE u.id = $1;`;
+            await entityManager.query(query, [userid]);
         } catch (error) {
             console.error('Error updating user followers:', error);
             throw error;
@@ -111,7 +128,7 @@ export class FollowerService {
         }
 
         try {
-            await this.updateUserFollowers(to_follow_userid);
+            await this.updateUserFollowers(to_follow_userid, userid);
         } catch (error) {
             throw new Error("Error updating user's followers: " + error.message);
         }

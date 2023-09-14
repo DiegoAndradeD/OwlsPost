@@ -11,4 +11,5 @@ export class FavoriteService {
     async getAllFavorites(): Promise<Favorite[]> {
         return this.favoriteRepository.find();
     }
+    
 }

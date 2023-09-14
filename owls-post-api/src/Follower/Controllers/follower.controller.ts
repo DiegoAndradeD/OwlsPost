@@ -27,8 +27,6 @@ export class FollowerController {
         @Param('userid') userid: number,
         @Param('to_follow_userid') to_follow_userid: number
     ): Promise<void> {
-        console.log(userid);
-        console.log(to_follow_userid);
         return this.followerService.followUser(userid, to_follow_userid);
     }
 
