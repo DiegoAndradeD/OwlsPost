@@ -12,6 +12,7 @@ interface Story {
   title: string;
   description: string;
   userid: number;
+  tags: string[];
 }
 
 interface UserStoriesStates {
@@ -64,7 +65,10 @@ const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ s
       <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
         <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
       </Link>
-      <p className={pClass}>{story.description}</p>
+      <p className={pClass} id="index_story_description">{story.description}</p>
+      <div  id='storyTags'>
+      <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
+      </div>
     </div>
   );
 };
@@ -78,6 +82,7 @@ const Index: React.FC = () => {
     stories: [],
     invertedColors: false,
   });
+  
 
   useEffect(() => {
     const cookies = new Cookies();
@@ -102,6 +107,8 @@ const Index: React.FC = () => {
 
     fetchData();
   }, []);
+
+  
 
   const toggleColors = () => {
     setState({ ...state, invertedColors: !state.invertedColors });
@@ -132,12 +139,22 @@ const Index: React.FC = () => {
     }
   };
 
+  const ToggleColorsButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+        <button onClick={onClick} id='toggleColorBtn'>
+            <i className="fa-solid fa-eye-dropper"></i> Change Colors
+        </button>
+    );
+};
+
+
   const mainContainerClass = state.invertedColors
     ? 'container invertedColors'
     : 'container';
 
   return (
     <div className="mainDiv">
+      <ToggleColorsButton onClick={toggleColors} />
       <WelcomeText invertedColors={state.invertedColors} />
       <SearchBar search={state.search} onSearchChange={onSearchChange} onSubmit={onSubmit} />
       <div className={mainContainerClass} id='mainStoriesContainer'>

@@ -14,6 +14,7 @@ interface StoryStates {
   description: string;
   invertedColors: boolean;
   created_at: Date;
+  tags: string[];
 }
 
 interface Chapter {
@@ -34,6 +35,7 @@ const StoryPage: React.FC = () => {
     description: '',
     invertedColors: false,
     created_at: new Date(),
+    tags: [],
   });
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [accessToken, setAccessToken] = useState<any>(null); 
@@ -54,7 +56,6 @@ const StoryPage: React.FC = () => {
             },
           }
         );
-        console.log(storyResponse.data.userid)
 
         setStory((prevStory) => ({
           ...prevStory,
@@ -65,8 +66,8 @@ const StoryPage: React.FC = () => {
           title: storyResponse.data.title,
           description: storyResponse.data.description,
           created_at: storyResponse.data.created_at,
+          tags: storyResponse.data.tags,
         }));
-        console.log(story.userId);
 
         const chaptersResponse = await axios.get(
           `http://localhost:3000/chapter/getStory/${id}/chapters`,
@@ -178,6 +179,7 @@ const StoryPage: React.FC = () => {
           </Link>
           <p className={pClass}>{story.description}</p>
           <p className={pClass}>Created At: {formattedDate}</p>
+          <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
           {renderButtons()}
           {renderChapters()}
         </div>

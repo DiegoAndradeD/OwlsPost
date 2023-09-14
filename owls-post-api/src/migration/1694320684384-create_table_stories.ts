@@ -36,6 +36,11 @@ export class CreateTableStories1694320684384 implements MigrationInterface {
                     type: "timestamp",
                     default: "now()",
                 },
+                {
+                    name: 'tags',
+                    type: 'text[]',
+                    isNullable: true
+                },
             ],
         }));
 

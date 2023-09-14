@@ -27,4 +27,7 @@ export class Story {
 
     @Column({name: 'created_at'})
     created_at: Date;
+
+    @Column({name: 'tags', type: 'text', array: true, nullable: true})
+    tags: string[];
 }

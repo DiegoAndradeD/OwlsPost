@@ -9,6 +9,7 @@ interface Story {
     title: string;
     description: string;
     userid: number;
+    tags: string[];
 }
 
 interface UserStoriesStates {
@@ -39,6 +40,7 @@ const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ s
                 <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
             </Link>
             <p className={pClass}>{story.description}</p>
+            <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
         </div>
     );
 };

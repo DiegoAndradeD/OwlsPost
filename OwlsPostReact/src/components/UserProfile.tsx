@@ -19,6 +19,7 @@ interface Story {
   title: string;
   description: string;
   userid: number;
+  tags: string[];
 }
 
 interface UserStoriesStates {
@@ -189,6 +190,7 @@ const UserProfile: React.FC = () => {
                 <li className="profile_storiesContainer" key={story.id}>
                   <h2 className="profile_h2_text_title">{story.title}</h2>
                   <p>{story.description}</p>
+                  <p >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
                 </li>
               ))}
             </ul>

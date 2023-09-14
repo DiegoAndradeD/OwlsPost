@@ -11,6 +11,8 @@ interface StoryFormState {
   userId: number;
   username: string;
   remainingChars: number;
+  tagInput: string; 
+  tags: string[];   
 }
 
 const CharacterCounter: React.FC<{ remainingChars: number }> = ({ remainingChars }) => {
@@ -73,6 +75,8 @@ const StoryForm: React.FC = () => {
     userId: 0,
     username: '',
     remainingChars: 2000,
+    tagInput: '', 
+    tags: [],    
   });
 
   const maxLenght = 2000;
@@ -86,6 +90,20 @@ const StoryForm: React.FC = () => {
     }
   }
 
+  const handleAddTag = () => {
+    const newTagInput = state.tagInput.trim();
+
+    if (newTagInput !== '' && !state.tags.includes(newTagInput)) {
+      const updatedTags = [...state.tags, newTagInput];
+      setState({ ...state, tags: updatedTags, tagInput: '' });
+    }
+  };
+
+  const handleRemoveTag = (indexToRemove: number) => {
+    const updatedTags = state.tags.filter((_, index) => index !== indexToRemove);
+    setState({ ...state, tags: updatedTags });
+  };
+
   useEffect(() => {
     const cookies = new Cookies();
     const accessToken = cookies.get('accessToken');
@@ -94,7 +112,6 @@ const StoryForm: React.FC = () => {
     }
   }, [])
 
-  //TODO - ADD validation(check logged user) to create story
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData();
@@ -105,6 +122,10 @@ const StoryForm: React.FC = () => {
     formData.append('description', cleanedDescription);
     formData.append('userid', String(state.userId));
     formData.append('username', state.username);
+
+    state.tags.forEach((tag, index) => {
+      formData.append(`tags[${index}]`, tag);
+    });
 
     try {
       await axios.post('http://localhost:3000/story/add_story',
@@ -139,7 +160,46 @@ const StoryForm: React.FC = () => {
               onChange={handleDescription}
               remainingChars={state.remainingChars}
             />
-            <button type="submit" className="">Submit</button>
+            <div className="mb-3 row" id="dataContainer">
+              <label htmlFor="tags" className="col-sm-2 col-form-label">Tags</label>
+              <div className="col-sm-8">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="tags"
+                  placeholder="Add tags (1 at a time)"
+                  value={state.tagInput}
+                  onChange={(e) => setState({ ...state, tagInput: e.target.value })}
+                />
+              </div>
+              <div className="col-sm-2">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleAddTag}
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+            <div className="mb-3 row">
+            <div className="col-sm-2"></div>
+            <div className="col-sm-10">
+              <div className="tags-container">
+                {state.tags.map((tag, index) => (
+                  <span key={index} className="tagText">
+                    {tag}
+                    <button
+                      type="button"
+                      className="removeTagBtn"
+                      onClick={() => handleRemoveTag(index)}
+                    >X</button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+            <button type="submit" className="storyForm_submit_btn">Submit</button>
           </form>
         </div>
       </div>

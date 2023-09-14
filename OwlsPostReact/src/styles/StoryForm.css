@@ -1,11 +1,11 @@
 #storyFormContainer {
-   margin-top: 150px;
+   margin-top: 20px;
 }
 
 #storyFormWrapper {
     background-color: #111215;
     width: 80%;
-    height: 600px;
+    height: 850px;
     padding: 30px;
     border-radius: 30px;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.481);
@@ -41,7 +41,7 @@
     justify-content: space-around;
 }
 
-#storyFormWrapper form button  {
+#storyFormWrapper form .storyForm_submit_btn  {
     font-family: 'Anton', sans-serif;
     font-size: 20px;
     margin-top: 30px;
@@ -59,3 +59,25 @@
 p {
     color: white;
 }
+
+.tags-container {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 5px;
+    align-items: center; 
+    flex-direction: row;
+  }
+  
+  .tagText {
+    color: white;
+    font-size: 20px;
+  }
+  
+  .removeTagBtn {
+    font-size: 15px;
+        width: 20px;
+        height: 20px;
+        color: red;
+        background-color: white;
+  }
+
