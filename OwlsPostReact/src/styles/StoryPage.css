@@ -76,3 +76,20 @@ a {
     text-decoration: none;
     padding: 20px 0px;
 }
+
+.storyPage_addFavorite_button svg, #removeFavoriteBtn{
+    font-size: 36px;
+}
+
+#StoryPage_title{
+    font-family: 'Anton', sans-serif;
+    color: white;
+    cursor: pointer;
+    overflow-wrap: break-word; 
+}
+
+.storyPage_title_favorite_container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}

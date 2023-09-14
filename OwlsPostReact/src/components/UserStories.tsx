@@ -37,7 +37,7 @@ const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ s
     return (
         <div className='container' id='storyContainer'>
             <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
-                <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
+                <h1 id='UserStories_title' className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
             </Link>
             <p className={pClass}>{story.description}</p>
             <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>

@@ -38,13 +38,14 @@ const StoryPage: React.FC = () => {
     tags: [],
   });
   const [chapters, setChapters] = useState<Chapter[]>([]);
-  const [accessToken, setAccessToken] = useState<any>(null); 
+  const [accessToken, setAccessToken] = useState<any>(null);
+  const [isStoryFavorited, setIsStoryFavorited] = useState(false); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = new Cookies().get('accessToken'); 
-        setAccessToken(token); 
+        const token = new Cookies().get('accessToken');
+        setAccessToken(token);
 
         const storyResponse = await axios.get(
           token && token.id === userid
@@ -86,6 +87,33 @@ const StoryPage: React.FC = () => {
 
     fetchData();
   }, [id, userid]);
+
+  useEffect(() => {
+    const userIdFromToken = accessToken ? accessToken.id : 0;
+    const fetchFavoriteStatus = async () => {
+      try {
+        const isFavoritedResponse = await axios.get(
+          `http://localhost:3000/favorite/user/${userIdFromToken}/isFavorite/${story.id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (isFavoritedResponse.data.length > 0 && isFavoritedResponse.data[0].count === '1') {
+          setIsStoryFavorited(true);
+        } else {
+          setIsStoryFavorited(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (story.id !== 0 && accessToken) {
+      fetchFavoriteStatus();
+    }
+  }, [story.id, accessToken]);
 
   const handleStoryDelete = async () => {
     if (confirm('Are you sure you want to delete this story?')) {
@@ -160,6 +188,40 @@ const StoryPage: React.FC = () => {
     );
   };
 
+  const handleAddFavoriteSubmit = async () => {
+    try {
+      await axios.post(
+        `http://localhost:3000/favorite/user/${accessToken.id}/addStory/${story.id}/toFavorites`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      setIsStoryFavorited(true);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRemoveFavoriteSubmit = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/favorite/user/${accessToken.id}/deleteStory/${story.id}/fromFavorites`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      setIsStoryFavorited(true);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <button onClick={toggleColors} id='toggleColorBtn'>
@@ -167,19 +229,37 @@ const StoryPage: React.FC = () => {
       </button>
       <div className={mainContainerClass} id='mainStoriesContainer'>
         <div key={story.id} className='container' id='storyContainer'>
+        <div className='storyPage_title_favorite_container'>
           <Link to={'/'} id='storyLink'>
-            <h1 className={h1Class}>
+            <h1 id='StoryPage_title' className={h1Class}>
               {capitalizeFirstLetter(story.title)}
             </h1>
           </Link>
+          {isStoryFavorited ? (
+            <button
+              onClick={handleRemoveFavoriteSubmit}
+              className='storyPage_removeFavorite_button'
+            >
+              <svg id='removeFavoriteBtn' xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg>
+            </button>
+          ) : (
+            <button
+              onClick={handleAddFavoriteSubmit}
+              className='storyPage_addFavorite_button'
+              disabled={isStoryFavorited}
+            >
+              {isStoryFavorited ? <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg> : <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z"/></svg>}
+            </button>
+          )}
+        </div>
           <Link to={`/getUserProfile/${story.authorId}`}>
             <h3 className="h1Class" id='authorUsername'>
-            Author: {capitalizeFirstLetter(story.username)};
+              Author: {capitalizeFirstLetter(story.username)};
             </h3>
           </Link>
           <p className={pClass}>{story.description}</p>
           <p className={pClass}>Created At: {formattedDate}</p>
-          <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
+          <p className={pClass}>Tags: {story.tags ? story.tags.join(', ') : ''} </p>
           {renderButtons()}
           {renderChapters()}
         </div>
