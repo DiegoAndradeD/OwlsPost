@@ -27,4 +27,9 @@ export class FavoriteController {
     async removeStoryFromFavorites(@Param('userid') userid: number, @Param('storyid') storyid: number): Promise<Favorite> {
         return this.favoriteService.removeStoryFromFavorites(userid, storyid);
     }
+
+    @Get('get_user/:userid/favoriteStories')
+    async getUserFavoriteStories(@Param('userid') userid: number): Promise<Favorite[]> {
+        return this.favoriteService.getUserFavoriteStories(userid);
+    }
 }

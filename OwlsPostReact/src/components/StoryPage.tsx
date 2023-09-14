@@ -45,7 +45,7 @@ const StoryPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = new Cookies().get('accessToken');
-        setAccessToken(token);
+        setAccessToken(token);     
 
         const storyResponse = await axios.get(
           token && token.id === userid
@@ -54,7 +54,7 @@ const StoryPage: React.FC = () => {
           {
             headers: {
               'Content-Type': 'application/json',
-            },
+            },     
           }
         );
 

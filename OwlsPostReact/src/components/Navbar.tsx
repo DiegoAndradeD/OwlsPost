@@ -39,9 +39,9 @@ const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ userna
           </Link>
         </li>
         <li>
-          <a href="#" className="dropdown-item">
+          <Link to={'/getUserFavorites'} className="dropdown-item">
             <i className="fa-solid fa-star"></i> Favorites
-          </a>
+          </Link>
         </li>
         <li>
           <a href="#" className="dropdown-item">
