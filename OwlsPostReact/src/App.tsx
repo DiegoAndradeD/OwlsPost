@@ -5,18 +5,18 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import '../src/styles/App.css'
 
-import LoginForm from './components/LoginForm';
+import LoginForm from './components/Authentication_Components/LoginForm';
 import Navbar from './components/Navbar';
-import SignupForm from './components/SignupForm';
+import SignupForm from './components/Authentication_Components/SignupForm';
 import Index from './components/Index';
-import StoryForm from './components/StoryForm';
-import UserStories from './components/UserStories';
-import StoryPage from './components/StoryPage';
-import AddChapterPage from './components/ChapterForm';
-import ChapterPage from './components/ChapterPage';
-import UserProfile from './components/UserProfile';
-import FollowedUsers from './components/FollowedUsers';
-import UserFavorites from './components/UserFavorites';
+import StoryForm from './components/Story_Components/StoryForm';
+import UserStories from './components/User_Components/UserStories';
+import StoryPage from './components/Story_Components/StoryPage';
+import AddChapterPage from './components/Chapter_Components/ChapterForm';
+import ChapterPage from './components/Chapter_Components/ChapterPage';
+import UserProfile from './components/User_Components/UserProfile';
+import FollowedUsers from './components/User_Components/FollowedUsers';
+import UserFavorites from './components/User_Components/UserFavorites';
 
 const App: React.FC = () => {
 

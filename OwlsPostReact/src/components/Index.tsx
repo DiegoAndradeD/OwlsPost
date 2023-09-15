@@ -43,7 +43,7 @@ const SearchBar: React.FC<{
   onFilterChange: (value: string) => void;
 }> = ({ search, onSearchChange, onSubmit, filter, onFilterChange }) => {
   return (
-    <div className="searchContainer mb-4">
+    <div className="searchContainer mb-4 container">
       <form onSubmit={onSubmit} className="searchBar">
         <input
           type="text"

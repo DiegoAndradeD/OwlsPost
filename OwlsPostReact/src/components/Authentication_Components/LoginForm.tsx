@@ -4,7 +4,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 
-import '../styles/Login.css';
+import '../../styles//Authentication_styles/Login.css';
 
 interface LoginFormState {
   username: string;

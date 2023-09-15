@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import '../styles/UserStories.css'
+import '../../styles/User_Styles/UserStories.css'
 import { Link } from 'react-router-dom';
 
 interface Story {

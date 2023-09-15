@@ -46,18 +46,37 @@ button {
 }
 
 #menuDrop li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 20px; 
     color: #0FC2C0;
     font-size: 26px;
     font-family: 'Imbue', serif;
     font-weight: 600;
-    text-decoration: none;
+}
+
+#menuDrop li a #user_menu_icons {
+    color: white;
+    margin: auto;
+    font-size: 24px; 
+    margin-right: 10px;
+    width: 30px;
+
+}
+
+#menuDrop li a h3 {
+    margin: 0;
+    flex-grow: 1;
 }
 
 #menuDrop  li a:hover {
-    background: transparent;
+    border-radius: 25px;
     font-style: italic;
     color: #038c3e;
+    
 }
+
 
 #navText {
     font-family: 'Imbue', serif;
@@ -77,6 +96,8 @@ button {
     background-size: 200% 100%; 
     animation: shine 1s linear infinite; 
 }
+
+
 
 
 @keyframes shine {

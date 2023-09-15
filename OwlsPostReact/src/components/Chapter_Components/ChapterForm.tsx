@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/ChapterForm.css';
+import '../../styles/Chapter_Styles/ChapterForm.css';
 
 
 const AddChapterPage: React.FC = () => {

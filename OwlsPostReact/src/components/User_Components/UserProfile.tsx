@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import '../styles/UserProfile.css';
+import '../../styles/User_Styles/UserProfile.css';
 import Cookies from "universal-cookie";
 
 //Todo - block user to follow himself

@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import owlIcon from '../assets/owlIcon.png';
 import '../styles/Navbar.css';
 import Cookies from 'universal-cookie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookOpen, faFilePen, faGear, faHeart, faRightFromBracket, faStar, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 interface NavbarState {
   isLoggedIn: boolean;
@@ -25,32 +27,32 @@ const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ userna
       <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" id="menuDrop">
         <li>
           <Link to={'user_stories'} className="dropdown-item">
-            <i className="fa-solid fa-book-open"></i> My Stories
+            <FontAwesomeIcon id="user_menu_icons" icon={faBookOpen} /> <h3>My Stories</h3>
           </Link>
         </li>
         <li>
           <Link to="/addStory" className="dropdown-item">
-            <i className="fa-solid fa-pen-nib"></i> Create Story
+          <FontAwesomeIcon id="user_menu_icons" icon={faFilePen} /> <h3>Create Story</h3>
           </Link>
         </li>
         <li>
           <Link to={'getFollowedUsers'} className="dropdown-item">
-            <i className="fa-solid fa-users"></i> Following
+          <FontAwesomeIcon id="user_menu_icons" icon={faUsers} /> <h3>Following</h3>
           </Link>
         </li>
         <li>
           <Link to={'/getUserFavorites'} className="dropdown-item">
-            <i className="fa-solid fa-star"></i> Favorites
+          <FontAwesomeIcon id="user_menu_icons" icon={faHeart} /> <h3>Favorites</h3>
           </Link>
         </li>
         <li>
           <a href="#" className="dropdown-item">
-            <i className="fa-solid fa-gear"></i> Settings
+          <FontAwesomeIcon id="user_menu_icons" icon={faGear} /> <h3>Settings</h3>
           </a>
         </li>
         <li>
           <a href="#" className="dropdown-item" onClick={onLogout}>
-            <i className="fa-solid fa-right-from-bracket"></i> LogOut
+          <FontAwesomeIcon id="user_menu_icons" icon={faRightFromBracket} /> <h3>LogOut</h3>
           </a>
         </li>
       </ul>

@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import Cookies from "universal-cookie"
-import '../styles/FollowedUsers.css'
+import '../../styles//User_Styles/FollowedUsers.css'
 import { Link } from "react-router-dom";
-import { faUser } from '@fortawesome/free-solid-svg-icons'; // Exemplo de ícone
 
 
 interface FollowedUsers {

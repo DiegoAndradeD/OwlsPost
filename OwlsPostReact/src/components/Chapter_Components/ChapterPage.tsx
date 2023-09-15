@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import '../styles/ChapterPage.css';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import '../../styles/Chapter_Styles/ChapterPage.css';
 
 interface Chapter {
   id: number;

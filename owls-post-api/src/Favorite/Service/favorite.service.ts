@@ -12,6 +12,7 @@ export class FavoriteService {
         return this.favoriteRepository.find();
     }
     
+    //Todo - Not permit the user to favorite his own story
     async addStoryToFavorites(userid: number, storyid: number): Promise<Favorite> {
         const entityManager = this.favoriteRepository.manager;
         const query = `INSERT INTO favorites (userid, storyid) VALUES ($1, $2)`;

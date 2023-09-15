@@ -79,6 +79,7 @@ a {
 
 .storyPage_addFavorite_button svg, #removeFavoriteBtn{
     font-size: 36px;
+    color: #A649DA;
 }
 
 #StoryPage_title{

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import Cookies from "universal-cookie"
-import '../styles/FollowedUsers.css'
+import '../../styles/User_Styles/FollowedUsers.css'
 import { Link } from "react-router-dom";
-import '../styles/UserFavorites.css';
+import '../../styles/User_Styles/UserFavorites.css';
 
 
 interface favoriteStories {
@@ -53,9 +53,9 @@ const UserFavorites: React.FC = () => {
                     <h1 className="UserFavorites_h1">Favorites: </h1>
                     <div className="favoriteStoriesContainer">
                         {favoriteStories.stories.map((story, index) => (
-                        <div className="favoriteStory">
+                        <div className="favoriteStory" key={story.storyid}>
                             <Link to={`/story/${story.storyid}/author/${story.author_id}`}>
-                                <h1>{story.story_title}</h1>
+                                <h1> {story.story_title} </h1>
                             </Link>
                             <p>{story.story_description}</p>
                         </div>

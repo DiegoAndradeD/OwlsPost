@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 import PasswordChecklist from 'react-password-checklist';
-import '../styles/Signup.css';
+import '../../styles//Authentication_styles/Signup.css';
 import { useNavigate } from 'react-router-dom';
 
 interface SignupFormState {
@@ -136,11 +136,12 @@ const SignupForm: React.FC = () => {
                 }
               }}
             />
+            {state.message && <p className="alert alert-info mt-5">{state.message}</p>}
             <button type="submit" className="btn btn-primary" id="submitBtn">
               Signup
             </button>
           </form>
-          {state.message && <p className="alert alert-info mt-5">{state.message}</p>}
+          
         </div>
       </div>
     </div>

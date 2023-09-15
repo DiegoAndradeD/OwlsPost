@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from 'universal-cookie';
 import axios from "axios";
 import DOMPurify from "dompurify";
-import '../styles/StoryForm.css'
+import '../../styles/Story_Styles/StoryForm.css'
 import { useNavigate } from "react-router-dom";
 
 interface StoryFormState {
