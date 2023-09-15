@@ -17,9 +17,10 @@ import ChapterPage from './components/Chapter_Components/ChapterPage';
 import UserProfile from './components/User_Components/UserProfile';
 import FollowedUsers from './components/User_Components/FollowedUsers';
 import UserFavorites from './components/User_Components/UserFavorites';
+import UserSettings from './components/User_Settings_Components/UserSettings';
+
 
 const App: React.FC = () => {
-
 
   return (
     <Router>
@@ -36,6 +37,9 @@ const App: React.FC = () => {
         <Route path='/getUserProfile/:userid' element={<UserProfile/>}/>
         <Route path='/getFollowedUsers' element={<FollowedUsers/>}/>
         <Route path='/getUserFavorites' element={<UserFavorites/>}/>
+        <Route path='/settings' element={<UserSettings/>}/>
+
+
       </Routes>
     </Router>
     

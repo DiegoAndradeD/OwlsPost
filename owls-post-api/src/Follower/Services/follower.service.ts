@@ -40,7 +40,8 @@ export class FollowerService {
 
     // Follow a user by user ID and the user to follow's ID
     async followUser(userid: number, to_follow_userid: number): Promise<void> {
-        const isUserFollowing = await this.checkUserFollowing(to_follow_userid, userid);
+        const isUserFollowing = await this.checkUserFollowing( userid, to_follow_userid);
+        console.log(isUserFollowing);
         if (isUserFollowing === 0) {
             const entityManager = this.followerRepository.manager;
             const query = `

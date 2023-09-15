@@ -46,9 +46,9 @@ const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ userna
           </Link>
         </li>
         <li>
-          <a href="#" className="dropdown-item">
+          <Link to={'/settings'} className="dropdown-item">
           <FontAwesomeIcon id="user_menu_icons" icon={faGear} /> <h3>Settings</h3>
-          </a>
+          </Link>
         </li>
         <li>
           <a href="#" className="dropdown-item" onClick={onLogout}>
