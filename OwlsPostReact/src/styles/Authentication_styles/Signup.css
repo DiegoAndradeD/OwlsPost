@@ -37,7 +37,7 @@ form {
     height: 70%;
 }
 
-input {
+.signup_inputField {
     width: 100%;
     height: 60px;
     background: transparent;
@@ -49,7 +49,7 @@ input {
     padding: 20px 45px 20px 20px;
 }
 
-input::placeholder {
+.signup_inputField::placeholder {
     color: #fff;
     
 }

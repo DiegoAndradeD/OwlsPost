@@ -63,6 +63,7 @@ const LoginForm: React.FC = () => {
             <h2 className="mb-5">Login</h2>
             <div className="mb-4">
               <input
+              className='login_inputField'
                 type="text"
                 id="username"
                 placeholder="User Name"
@@ -73,6 +74,7 @@ const LoginForm: React.FC = () => {
 
             <div className="mb-4">
               <input
+              className='login_inputField'
                 type="password"
                 id="password"
                 placeholder="Password"

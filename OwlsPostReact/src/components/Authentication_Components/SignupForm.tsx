@@ -22,8 +22,9 @@ const InputField: React.FC<{
   required?: boolean;
 }> = ({ id, placeholder, value, onChange, type = 'text', required = false }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-4 ">
       <input
+      className='signup_inputField'
         type={type}
         id={id}
         placeholder={placeholder}

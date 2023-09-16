@@ -1,0 +1,90 @@
+.button-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.updateBtn {
+    width: 30%;
+    height: 45px;
+    color: white;
+    border-radius: 35px;
+    border: 1px solid black;
+    margin: 10px auto;
+    background-color: #050506;
+    font-size: 22px;
+    font-family: 'Imbue', serif;
+}
+
+.updateBtn:hover {
+    padding-left: 10px;
+    background-color: #050506c9;
+}
+
+.profile-form-container {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin: 30px auto;
+    background-color: #111215;
+    border-left:.5px solid #27EE52;
+    border-top: .5px solid #27EE52;
+    box-shadow: 3px 3px #27EE52;
+}
+
+.profile-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid black; 
+    border-radius: 10px;
+}
+
+.profile-input::placeholder {
+    color: black;
+}
+  
+.profile-input:focus {
+    outline: none; 
+    border-color: #007bff; 
+}
+  
+
+.profile-submit-button{
+    width: 50%;
+    margin: auto;
+    background-color: #1985f8; 
+    color: #fff; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 60px;
+    font-weight: 600;
+    font-size: 23px;
+}
+
+.profile-cancel-button {
+    margin: 0px 0px;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: rgb(199, 17, 17);
+    border-radius: 10px;
+    width: 10%;
+}
+
+.profile-submit-button:hover {
+    background-color: #0056b3; 
+}
+
+.profile-cancel-button:hover {
+    background-color: rgba(199, 17, 17, 0.611); 
+}
+
+.form_header_title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    padding: 50px;
+    
+}
+  
