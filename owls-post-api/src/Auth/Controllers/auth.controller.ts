@@ -99,14 +99,27 @@ export class AuthController {
             }
 
             const token = parts[1];
+            console.log(token)
+            try {
+                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
+                console.log(decodedToken)
+                if(decodedToken) {
+                    if (!body.newUsername || typeof body.newUsername !== 'string') {
+                        throw new BadRequestException('Invalid new username');
+                    }
+        
+                    await this.userService.changeUsername(body.newUsername, body.userid);
+        
+                    res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
+                } else {
+                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+                }
 
-            if (!body.newUsername || typeof body.newUsername !== 'string') {
-                throw new BadRequestException('Invalid new username');
+            } catch (error) {
+                console.error('Error processing request:', error);
+                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
             }
 
-            await this.userService.changeUsername(body.newUsername, body.userid);
-
-            res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
         } catch (error) {
             console.error('Error processing request:', error);
             res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
