@@ -1,8 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { UserService } from 'src/User/Services/user.service';
 import { SignInDTO } from '../Dto/signInDto.dto';
 import { AuthService } from '../Services/auth.service';
+import authConfig from '../auth.config';
+import * as jwt from 'jsonwebtoken';
+
 
 @Controller('auth')
 export class AuthController {
@@ -62,7 +65,7 @@ export class AuthController {
             // Respond with success message
             res.status(HttpStatus.OK).json({ message: 'User Exists' });
         } catch (error) {
-            // Handle any errors that occur during user checking
+            console.log('Not Authorized')
             res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
         }
     }
@@ -72,6 +75,41 @@ export class AuthController {
     async logout(@Req() req: Request, @Res() res: Response) {
         // Clear the access_token cookie
         res.clearCookie('access_token');
+        res.clearCookie('username');
+        res.clearCookie('id');
         return res.status(200).send('Logout successful');
+    }
+
+    @Post('/change-username')
+    async changeUsername(@Body() body: { newUsername: string, userid: string }, @Req() req: Request, @Res() res: Response): Promise<void> {
+        console.log(body.userid)
+        try {
+            const authHeader = req.headers.authorization;
+
+            if (!authHeader) {
+                console.log('Missing authorization header');
+                throw new UnauthorizedException('Missing authorization header');
+            }
+
+            const parts = authHeader.split(' ');
+
+            if (parts.length !== 2 || parts[0] !== 'Bearer') {
+                console.log('Invalid authorization header format');
+                throw new UnauthorizedException('Invalid authorization header format');
+            }
+
+            const token = parts[1];
+
+            if (!body.newUsername || typeof body.newUsername !== 'string') {
+                throw new BadRequestException('Invalid new username');
+            }
+
+            await this.userService.changeUsername(body.newUsername, body.userid);
+
+            res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
+        } catch (error) {
+            console.error('Error processing request:', error);
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+        }
     }
 }

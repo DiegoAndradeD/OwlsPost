@@ -117,15 +117,46 @@ const UserProfile_Settings: React.FC = () => {
     return isValid;
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/auth/logout");
+
+      cookies.remove('accessToken', { path: '/' });
+      navigate('/');
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleUpdateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isPasswordStrong(updateUser.updatedPassword)) {
-      return;
-    }
+    try {
+      console.log('here')
+      console.log(user.profile_user_id)
+      const response = await axios.post(
+        `http://localhost:3000/auth/change-username`,
+        {
+          userid: user.profile_user_id,
+          newUsername: updateUser.updatedUsername, 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken.access_token}`, 
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log(response.data)
 
-    // Logic to be implemented
-    setUpdateUser({ ...updateUser, fieldToEdit: null });
+      if (response.status === 200) {
+        setUser({ ...user, username: updateUser.updatedUsername });
+        handleLogout();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleEditClick = (field: string) => {

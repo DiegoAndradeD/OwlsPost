@@ -47,4 +47,10 @@ export class UserService {
 
         return null;
     }
+
+    async changeUsername(newUsername: string, userid: string): Promise<void> {
+        const entityManager = this.userRepository.manager;
+        const query = `Update users SET username = $1 WHERE id = $2`;
+        return await entityManager.query(query, [newUsername, userid]);
+    }
 }

@@ -63,6 +63,7 @@ const UserMenu: React.FC<{ username: string; onLogout: () => void }> = ({ userna
 const Navbar: React.FC = () => {
   const cookieInstance = new Cookies();
   const accessToken = cookieInstance.get('accessToken');
+  console.log(accessToken)
 
   const [state, setState] = useState<NavbarState>({
     isLoggedIn: false,
