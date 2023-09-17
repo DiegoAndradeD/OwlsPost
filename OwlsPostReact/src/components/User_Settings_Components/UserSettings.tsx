@@ -22,7 +22,7 @@ const UserSettings: React.FC = () => {
 
           <i className='sidebar_item'>
             <button onClick={() => handleClick('UserProfile_Settings')}>
-              <FontAwesomeIcon className='sidebar_icon' icon={faAddressCard}/>User Data
+              <FontAwesomeIcon className='sidebar_icon' icon={faAddressCard}/>Acount
             </button>
           </i>
 

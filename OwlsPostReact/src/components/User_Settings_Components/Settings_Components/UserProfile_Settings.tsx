@@ -21,33 +21,13 @@ interface UpdateUserState {
   fieldToEdit: string | null;
 }
 
-const InputField: React.FC<{
-  id: string;
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-  type?: string;
-  required?: boolean;
-}> = ({ id, placeholder, value, onChange, type = 'text', required = false }) => {
-  return (
-    <div className="mb-4">
-      <h1 className="updateForm_title">Update Form</h1>
-      <input
-        className='profile-input'
-        type={type}
-        id={id}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-      />
-    </div>
-  );
-};
 
 const UserProfile_Settings: React.FC = () => {
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
+
+  const [isUsernameFormVisible, setUsernameFormVisible] = useState(false);
+  const [isEmailFormVisible, setEmailFormVisible] = useState(false);
 
   const [user, setUser] = useState<UserProfileStates>({
     profile_user_id: 0,
@@ -160,130 +140,96 @@ const UserProfile_Settings: React.FC = () => {
     }
   };
 
-  const handleEditClick = (field: string) => {
-    setUpdateUser({ ...updateUser, fieldToEdit: field });
+  const FormField: React.FC<{
+    id: string;
+    placeholder: string;
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+    type?: string;
+    required?: boolean;
+  }> = ({ id, placeholder, label, value, onChange, type = 'text', required = false }) => {
+    return (
+      <div className="form-group " >
+        <form className="form-inline" id="update_form_container">
+          <div className="form-group " >
+            <label htmlFor={id} className="sr-only">{label}</label>
+            <input
+              className='form-control'
+              type={type}
+              id={id}
+              placeholder={placeholder}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              required={required}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mb-2" id="update_username_btn_submit" onClick={handleUpdateSubmit}>Update</button>
+        </form>
+      </div>
+    );
   };
 
-  const handleCancelEdit = () => {
-    setUpdateUser({ ...updateUser, fieldToEdit: null });
-  };
+  const handleUsernameFormToogle = () => {
+    setUsernameFormVisible(!isUsernameFormVisible);
+    setEmailFormVisible(false);
+  }
+
+  const handleEmailFormToogle = () => {
+    setEmailFormVisible(!isEmailFormVisible);
+    setUsernameFormVisible(false);
+  }
+
 
   return (
-  
-      <div className="profileFormContainer">
-        <div className="profile_settings_wrapper">
-          <div className="profile_settings_userInfo">
-            <div className="profile_settings_textContainer ">
-              <h3 className="profile_settings_h1_text">Username: {user.username}</h3>
-            </div>
-            <div className="profile_settings_textContainer">
-              <h3 className="profile_settings_h1_text">Member Since: {formattedDate}</h3>
-            </div>
-            <div className="profile_settings_textContainer">
-              <h3 className="profile_settings_h1_text">Followers: {user.followers_count}</h3>
-            </div>
-            <div className="profile_settings_textContainer">
-              <h3 className="profile_settings_h1_text">Email: {user.email}</h3>
-            </div>
-          </div>
-
-          <div className="" id="updateForm_Container">
-            {updateUser.fieldToEdit ? (
-              <form onSubmit={handleUpdateSubmit} className="profile-form-container">
-                {updateUser.fieldToEdit === 'username' && (
-                   <InputField
-                    id="username"
-                    placeholder="Username"
-                    value={updateUser.updatedUsername}
-                    onChange={(value) => setUpdateUser({ ...updateUser, updatedUsername: value })}
-                  />
-                )}
-                {updateUser.fieldToEdit === 'email' && (
-                  <InputField
-                    id="email"
-                    placeholder="Email"
-                    value={updateUser.updatedEmail}
-                    onChange={(value) => setUpdateUser({ ...updateUser, updatedEmail: value })}
-                    type="email"
-                    required
-                  />
-                )}
-                {updateUser.fieldToEdit === 'password' && (
-                  <>
-                    <InputField
-                      id="password"
-                      placeholder="Password"
-                      value={updateUser.updatedPassword}
-                      onChange={(value) => setUpdateUser({ ...updateUser, updatedPassword: value })}
-                      type="password"
-                      required
-                    />
-                    <InputField
-                      id="passwordAgain"
-                      placeholder="Password Again"
-                      value={updateUser.updatedPasswordAgain}
-                      onChange={(value) => setUpdateUser({ ...updateUser, updatedPasswordAgain: value })}
-                      type="password"
-                      required
-                    />
-                    <PasswordChecklist
-                      className="mt-4"
-                      rules={['minLength', 'specialChar', 'number', 'capital', 'match']}
-                      minLength={5}
-                      value={updateUser.updatedPassword}
-                      valueAgain={updateUser.updatedPassword}
-                      onChange={(isValid: boolean) => {
-                        if (isValid) {
-                          setPasswordError('Strong Password');
-                        } else {
-                          setPasswordError('Weak Password');
-                        }
-                      }}
-                    />
-                    {passwordError && <p className="alert alert-info mt-2">{passwordError}</p>}
-                  </>
-                )}
-                <div className="button-container">
-                  <button type="submit" className="profile-submit-button">
-                    Update
-                  </button>
-                  <button
-                    type="button"
-                    className="profile-cancel-button"
-                    onClick={handleCancelEdit}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="profile-data-container">
-                <div className="button-container" >
-                  <button
-                    className="updateBtn"
-                    onClick={() => handleEditClick('username')}
-                  >
-                    Update Your Username
-                  </button>
-                  <button
-                    className="updateBtn"
-                    onClick={() => handleEditClick('email')}
-                  >
-                    Update Your Email
-                  </button>
-                  <button
-                    className="updateBtn"
-                    onClick={() => handleEditClick('password')}
-                  >
-                    Update Your Password
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+    <div className="acount_settings_container">
+      <div className="acount_settings_wrapper">
+        <div id="update_username_container">
+          <h1 id="update_username_title">Update Username</h1>
+          <p>You will need to login again after changing your username</p>
+          <button
+            id="update_username_btn"
+            onClick={handleUsernameFormToogle}
+          >
+            Change Username
+          </button>
+          {isUsernameFormVisible && (
+            <FormField
+              id="username"
+              placeholder="Username"
+              label="Username"
+              value={updateUser.updatedUsername}
+              onChange={(value) =>
+                setUpdateUser({ ...updateUser, updatedUsername: value })
+              }
+            />
+          )}
+        </div>
+        <div id="update_email_container">
+          <h1 id="update_email_title">Update Email</h1>
+          <p>You will need to login again after changing your email</p>
+          <button
+            id="update_email_btn"
+            onClick={handleEmailFormToogle}
+          >
+            Change Email
+          </button>
+          {isEmailFormVisible && (
+            <FormField
+              id="email"
+              placeholder="Email"
+              label="Email"
+              value={updateUser.updatedEmail}
+              onChange={(value) =>
+                setUpdateUser({ ...updateUser, updatedEmail: value })
+              }
+            />
+          )}
         </div>
       </div>
+    </div>
   );
 };
+
 
 export default UserProfile_Settings;

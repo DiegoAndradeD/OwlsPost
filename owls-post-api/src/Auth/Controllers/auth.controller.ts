@@ -99,7 +99,6 @@ export class AuthController {
             }
 
             const token = parts[1];
-            console.log(token)
             try {
                 const decodedToken = jwt.verify(token, authConfig.jwtSecret);
                 console.log(decodedToken)
