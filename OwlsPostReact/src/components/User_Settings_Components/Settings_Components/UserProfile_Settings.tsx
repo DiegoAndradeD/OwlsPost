@@ -31,6 +31,7 @@ const InputField: React.FC<{
 }> = ({ id, placeholder, value, onChange, type = 'text', required = false }) => {
   return (
     <div className="mb-4">
+      <h1 className="updateForm_title">Update Form</h1>
       <input
         className='profile-input'
         type={type}
@@ -168,27 +169,29 @@ const UserProfile_Settings: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="container">
-        <div className="profile_wrapper">
-          <div className="profile_usernameContainer mb-4">
-            <h1 className="profile_h1_text">{user.username}</h1>
-          </div>
-          <div className="profile_created_atContainer">
-            <h1 className="profile_h1_text">Member Since: {formattedDate}</h1>
-          </div>
-          <div className="profile_followersCount_container">
-            <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
-          </div>
-          <div className="profile_created_atContainer">
-            <h1 className="profile_h1_text">Email: {user.email}</h1>
+  
+      <div className="profileFormContainer">
+        <div className="profile_settings_wrapper">
+          <div className="profile_settings_userInfo">
+            <div className="profile_settings_textContainer ">
+              <h3 className="profile_settings_h1_text">Username: {user.username}</h3>
+            </div>
+            <div className="profile_settings_textContainer">
+              <h3 className="profile_settings_h1_text">Member Since: {formattedDate}</h3>
+            </div>
+            <div className="profile_settings_textContainer">
+              <h3 className="profile_settings_h1_text">Followers: {user.followers_count}</h3>
+            </div>
+            <div className="profile_settings_textContainer">
+              <h3 className="profile_settings_h1_text">Email: {user.email}</h3>
+            </div>
           </div>
 
-          <div className="container p-0" id="updateForm_Container">
+          <div className="" id="updateForm_Container">
             {updateUser.fieldToEdit ? (
               <form onSubmit={handleUpdateSubmit} className="profile-form-container">
                 {updateUser.fieldToEdit === 'username' && (
-                  <InputField
+                   <InputField
                     id="username"
                     placeholder="Username"
                     value={updateUser.updatedUsername}
@@ -246,7 +249,7 @@ const UserProfile_Settings: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-secondary profile-cancel-button"
+                    className="profile-cancel-button"
                     onClick={handleCancelEdit}
                   >
                     Cancel
@@ -260,19 +263,19 @@ const UserProfile_Settings: React.FC = () => {
                     className="updateBtn"
                     onClick={() => handleEditClick('username')}
                   >
-                    Edit Username
+                    Update Your Username
                   </button>
                   <button
                     className="updateBtn"
                     onClick={() => handleEditClick('email')}
                   >
-                    Edit Email
+                    Update Your Email
                   </button>
                   <button
                     className="updateBtn"
                     onClick={() => handleEditClick('password')}
                   >
-                    Edit Password
+                    Update Your Password
                   </button>
                 </div>
               </div>
@@ -280,7 +283,6 @@ const UserProfile_Settings: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
