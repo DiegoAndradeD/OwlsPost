@@ -15,7 +15,13 @@ export class AuthController {
         private readonly userService: UserService,
     ) {}
 
-    // Handle user login
+    /**
+     * Function to login the user
+     * checks the token with a function from authService
+     * Creates the user cookie
+     * @param signInDto 
+     * @param res 
+     */
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async signIn(@Body() signInDto: SignInDTO, @Res() res: Response): Promise<void> {
@@ -48,7 +54,12 @@ export class AuthController {
         }
     }
 
-    // Check if a user is registered
+    /**
+     * Checks if the user is registered with an authService function
+     * @param body 
+     * @param res 
+     * @param req 
+     */
     @Post('check_user')
     async isUserRegistered(@Body() body: { id: string; username: string }, @Res() res: Response, @Req() req: Request): Promise<void> {
       try {
