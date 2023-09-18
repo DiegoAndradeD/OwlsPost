@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../styles/Settings_Styles/Settings.css';
-import UserProfile_Settings from './Settings_Components/UserProfile_Settings';
+import UserAccount_Settings from './Settings_Components/UserAccount_Settings';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,7 +21,7 @@ const UserSettings: React.FC = () => {
         <div className='sidebar_options'>
 
           <i className='sidebar_item'>
-            <button onClick={() => handleClick('UserProfile_Settings')}>
+            <button onClick={() => handleClick('UserAccount_Settings')}>
               <FontAwesomeIcon className='sidebar_icon' icon={faAddressCard}/>Acount
             </button>
           </i>
@@ -63,7 +63,7 @@ const UserSettings: React.FC = () => {
       </div>
 
       <div className="main-content">
-        {selectedComponent === 'UserProfile_Settings' && <UserProfile_Settings />}
+        {selectedComponent === 'UserAccount_Settings' && <UserAccount_Settings />}
       </div>
     </div>
   );

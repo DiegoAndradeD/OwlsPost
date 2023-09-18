@@ -38,6 +38,7 @@ const LoginForm: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
+      console.log(response)
 
       const { access_token: token, username, id } = response.data;
       const cookieData = {
@@ -51,7 +52,7 @@ const LoginForm: React.FC = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      setState({ ...state, message: 'Error ' + error });
+      setState({ ...state, message: 'Unathorized. Please check your username or password!'});
     }
   };
 

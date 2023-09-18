@@ -4,14 +4,14 @@
     background-color: #111215;
 }
 
-#update_username_title, #update_email_title {
+#update_username_title, #update_email_title, #update_password_title {
     color: white;
     font-family: 'Oswald', sans-serif;
     border-bottom: 1px solid white;
     padding-bottom: 5px;
 }
 
-#update_username_btn, #update_email_btn {
+#update_username_btn, #update_email_btn, #update_password_btn {
     color: white;
     font-family: 'Oswald', sans-serif;
     font-size: 22px;
@@ -22,7 +22,7 @@
     margin-bottom: 30px;
 }
 
-#update_username_btn:hover, #update_email_btn:hover {
+#update_username_btn:hover, #update_email_btn:hover, #update_password_btn:hover {
     padding-left: 15px;
 }
 

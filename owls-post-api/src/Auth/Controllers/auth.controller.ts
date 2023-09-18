@@ -5,6 +5,7 @@ import { SignInDTO } from '../Dto/signInDto.dto';
 import { AuthService } from '../Services/auth.service';
 import authConfig from '../auth.config';
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 
 @Controller('auth')
@@ -82,7 +83,6 @@ export class AuthController {
 
     @Post('/change-username')
     async changeUsername(@Body() body: { newUsername: string, userid: string }, @Req() req: Request, @Res() res: Response): Promise<void> {
-        console.log(body.userid)
         try {
             const authHeader = req.headers.authorization;
 
@@ -124,4 +124,96 @@ export class AuthController {
             res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
         }
     }
+
+    @Post('change-email')
+    async changeEmail(@Body() body: {newEmail: string, userid: string}, @Req() req: Request, @Res() res: Response): Promise<void> {
+        try {
+            const authHeader = req.headers.authorization;
+            if (!authHeader) {
+                throw new UnauthorizedException('Missing authorization header');
+            }
+
+            const parts = authHeader.split(' ');
+            if (parts.length !== 2 ||parts[0] !== 'Bearer') {
+                throw new UnauthorizedException('Invalid authorization header format');
+            }
+
+            const token = parts[1];
+
+            try {
+                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
+
+                if (decodedToken) {
+
+                    if (!body.newEmail || typeof body.newEmail !== 'string') {
+                        throw new BadRequestException('Invalid new email');
+                    }
+
+                    await this.userService.changeEmail(body.newEmail, body.userid)
+                    res.status(HttpStatus.OK).json({ message: 'Email changed successfully' });
+
+                } 
+                else {
+                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+
+                }
+            } catch (error) {
+                console.error('Error processing request:', error);
+                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+            }
+
+        } catch (error) {
+            console.error('Error processing request:', error);
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+        } 
+    }
+
+    @Post('change-password')
+    async changePassword(@Body() body: {newPassword: string, userid: string}, @Req() req: Request, @Res() res: Response): Promise<void> {
+        try {
+            const authHeader = req.headers.authorization;
+            if (!authHeader) {
+                throw new UnauthorizedException('Missing authorization header');
+            }
+
+            const parts = authHeader.split(' ');
+            if (parts.length !== 2 ||parts[0] !== 'Bearer') {
+                throw new UnauthorizedException('Invalid authorization header format');
+            }
+
+            const token = parts[1];
+
+            try {
+                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
+
+                if (decodedToken) {
+
+                    if (!body.newPassword || typeof body.newPassword !== 'string') {
+                        throw new BadRequestException('Invalid new email');
+                    }  
+
+                    const saltOrRounds = 10;
+                    const passwordHashed = await bcrypt.hash(body.newPassword, saltOrRounds);
+
+                    await this.userService.changePassword(passwordHashed, body.userid)
+                    res.status(HttpStatus.OK).json({ message: 'Password changed successfully' });
+
+                } 
+                else {
+                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+
+                }
+            } catch (error) {
+                console.error('Error processing request:', error);
+                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+            }
+
+        } catch (error) {
+            console.error('Error processing request:', error);
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+        } 
+    }
+
+
+    
 }
