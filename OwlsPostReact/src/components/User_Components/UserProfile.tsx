@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import '../../styles/User_Styles/UserProfile.css';
 import Cookies from "universal-cookie";
@@ -64,6 +64,7 @@ const UserProfile: React.FC = () => {
             },
           }
         );
+        console.log(response.data)
         setUser({
           profile_user_id: response.data.id,
           username: response.data.username,
@@ -188,7 +189,9 @@ const UserProfile: React.FC = () => {
             <ul>
               {state.stories.map((story) => (
                 <li className="profile_storiesContainer" key={story.id}>
-                  <h2 className="profile_h2_text_title">{story.title}</h2>
+                  <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
+                    <h2 className="profile_h2_text_title">{story.title}</h2>
+                  </Link>
                   <p>{story.description}</p>
                   <p >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
                 </li>

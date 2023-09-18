@@ -21,4 +21,7 @@ export class User {
 
     @OneToMany(() => Follower, (follower) => follower.following)
     followers: Follower[];
+
+    @Column({name: 'description', nullable: true})
+    description: string;
 }

@@ -76,7 +76,6 @@ export class FollowerService {
             AND followingid = $2
         `;
         const result = await entityManager.query(query, [userid, to_follow_userid]);
-        console.log(result)
         return parseInt(result[0].count, 10);
     }
 

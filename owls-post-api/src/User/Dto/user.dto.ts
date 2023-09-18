@@ -3,4 +3,5 @@ export interface UserDTO {
     email: string;
     password: string;
     followers_count: number;
+    description: string;
 }
