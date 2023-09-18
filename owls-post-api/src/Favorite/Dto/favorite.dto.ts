@@ -1,5 +1,5 @@
 
-export interface FavoriteDto {
+export class FavoriteDto {
     userid: number;
     storyid: number;
 }

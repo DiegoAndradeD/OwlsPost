@@ -24,4 +24,6 @@ export class User {
 
     @Column({name: 'description', nullable: true})
     description: string;
+    
+    followers_count: number;
 }
