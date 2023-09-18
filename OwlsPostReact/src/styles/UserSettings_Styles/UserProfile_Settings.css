@@ -1,43 +1,20 @@
-.acount_settings_container {
+.profile_settings_container {
     padding: 20px;
-    height: 92vh;
     background-color: #111215;
 }
 
-#update_username_title, #update_email_title, #update_password_title {
+.profile_settings_description_container {
+    border-top: 1px solid black;
+    padding: 20px 0px;
+    border-bottom: 1px solid black;
+}
+
+.profile_settings_description_container h1{
     color: white;
+    font-size: 26px;
+    font-weight: 300;
     font-family: 'Oswald', sans-serif;
-    border-bottom: 1px solid white;
-    padding-bottom: 5px;
 }
 
-#update_username_btn, #update_email_btn, #update_password_btn {
-    color: white;
-    font-family: 'Oswald', sans-serif;
-    font-size: 22px;
-    background-color: #2d2e32;
-    padding: 5px;
-    border-radius: 10px;
-    transition: all .2s ease;
-    margin-bottom: 30px;
-}
 
-#update_username_btn:hover, #update_email_btn:hover, #update_password_btn:hover {
-    padding-left: 15px;
-}
-
-#update_form_container {
-    display: flex;
-    flex-direction: row;
-}
-
-#update_form_container input {
-    margin-right: 20px;
-}
-
-#update_username_btn_submit {
-    color: white;
-    font-family: 'Oswald', sans-serif;
-    transition: all .2s ease;
-    margin-left: 10px;
-}
+  

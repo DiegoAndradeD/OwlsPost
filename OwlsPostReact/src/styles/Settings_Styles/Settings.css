@@ -1,54 +1,48 @@
-.settings-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
+#mainContainer {
+  margin: auto;
 
 }
 
-.main-content {
-  flex-grow: 1;
-}
-
-.sidebar {
-    width: 300px;
-    background-color: #333;
-    color: #fff;
+#settings_navbar {
+    background-color: #111215;
     padding: 20px;
-    overflow-y: auto;
-    height: 92vh;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-family: 'Oswald', sans-serif;
     border-radius: 5px;
     box-shadow: 2px 2px rgb(67, 67, 67);
-  }
-  
-.sidebar_options {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-
 }
+  
 
-.sidebar_item {
-  width: 100%;
+
+#Settings_acountText, #Settings_profileText {
   font-size: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all .3s ease;
   padding: 0px 20px;
-  margin: 35px auto;
   border-radius: 15px;
+  
+
 }
 
-.sidebar_item:hover {
-  color: black;
-  background-color: rgba(255, 247, 247, 0.856);
+#navbar_header_title {
+  font-family: 'Oswald', sans-serif;
+  color: #fff;
+  font-size: 40px;
+
+}
+
+ #Settings_acountText a, #Settings_profileText a {
+  font-family: 'Oswald', sans-serif;
+  color: #fff;
+  background-color: #735BA4;
+  border-radius: 25px;
+  padding: 5px 20px;
+  transition: all .2s ease-in-out;
+}
+
+#Settings_acountText a:hover, #Settings_profileText a:hover {
+  color: #FFDC40;
+  font-style: italic;
 }
 
 .sidebar_icon {

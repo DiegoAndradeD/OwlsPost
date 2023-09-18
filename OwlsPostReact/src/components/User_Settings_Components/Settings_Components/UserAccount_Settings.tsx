@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import PasswordChecklist from 'react-password-checklist';
-import '../../../styles/UserSettings_Styles/UserProfile_Settings.css';
+import '../../../styles/UserSettings_Styles/UserAccount_Settings.css';
 import Cookies from "universal-cookie";
 
 // Define TypeScript interfaces for the component's state. Getting the logged user data.
@@ -24,7 +24,7 @@ interface UpdateUserState {
 }
 
 //Main Component
-const UserProfile_Settings: React.FC = () => {
+const UserAccount_Settings: React.FC = () => {
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
 
@@ -321,4 +321,4 @@ const UserProfile_Settings: React.FC = () => {
 };
 
 
-export default UserProfile_Settings;
+export default UserAccount_Settings;
