@@ -51,24 +51,19 @@ export class AuthController {
     // Check if a user is registered
     @Post('check_user')
     async isUserRegistered(@Body() body: { id: string; username: string }, @Res() res: Response, @Req() req: Request): Promise<void> {
-        try {
-            const { id, username } = body;
-            if (!id || !username) {
-                throw new UnauthorizedException('Authentication Cookie not Found');
-            }
-
-            // TODO: Implement a findOne by username and id function
-            const user = await this.userService.findOne(username);
-            if (!user) {
-                throw new UnauthorizedException('User Not Found');
-            }
-
-            // Respond with success message
-            res.status(HttpStatus.OK).json({ message: 'User Exists' });
-        } catch (error) {
-            console.log('Not Authorized')
-            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+      try {
+        const { id, username } = body;
+        const isRegistered = await this.authService.checkUserRegistration(id, username);
+  
+        if (isRegistered) {
+          res.status(HttpStatus.OK).json({ message: 'User Exists' });
+        } else {
+          res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
         }
+      } catch (error) {
+        console.error(error);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+      }
     }
 
     // Handle user logout
@@ -81,137 +76,92 @@ export class AuthController {
         return res.status(200).send('Logout successful');
     }
 
-    @Post('/change-username')
-    async changeUsername(@Body() body: { newUsername: string, userid: string }, @Req() req: Request, @Res() res: Response): Promise<void> {
-        try {
-            const authHeader = req.headers.authorization;
-
-            if (!authHeader) {
-                console.log('Missing authorization header');
-                throw new UnauthorizedException('Missing authorization header');
-            }
-
-            const parts = authHeader.split(' ');
-
-            if (parts.length !== 2 || parts[0] !== 'Bearer') {
-                console.log('Invalid authorization header format');
-                throw new UnauthorizedException('Invalid authorization header format');
-            }
-
-            const token = parts[1];
-            try {
-                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-                console.log(decodedToken)
-                if(decodedToken) {
-                    if (!body.newUsername || typeof body.newUsername !== 'string') {
-                        throw new BadRequestException('Invalid new username');
-                    }
-        
-                    await this.userService.changeUsername(body.newUsername, body.userid);
-        
-                    res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
-                } else {
-                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-                }
-
-            } catch (error) {
-                console.error('Error processing request:', error);
-                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-            }
-
-        } catch (error) {
-            console.error('Error processing request:', error);
-            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
+    @Post('change-username')
+    async changeUsername(
+      @Body() body: { newUsername: string; userid: string },
+      @Req() req: Request,
+      @Res() res: Response,
+    ): Promise<void> {
+      try {
+        const authHeader = req.headers.authorization;
+  
+        if (!authHeader) {
+          console.log('Missing authorization header');
+          throw new UnauthorizedException('Missing authorization header');
         }
+  
+        const parts = authHeader.split(' ');
+  
+        if (parts.length !== 2 || parts[0] !== 'Bearer') {
+          console.log('Invalid authorization header format');
+          throw new UnauthorizedException('Invalid authorization header format');
+        }
+  
+        const token = parts[1];
+  
+        await this.authService.changeUsername(body.newUsername, body.userid, token);
+  
+        res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+      }
     }
-
+  
     @Post('change-email')
-    async changeEmail(@Body() body: {newEmail: string, userid: string}, @Req() req: Request, @Res() res: Response): Promise<void> {
-        try {
-            const authHeader = req.headers.authorization;
-            if (!authHeader) {
-                throw new UnauthorizedException('Missing authorization header');
-            }
-
-            const parts = authHeader.split(' ');
-            if (parts.length !== 2 ||parts[0] !== 'Bearer') {
-                throw new UnauthorizedException('Invalid authorization header format');
-            }
-
-            const token = parts[1];
-
-            try {
-                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-
-                if (decodedToken) {
-
-                    if (!body.newEmail || typeof body.newEmail !== 'string') {
-                        throw new BadRequestException('Invalid new email');
-                    }
-
-                    await this.userService.changeEmail(body.newEmail, body.userid)
-                    res.status(HttpStatus.OK).json({ message: 'Email changed successfully' });
-
-                } 
-                else {
-                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-
-                }
-            } catch (error) {
-                console.error('Error processing request:', error);
-                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-            }
-
-        } catch (error) {
-            console.error('Error processing request:', error);
-            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-        } 
+    async changeEmail(
+      @Body() body: { newEmail: string; userid: string },
+      @Req() req: Request,
+      @Res() res: Response,
+    ): Promise<void> {
+      try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+          throw new UnauthorizedException('Missing authorization header');
+        }
+  
+        const parts = authHeader.split(' ');
+        if (parts.length !== 2 || parts[0] !== 'Bearer') {
+          throw new UnauthorizedException('Invalid authorization header format');
+        }
+  
+        const token = parts[1];
+  
+        await this.authService.changeEmail(body.newEmail, body.userid, token);
+  
+        res.status(HttpStatus.OK).json({ message: 'Email changed successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+      }
     }
-
+  
     @Post('change-password')
-    async changePassword(@Body() body: {newPassword: string, userid: string}, @Req() req: Request, @Res() res: Response): Promise<void> {
-        try {
-            const authHeader = req.headers.authorization;
-            if (!authHeader) {
-                throw new UnauthorizedException('Missing authorization header');
-            }
-
-            const parts = authHeader.split(' ');
-            if (parts.length !== 2 ||parts[0] !== 'Bearer') {
-                throw new UnauthorizedException('Invalid authorization header format');
-            }
-
-            const token = parts[1];
-
-            try {
-                const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-
-                if (decodedToken) {
-
-                    if (!body.newPassword || typeof body.newPassword !== 'string') {
-                        throw new BadRequestException('Invalid new email');
-                    }  
-
-                    const saltOrRounds = 10;
-                    const passwordHashed = await bcrypt.hash(body.newPassword, saltOrRounds);
-
-                    await this.userService.changePassword(passwordHashed, body.userid)
-                    res.status(HttpStatus.OK).json({ message: 'Password changed successfully' });
-
-                } 
-                else {
-                    res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-
-                }
-            } catch (error) {
-                console.error('Error processing request:', error);
-                res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-            }
-
-        } catch (error) {
-            console.error('Error processing request:', error);
-            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Not Authorized' });
-        } 
+    async changePassword(
+      @Body() body: { newPassword: string; userid: string },
+      @Req() req: Request,
+      @Res() res: Response,
+    ): Promise<void> {
+      try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+          throw new UnauthorizedException('Missing authorization header');
+        }
+  
+        const parts = authHeader.split(' ');
+        if (parts.length !== 2 || parts[0] !== 'Bearer') {
+          throw new UnauthorizedException('Invalid authorization header format');
+        }
+  
+        const token = parts[1];
+  
+        await this.authService.changePassword(body.newPassword, body.userid, token);
+  
+        res.status(HttpStatus.OK).json({ message: 'Password changed successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+      }
     }
 
 
