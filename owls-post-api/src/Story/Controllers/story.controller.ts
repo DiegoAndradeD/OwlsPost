@@ -3,11 +3,13 @@ import { Request, Response } from 'express';
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
+import { AuthService } from 'src/Auth/Services/auth.service';
 
 @Controller('story')
 export class StoryController {
 
-    constructor(private readonly storyService: StoryService) {}
+    constructor(private readonly storyService: StoryService,
+      private readonly authService: AuthService) {}
 
     // Get all stories
     @Get('all')
@@ -21,27 +23,17 @@ export class StoryController {
     @Res() res: Response,): Promise<void> {
         const authHeader = req.headers.authorization;
   
-        if (!authHeader) {
-          console.log('Missing authorization header');
-          throw new UnauthorizedException('Missing authorization header');
-        }
-  
-        const parts = authHeader.split(' ');
-  
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-          console.log('Invalid authorization header format');
-          throw new UnauthorizedException('Invalid authorization header format');
-        }
-  
-        const token = parts[1];
+        const token = this.authService.getTokenAuthHeader(authHeader)
         try {
-            const story = await this.storyService.registerStory(storyDto, token);
+            const story = await this.storyService.registerStory(storyDto, await token);
             res.status(201).json(story); 
           } catch (error) {
             console.error('Error registering story:', error);
             res.status(500).json({ error: 'Failed to register the story' });
           }
     }
+
+
 
     // Get all stories of a user by user ID
     @Get('get_user_stories/:userId')

@@ -147,6 +147,11 @@ export class UserService {
         
     }
 
+    /**
+     * Function to find a user from the database based in its token
+     * @param token 
+     * @returns user
+     */
     async findUserByToken(token: string): Promise<ReturnUserDto | null> {
         try {
             const user = await this.userRepository.findOne({ where: {token} });
@@ -157,10 +162,21 @@ export class UserService {
         }
     }
 
+    /**
+     * Function to change a user description for a new one
+     * @param newDescription 
+     * @param userid 
+     * @returns 
+     */
     async changeDescription(newDescription: string, userid: string):Promise<void> {
-        const entityManager = this.userRepository.manager;
-        const query = `UPDATE users SET description = $1 WHERE id = $2`;
-        return await entityManager.query(query, [newDescription, userid]);
+        try {
+            const entityManager = this.userRepository.manager;
+            const query = `UPDATE users SET description = $1 WHERE id = $2`;
+            return await entityManager.query(query, [newDescription, userid]);
+        } catch (error) {
+            throw new InternalServerErrorException('Error updation description')
+        }
+        
     }
 
 }

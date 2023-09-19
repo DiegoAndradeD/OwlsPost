@@ -132,6 +132,23 @@ export class AuthService {
     }
     }
 
+    async getTokenAuthHeader(authHeader: any) {
+        if (!authHeader) {
+          console.log('Missing authorization header');
+          throw new UnauthorizedException('Missing authorization header');
+        }
+  
+        const parts = authHeader.split(' ');
+  
+        if (parts.length !== 2 || parts[0] !== 'Bearer') {
+          console.log('Invalid authorization header format');
+          throw new UnauthorizedException('Invalid authorization header format');
+        }
+  
+        const token = parts[1];
+        return token;
+      }
+
     
 
 }
