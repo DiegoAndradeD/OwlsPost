@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import '../../../styles/UserSettings_Styles/UserProfile_Settings.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 interface UserStates {
@@ -22,18 +22,22 @@ interface Story {
     tags: string[];
   }
   
-  interface UserStoriesStates {
-    profile_user_id: number;
-    stories: Story[];
-    invertedColors: boolean;
-    isFollowed: number,
-  }
+interface UserStoriesStates {
+  profile_user_id: number;
+  stories: Story[];
+  invertedColors: boolean;
+  isFollowed: number,
+}
 
 
 
 const UserProfile_Settings: React.FC = () => {
     const cookies = new Cookies();
     const accessToken = cookies.get('accessToken');
+
+    const navigate = useNavigate();
+
+    const [updatedDescription, setUpdatedDescription] = useState('');
 
     const [user, setUser] = useState<UserStates> ({
         profile_user_id: 0,
@@ -103,6 +107,52 @@ const UserProfile_Settings: React.FC = () => {
     .toLocaleString()
     .replace(',', ' |');
 
+    
+    //Function to update the user's username
+    const handleDescriptionUpdate = async () => {
+      const formData = new FormData();
+      formData.append('newDescription', updatedDescription);
+      formData.append('userid', accessToken.id);
+      console.log(updatedDescription)
+      try {
+        const response = 
+        await axios.post(`http://localhost:3000/user/userid/${accessToken.id}/changeDescriptionTo`,
+        formData,
+        {
+          headers: {
+             'Content-Type': 'application/json' ,
+          }
+        }
+        )
+        window.location.reload();
+      } catch (error) {
+        console.error(error)
+      }
+      
+    }
+
+    const updateDesciptionForm = () => {
+      return (
+        <div>
+          <form className="form-inline" id="update_form_container">
+                <div className="form-group " >
+                  <label htmlFor="description" className="sr-only">Description</label>
+                  <input
+                    className='form-control'
+                    type='text'
+                    id="description"
+                    placeholder="Description"
+                    value={updatedDescription}
+                    onChange={(e) => setUpdatedDescription(e.target.value )}                
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary mb-2" id="update_username_btn_submit" onClick={handleDescriptionUpdate}>Update</button>
+              </form>
+        </div>
+      )
+    }
+
     return (
         <div>
             <div className="profile_settings_container">
@@ -121,6 +171,7 @@ const UserProfile_Settings: React.FC = () => {
                             <div className="profile_settings_description_container">
                                 <h1 className="profile_h1_text">Description: {user.description}</h1>
                                 <button id="update_description_btn">Change Description</button>
+                                {updateDesciptionForm()}
                             </div>
                             <h2 className="profile_h2_text">User Stories: </h2>
                             <div className="AllStoriesContainer">

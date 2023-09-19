@@ -57,4 +57,9 @@ export class UserController {
         }
       
     }
+
+    @Post('userid/:userid/changeDescriptionTo')
+    async changeDescription(@Body() body: {newDescription: string, userid: string}): Promise<void> {
+        return this.userService.changeDescription(body.newDescription, body.userid);
+    }
 }
