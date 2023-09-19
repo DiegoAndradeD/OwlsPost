@@ -26,4 +26,7 @@ export class User {
     description: string;
     
     followers_count: number;
+
+    @Column({name: 'token', nullable: false})
+    token: string;
 }

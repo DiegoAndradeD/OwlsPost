@@ -128,16 +128,24 @@ const StoryForm: React.FC = () => {
     });
 
     try {
-      await axios.post('http://localhost:3000/story/add_story',
+      const cookies = new Cookies();
+      const accessToken = cookies.get('accessToken');;
+      const response = await axios.post('http://localhost:3000/story/add_story',
         formData, {
         headers: {
           'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
         },
       });
+      if (response.status === 201) { 
+        console.log('Story registered successfully');
+        navigate('/user_stories');
+      } else {
+        console.log('Failed to register the story');
+      }
     } catch (error) {
       console.log(error);
     }
-
     navigate('/user_stories');
   }
 

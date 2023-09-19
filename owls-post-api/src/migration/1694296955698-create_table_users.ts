@@ -40,6 +40,11 @@ export class CreateTableUser1694109858458 implements MigrationInterface {
                     type: "timestamp",
                     default: "now()",
                 },
+                {
+                    name: "token",
+                    type: "varchar",
+                    isNullable: false,
+                },
             ],
         }));
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, InternalServerErrorException, Param, Post, HttpException, NotFoundException } from "@nestjs/common";
 import { UserService } from "../Services/user.service";
 import { UserDTO } from "../Dto/user.dto";
 import { User } from "../Entities/user.entity";
@@ -9,16 +9,33 @@ export class UserController {
 
     constructor(private readonly userService: UserService) {}
 
-    // Get all users
+    /**
+     * Gets all users
+     * @returns 
+     */
     @Get()
     async getAllUsers(): Promise<User[]> {
-        return this.userService.getAllUsers();
+        try {
+            return this.userService.getAllUsers();
+        } catch (error) {
+            throw new HttpException('Error getting all users', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
-    // Register a new user
+    /**
+     * Registers a new user
+     * @param userDTO 
+     * @returns 
+     */
     @Post('Signup')
     async registerUser(@Body() userDTO: UserDTO): Promise<User> {
-        return this.userService.registerUser(userDTO);
+        try {
+            return this.userService.registerUser(userDTO);
+        } catch (error) {
+            throw new HttpException('Error in user signup', HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
     /**
@@ -29,7 +46,15 @@ export class UserController {
      */
     @Get('/getUserById/:userid')
     async getUserById(@Param('userid') userid: number): Promise<ReturnUserDto> {
-      const user: User = await this.userService.getUserById(userid);
-      return new ReturnUserDto(user);
+        try {
+            const user: User = await this.userService.getUserById(userid);
+            return new ReturnUserDto(user);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            }
+            throw new HttpException('Error getting user by id', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+      
     }
 }

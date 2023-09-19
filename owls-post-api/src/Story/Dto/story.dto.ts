@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsInt, IsString } from "class-validator";
 
 
 export class StoryDTO {
@@ -6,7 +6,7 @@ export class StoryDTO {
     title: string;
     @IsString()
     description: string;
-
+    @IsInt()
     userid: number;
 
     @IsString()

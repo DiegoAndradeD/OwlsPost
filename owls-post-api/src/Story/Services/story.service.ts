@@ -1,21 +1,32 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ILike, Repository } from "typeorm";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
+import { AuthService } from "src/Auth/Services/auth.service";
+import { UserService } from "src/User/Services/user.service";
+import * as jwt from 'jsonwebtoken';
+import authConfig from "src/Auth/auth.config";
 
 @Injectable()
 export class StoryService {
 
     constructor(
         @InjectRepository(Story)
-        private readonly storyRepository: Repository<Story>
+        private readonly storyRepository: Repository<Story>,
+        private readonly authService: AuthService,
+        private readonly userService: UserService,
     ){}
 
     // Register a new story
     // TODO: Add validation to register story
-    async registerStory(storyDto: StoryDTO): Promise<Story> {
+    async registerStory(storyDto: StoryDTO, token: string): Promise<Story> {
         try {
+            const user = await this.authService.verifyToken(token);
+            if(!user) {
+                throw new UnauthorizedException('Invalid Token or not authenticated user')
+            }
+
             return this.storyRepository.save({
                 ...storyDto,
             });

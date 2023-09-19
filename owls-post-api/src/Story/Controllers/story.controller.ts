@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
@@ -16,8 +17,30 @@ export class StoryController {
 
     // Register a new story
     @Post('add_story')
-    async registerStory(@Body() storyDto: StoryDTO): Promise<Story> {
-        return this.storyService.registerStory(storyDto);
+    async registerStory(@Body() storyDto: StoryDTO, @Req() req: Request,
+    @Res() res: Response,): Promise<void> {
+        const authHeader = req.headers.authorization;
+  
+        if (!authHeader) {
+          console.log('Missing authorization header');
+          throw new UnauthorizedException('Missing authorization header');
+        }
+  
+        const parts = authHeader.split(' ');
+  
+        if (parts.length !== 2 || parts[0] !== 'Bearer') {
+          console.log('Invalid authorization header format');
+          throw new UnauthorizedException('Invalid authorization header format');
+        }
+  
+        const token = parts[1];
+        try {
+            const story = await this.storyService.registerStory(storyDto, token);
+            res.status(201).json(story); 
+          } catch (error) {
+            console.error('Error registering story:', error);
+            res.status(500).json({ error: 'Failed to register the story' });
+          }
     }
 
     // Get all stories of a user by user ID

@@ -3,6 +3,7 @@ import { UserService } from "src/User/Services/user.service";
 import * as bcrypt from 'bcrypt';
 import authConfig from '../auth.config';
 import * as jwt from 'jsonwebtoken';
+import { ReturnUserDto } from "src/User/Dto/returnUser.dto";
 
 @Injectable()
 export class AuthService {
@@ -23,27 +24,35 @@ export class AuthService {
                 throw new UnauthorizedException('Invalid credentials');
             }
 
-            // Generate and return a JWT token
-            const token = await this.generateJwtToken(user);
-            return token;
+            if(!user.token) {
+                throw new UnauthorizedException('Token not found');
+            }
+
+            return user.token;
         } catch (error) {
             throw new UnauthorizedException('Invalid credentials');
         }
     }
 
-    // Generate a JWT token for the authenticated user
-    async generateJwtToken(user: any): Promise<string> {
+    async verifyToken(token: string): Promise<ReturnUserDto | null> {
         try {
-            // Create the JWT payload with username and user ID
-            const payload = { username: user.username, sub: user.id };
-            
-            // Sign the payload with the JWT secret and set an expiration time
-            return jwt.sign(payload, authConfig.jwtSecret, { expiresIn: '1h' });
+            const user = await this.userService.findUserByToken(token);
+            if (!user) {
+                throw new UnauthorizedException('Invalid Token');
+            }
+
+            const decodedToken = jwt.verify(token, authConfig.jwtSecret);
+            if (decodedToken) {
+                return user;
+            } else {
+                throw new UnauthorizedException('Token JWT Invalid');
+            }
         } catch (error) {
-            // Handle any errors that occur during token generation
-            throw new UnauthorizedException('Token generation failed');
+            console.error('Error verifying token', error);
+            throw new UnauthorizedException('Invalid Token');
         }
     }
+
 
     async checkUserRegistration(id: string, username: string): Promise<boolean> {
         try {
@@ -122,6 +131,7 @@ export class AuthService {
         throw new UnauthorizedException('Not Authorized');
     }
     }
+
     
 
 }
