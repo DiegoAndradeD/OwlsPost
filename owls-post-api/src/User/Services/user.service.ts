@@ -65,4 +65,11 @@ export class UserService {
         const query = `Update users SET password = $1 WHERE id =$2`;
         return await entityManager.query(query, [newHashedPassword, userid]);
     }
+
+    async changeDescription(newDescription: string, userid: string):Promise<void> {
+        const entityManager = this.userRepository.manager;
+        const query = `UPDATE users SET description = $1 WHERE id = $2`;
+        return await entityManager.query(query, [newDescription, userid]);
+    }
+
 }

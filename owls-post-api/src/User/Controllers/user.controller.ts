@@ -32,4 +32,9 @@ export class UserController {
       const user: User = await this.userService.getUserById(userid);
       return new ReturnUserDto(user);
     }
+
+    @Post('userid/:userid/changeDescriptionTo')
+    async changeDescription(@Body() body: {newDescription: string, userid: string}): Promise<void> {
+        return this.userService.changeDescription(body.newDescription, body.userid);
+    }
 }
