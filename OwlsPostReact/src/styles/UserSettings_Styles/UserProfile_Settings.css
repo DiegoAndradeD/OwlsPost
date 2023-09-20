@@ -1,6 +1,7 @@
-.profile_settings_container {
+.content {
     padding: 20px;
     background-color: #111215;
+    width: 100%;
 }
 
 
@@ -13,7 +14,7 @@
     color: white;
     font-size: 26px;
     font-weight: 300;
-    font-family: 'Oswald', sans-serif;
+    
 }
 
 #userSettings_update_description_btn {
@@ -37,12 +38,22 @@
     font-size: 26px;
 }
 
+#userDescription {
+    color: white;
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 26px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 #ProfileSettings_description {
     background-color: #111215;
     border: 1px solid #111215;
     border-bottom: 4px solid #27EE52;
     color: white;
-    width: 1200px;
+    width: 140%;
     margin-bottom: 10px;
 }
 

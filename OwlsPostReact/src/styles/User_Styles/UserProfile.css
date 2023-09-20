@@ -1,6 +1,6 @@
 .profile_wrapper {
     background: transparent;
-    width: 100%;
+    width: 90%;
     margin: 40px auto;
     border-radius: 10px;
     box-shadow: 2px 2px black;
@@ -8,7 +8,7 @@
     align-items: center;
     flex-direction: column;
     border: 1px solid black;
-    padding: 10px;
+    padding: 30px;
     
 }
 

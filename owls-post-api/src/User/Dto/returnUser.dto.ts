@@ -8,7 +8,7 @@ export class ReturnUserDto {
         this.email = user.email;
         this.created_at = user.created_at;
         this.followers_count = user.followers_count;
-        
+        this.description = user.description;
     }
 
     id: Number;

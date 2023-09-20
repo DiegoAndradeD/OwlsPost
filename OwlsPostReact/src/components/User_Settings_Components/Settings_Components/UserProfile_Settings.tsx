@@ -59,6 +59,7 @@ const UserProfile_Settings: React.FC = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
+          console.log(accessToken.id)
             try {
               const response = await axios.get(
                 `http://localhost:3000/user/getUserById/${accessToken.id}`,
@@ -188,7 +189,7 @@ const UserProfile_Settings: React.FC = () => {
                                 <h1 className="userSettings_profile_h1_text">Followers: {user.followers_count}</h1>
                             </div>
                             <div className="userSettings_profile_settings_description_container">
-                              <h1 className="userSettings_profile_h1_text">Description: {user.description}</h1>
+                              <h1 className="userSettings_profile_h1_text">Description: <p id="userDescription">{user.description}</p></h1>
                               {updateDesciptionForm()}
                             </div>
 

@@ -12,6 +12,7 @@ interface UserProfileStates {
   email: string;
   created_at: Date;
   followers_count: number;
+  description: string;
 }
 
 interface Story {
@@ -40,6 +41,7 @@ const UserProfile: React.FC = () => {
     email: "",
     created_at: new Date(),
     followers_count: 0,
+    description: '',
   });
 
   const [state, setState] = useState<UserStoriesStates>({
@@ -71,6 +73,7 @@ const UserProfile: React.FC = () => {
           email: response.data.email,
           created_at: response.data.created_at,
           followers_count: response.data.followers_count,
+          description: response.data.description,
         });
         
         const fetchUserStories = async () => {
@@ -169,7 +172,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <div>
-      <div className="container">
+      <div className="">
         <div className="profile_wrapper">
           <div className="profile_usernameContainer mb-4">
             <h1 className="profile_h1_text">{user.username}</h1>
@@ -183,6 +186,9 @@ const UserProfile: React.FC = () => {
               {state.isFollowed === 0 ? 'Follow' : 'Unfollow'}
             </button>
 
+          </div>
+          <div className="profile_created_atContainer">
+            <h1 className="profile_h1_text">Description: <p id="userDescription">{user.description}</p></h1>
           </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>
