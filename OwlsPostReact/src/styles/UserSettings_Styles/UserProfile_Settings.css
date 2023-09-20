@@ -3,10 +3,10 @@
     background-color: #111215;
 }
 
+
+
 .profile_settings_description_container {
-    border-top: 1px solid black;
     padding: 20px 0px;
-    border-bottom: 1px solid black;
 }
 
 .profile_settings_description_container h1{
@@ -16,5 +16,39 @@
     font-family: 'Oswald', sans-serif;
 }
 
+#userSettings_update_description_btn {
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    background-color: #2d2e32;
+    padding: 5px;
+    border-radius: 10px;
+    transition: all .2s ease;
+    margin-bottom: 30px;
+}
+
+.userSettings_profile_h1_text {
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-size: 26px;
+}
+
+#ProfileSettings_description {
+    background-color: #111215;
+    border: 1px solid #111215;
+    border-bottom: 4px solid #27EE52;
+    color: white;
+    width: 1200px;
+    margin-bottom: 10px;
+}
+
+#ProfileSettings_description::placeholder {
+    color: white;
+    font-family: 'Anton', sans-serif;
+}
 
   

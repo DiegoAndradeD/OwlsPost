@@ -1,15 +1,26 @@
-#mainContainer {
-  margin: auto;
-
+.UserSettings_mainContainer {
+  display: flex;
+  height: 90.5vh; 
+  width: 100%;
+  margin: 0;
+  overflow: hidden; 
 }
 
-
-#settings_navbar {
-    background-color: #111215;
-    padding: 20px;
-    border-radius: 5px;
+.sidebar {
+  background-color: #333;
+  padding: 20px;
+  color: #fff;
+  width: 200px;
+  min-width: 250px; 
 }
-  
+
+.content {
+  padding: 0px 0px 0px 0px;
+  background-color: #111215;
+  flex-grow: 1; 
+  overflow-y: auto; 
+}
+
 
 
 #Settings_acountText, #Settings_profileText {
@@ -49,5 +60,26 @@
   padding-right: 5px;
 }
 
-  
-  
+
+.btn-sidebar {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+  padding: 10px;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-sidebar:hover {
+  background-color: #555;
+}
+
+
+.btn-sidebar.active {
+  background-color: #007bff;
+  font-weight: bold;
+}

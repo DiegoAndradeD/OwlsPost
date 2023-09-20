@@ -12,6 +12,7 @@ interface UserStates {
     created_at: Date;
     followers_count: number;
     description: string;
+    
 }
 
 interface Story {
@@ -38,6 +39,7 @@ const UserProfile_Settings: React.FC = () => {
     const navigate = useNavigate();
 
     const [updatedDescription, setUpdatedDescription] = useState('');
+    const [isUpdateDescriptionFormVisible, setIsUpdateDescriptionFormVisible] = useState(false);
 
     const [user, setUser] = useState<UserStates> ({
         profile_user_id: 0,
@@ -131,49 +133,66 @@ const UserProfile_Settings: React.FC = () => {
       
     }
 
+
     const updateDesciptionForm = () => {
       return (
         <div>
-          <form className="form-inline" id="update_form_container">
-                <div className="form-group " >
-                  <label htmlFor="description" className="sr-only">Description</label>
-                  <input
-                    className='form-control'
-                    type='text'
-                    id="description"
-                    placeholder="Description"
-                    value={updatedDescription}
-                    onChange={(e) => setUpdatedDescription(e.target.value )}                
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary mb-2" id="update_username_btn_submit" onClick={handleDescriptionUpdate}>Update</button>
-              </form>
+          <button
+            id="userSettings_update_description_btn"
+            onClick={() => setIsUpdateDescriptionFormVisible(!isUpdateDescriptionFormVisible)}
+          >
+            Change Description
+          </button>
+          {isUpdateDescriptionFormVisible && (
+            <form className="form-inline" id="profile_settings_update_form_container">
+              <div className="form-group">
+                <label htmlFor="description" className="sr-only">Description</label>
+                <textarea
+                  className='form-control'
+                  id="ProfileSettings_description"
+                  placeholder="Description"
+                  value={updatedDescription}
+                  rows={10}
+                  onChange={(e) => setUpdatedDescription(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary mb-2"
+                id="update_username_btn_submit"
+                onClick={handleDescriptionUpdate}
+              >
+                Update
+              </button>
+            </form>
+          )}
         </div>
       )
     }
+    
 
     return (
         <div>
             <div className="profile_settings_container">
                 <div className="profile_settings_wrapper">
-                    <div className="container">
-                        <div className="profile_wrapper">
-                            <div className="profile_usernameContainer mb-4">
-                                <h1 className="profile_h1_text">{user.username}</h1>
+                    <div className="">
+                        <div className="userSettings_profile_wrapper">
+                            <div className="userSettings_profile_usernameContainer mb-4">
+                                <h1 className="userSettings_profile_h1_text">{user.username}</h1>
                             </div>
-                            <div className="profile_created_atContainer">
-                                <h1 className="profile_h1_text">Member Since: {formattedDate}</h1>
+                            <div className="userSettings_profile_created_atContainer">
+                                <h1 className="userSettings_profile_h1_text">Member Since: {formattedDate}</h1>
                             </div>
-                            <div className="profile_followersCount_container">
-                                <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
+                            <div className="userSettings_profile_followersCount_container">
+                                <h1 className="userSettings_profile_h1_text">Followers: {user.followers_count}</h1>
                             </div>
-                            <div className="profile_settings_description_container">
-                                <h1 className="profile_h1_text">Description: {user.description}</h1>
-                                <button id="update_description_btn">Change Description</button>
-                                {updateDesciptionForm()}
+                            <div className="userSettings_profile_settings_description_container">
+                              <h1 className="userSettings_profile_h1_text">Description: {user.description}</h1>
+                              {updateDesciptionForm()}
                             </div>
-                            <h2 className="profile_h2_text">User Stories: </h2>
+
+                            <h2 className="userSettings_profile_h2_text">User Stories: </h2>
                             <div className="AllStoriesContainer">
                                 <ul>
                                 {story.stories.map((story) => (
