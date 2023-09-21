@@ -1,66 +1,105 @@
-#storyFormContainer {
-   margin-top: 20px;
-}
-
-#storyFormWrapper {
-    background-color: #111215;
-    width: 80%;
-    height: 850px;
+:root {
+    --storyForm-background-color-light: #fff; 
+    --storyForm-text-color-light: black; 
+    --storyForm-background-color-dark: #fff; 
+    --storyForm-text-color-dark: #fff;
+    --storyForm-input-background-color-light: gray;
+    --storyForm-button-background-light: rgb(33, 33, 237); 
+    --storyForm-button-color-light: #fff; 
+    --storyForm-button-background-dark: #050506; 
+    --storyForm-button-color-dark: #27EE52; 
+    --storyForm-border-color-light: #fff; 
+  }
+  
+  .dark-mode {
+    --storyForm-background-color-light: #fff;
+    --storyForm-text-color-light: #fff;
+    --storyForm-background-color-dark: #111215; 
+    --storyForm-text-color-dark: #fff;
+    --storyForm-border-color-light: #27EE52;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--storyForm-background-color-light);
+    color: var(--storyForm-text-color-light);
+  }
+  
+  .StoryForm_mainDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #storyFormWrapper {
+    background-color: var(--storyForm-background-color-dark);
+    width: 98%;
+    height: 846px;
     padding: 30px;
     border-radius: 30px;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.481);
-}
-
-#storyFormWrapper form {
+    margin: 20px auto;
+    overflow: hidden;
+  }
+  
+  #storyForm-headers-titles {
+    color: var(--storyForm-text-color-light);
+  }
+  
+  label {
+    color: var(--storyForm-text-color-light);
+  }
+  
+  #storyFormWrapper form {
     margin: auto;
     width: 100%;
-}
-
-#storyFormWrapper form label  {
+  }
+  
+  #storyFormWrapper form label  {
     font-family: 'Anton', sans-serif;
     font-size: 30px;
-
-}
-
-
-#storyFormWrapper form input,  #storyFormWrapper form textarea{
-    background-color: #111215;
+  }
+  
+  #storyFormWrapper form input,  #storyFormWrapper form textarea{
     border: 1px solid #111215;
-    border-bottom: 4px solid #27EE52;
-    color: white;
-}
-
-#storyFormWrapper form input::placeholder, #storyFormWrapper form textarea::placeholder {
+    border-bottom: 4px solid var(--storyForm-border-color-light);
+    color: var(--storyForm-text-color-light);
+    background-color: var(--storyForm-background-color-dark);
+  }
+  
+  #storyFormWrapper form input::placeholder, #storyFormWrapper form textarea::placeholder {
     color: white;
     font-family: 'Anton', sans-serif;
-}
-
-#dataContainer {
+  }
+  
+  #dataContainer {
     display: flex;
     align-self: center;
     justify-content: space-around;
-}
-
-#storyFormWrapper form .storyForm_submit_btn  {
+  }
+  
+  #storyFormWrapper form .storyForm_submit_btn  {
     font-family: 'Anton', sans-serif;
     font-size: 20px;
     margin-top: 30px;
     width: 100%;
     height: 45px;
     border-radius: 15px;
-    color: #27EE52;
-    background-color: #050506;
-}
-
-#storyFormWrapper form button:hover {
-    background-color: #05050671;
-}
-
-p {
+    color: var(--storyForm-button-color-light);
+    background-color: var(--storyForm-button-background-light);
+  }
+  
+  #storyFormWrapper form .storyForm_submit_btn.dark-mode {
+    background-color: var(--storyForm-button-background-dark);
+    color: var(--storyForm-button-color-dark);
+  }
+  
+  p {
     color: white;
-}
-
-.tags-container {
+  }
+  
+  .tags-container {
     display: flex; 
     flex-wrap: wrap; 
     gap: 5px;
@@ -75,9 +114,13 @@ p {
   
   .removeTagBtn {
     font-size: 15px;
-        width: 20px;
-        height: 20px;
-        color: red;
-        background-color: white;
+    width: 20px;
+    height: 20px;
+    color: red;
+    background-color: white;
   }
 
+  #storyForm_CharsCounter {
+    color: var(--storyForm-text-color-light);
+  }
+  

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import '../../styles/User_Styles/UserStories.css'
 import { Link } from 'react-router-dom';
+import { useTheme } from '../ThemeContext'; 
 
 interface Story {
     id: number;
@@ -18,13 +19,7 @@ interface UserStoriesStates {
     invertedColors: boolean;
 }
 
-const ToggleColorsButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-    return (
-        <button onClick={onClick} id='toggleColorBtn'>
-            <i className="fa-solid fa-eye-dropper"></i> Change Colors
-        </button>
-    );
-};
+
 
 const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ story, invertedColors }) => {
     const h1Class = invertedColors ? 'invertedColors' : '';
@@ -35,7 +30,7 @@ const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ s
     }
 
     return (
-        <div className='container' id='storyContainer'>
+        <div className='' id='storyContainer'>
             <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
                 <h1 id='UserStories_title' className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
             </Link>
@@ -51,6 +46,8 @@ const UserStories: React.FC = () => {
         stories: [],
         invertedColors: false,
     });
+
+    const { darkMode } = useTheme();
 
     useEffect(() => {
         const cookies = new Cookies();
@@ -83,23 +80,20 @@ const UserStories: React.FC = () => {
         setState({ ...state, invertedColors: !state.invertedColors });
     };
 
-    const mainContainerClass = state.invertedColors
-        ? 'container invertedColors'
-        : 'container';
+    const userStories_mainContainerClass = darkMode ? 'dark-mode' : '';
 
     return (
-        <div>
-            <ToggleColorsButton onClick={toggleColors} />
-            <div className={mainContainerClass} id='mainStoriesContainer'>
-                {state.stories.map(story => (
-                    <StoryContainer
-                        key={story.id}
-                        story={story}
-                        invertedColors={state.invertedColors}
-                    />
-                ))}
+        <div className={`UserStories_mainDiv ${userStories_mainContainerClass}`}>
+        <div className={userStories_mainContainerClass} id='userStories_mainContainerClass'>
+                    {state.stories.map(story => (
+                        <StoryContainer
+                            key={story.id}
+                            story={story}
+                            invertedColors={state.invertedColors}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
     )
 }
 

@@ -5,7 +5,9 @@ import owlIcon from '../assets/owlIcon.png';
 import '../styles/Navbar.css';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookOpen, faFilePen, faGear, faHeart, faRightFromBracket, faStar, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faFilePen, faGear, faHeart, faMoon, faRightFromBracket, faStar, faSun, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from './ThemeContext';
+
 
 interface NavbarState {
   isLoggedIn: boolean;
@@ -68,6 +70,7 @@ const Navbar: React.FC = () => {
     isLoggedIn: false,
     username: '',
   });
+  const { darkMode, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
 
@@ -116,15 +119,27 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="navbar_mainContainer">
       <nav className="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div className="container">
           <Link className="navbar-brand d-flex align-items-center" to="/" id='HeaderTitle'><img id="owlIcon" src={owlIcon} alt="owlIcon" /></Link>
+          
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
+            <button onClick={toggleTheme} id='toggleColorBtn'>
+              {darkMode ? (
+                <>
+                  <FontAwesomeIcon icon={faSun} /> 
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faMoon} /> 
+                </>
+              )}
+            </button>
               <li className="nav-item">
                 <Link className="nav-link" to="/" id='navText'>Explore</Link>
               </li>
@@ -143,7 +158,7 @@ const Navbar: React.FC = () => {
                   </li>
                 </>
               )}
-            </ul>
+            </ul>   
           </div>
         </div>
       </nav>

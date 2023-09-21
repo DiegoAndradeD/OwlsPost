@@ -1,23 +1,46 @@
-#mainStoriesContainer {
-    padding: 10px;
-    border: 1px solid black;
-    margin: 10px;
-    width: 99%;
-    backdrop-filter: blur(20px);
+
+:root {
+    --background-color-light: #fff; 
+    --text-color-light: black; 
+    --background-color-dark: transparent; 
+    --text-color-dark: #fff;
+    --input_background-color-light: gray;
+    --button-background-light: #8C1657;
+    --button-color-light: #f27405b1;
 }
 
+.dark-mode {
+    --background-color-light: transparent;
+    --text-color-light: #fff;
+    --background-color-dark: transparent; 
+    --text-color-dark: #fff;
+}
 
+.UserStories_mainDiv {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color-light); 
+    color: var(--text-color-light); 
+}
+
+#userStories_mainContainerClass {
+    padding: 10px;
+    border: 1px solid black;
+    width: 99%;
+    margin: auto;
+    margin-top: 50px;
+
+}
 
 #storyContainer {
     background: transparent;
     backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
-  
+    margin-top: 30px;
     margin-bottom: 30px;
     border-bottom: 1px solid black;
-
-
+    border: 1px solid black;
 }
 
 #storyLink {
@@ -31,7 +54,7 @@
 
 #storyContainer #UserStories_title {
     font-family: 'Anton', sans-serif;
-    color: white;
+    color: var(--text-color-light);
     border-bottom: 1px solid black;
     cursor: pointer;
     overflow-wrap: break-word; 
@@ -43,7 +66,7 @@
 
 #storyContainer p {
     font-size: 20px;
-    color: white;
+    color: var(--text-color-light);
     font-weight: 500;
     overflow-wrap: break-word;
 }

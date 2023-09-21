@@ -9,6 +9,10 @@
     filter: saturate(170%);
 }
 
+.navbar_mainContainer {
+
+}
+
 #navbar {
     border-radius: 15px;
     box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.237);
@@ -50,14 +54,14 @@ button {
     align-items: center;
     text-decoration: none;
     padding: 10px 20px; 
-    color: #0FC2C0;
+    color: #F2075D;
     font-size: 26px;
     font-family: 'Imbue', serif;
     font-weight: 600;
 }
 
 #menuDrop li a #user_menu_icons {
-    color: white;
+    color: #181240;
     margin: auto;
     font-size: 24px; 
     margin-right: 10px;
@@ -97,7 +101,20 @@ button {
     animation: shine 1s linear infinite; 
 }
 
+#toggleColorBtn {
+    margin: auto;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    font-size: 22px;
+    font-weight: 600;
+    width: 15%;
+    color: white;
+}
 
+#toggleColorBtn:hover {
+    color:  #8A26A6; 
+}
 
 
 @keyframes shine {

@@ -4,6 +4,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import '../../styles/Story_Styles/StoryForm.css'
 import { useNavigate } from "react-router-dom";
+import { useTheme } from '../ThemeContext';
 
 interface StoryFormState {
   title: string;
@@ -16,7 +17,7 @@ interface StoryFormState {
 }
 
 const CharacterCounter: React.FC<{ remainingChars: number }> = ({ remainingChars }) => {
-  return <p>Description Max Length: <span>{remainingChars}</span></p>;
+  return <p id="storyForm_CharsCounter">Description Max Length: <span>{remainingChars}</span></p>;
 };
 
 const TextInputField: React.FC<{
@@ -26,7 +27,7 @@ const TextInputField: React.FC<{
   onChange: (value: string) => void;
 }> = ({ id, placeholder, value, onChange }) => {
   return (
-    <div className="mb-3 row" id="dataContainer">
+    <div className="mb-3 row">
       <label htmlFor={id} className="col-sm-2 col-form-label">{placeholder}</label>
       <div className="col-sm-10">
         <input
@@ -50,7 +51,7 @@ const TextAreaField: React.FC<{
   remainingChars: number;
 }> = ({ id, placeholder, value, onChange, remainingChars }) => {
   return (
-    <div className="mb-3 row" id="dataContainer">
+    <div className="mb-3 row">
       <label htmlFor={id} className="col-sm-2 col-form-label">{placeholder}</label>
       <div className="col-sm-10">
         <textarea
@@ -69,6 +70,8 @@ const TextAreaField: React.FC<{
 
 const StoryForm: React.FC = () => {
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
+
   const [state, setState] = useState<StoryFormState>({
     title: '',
     description: '',
@@ -149,12 +152,13 @@ const StoryForm: React.FC = () => {
     navigate('/user_stories');
   }
 
+  const storyFormContainer = darkMode ? 'dark-mode' : '';
+
   return (
-    <div className="container" id="storyFormContainer">
-      <div className="row justify-content-center">
+    <div className={`StoryForm_mainDiv ${storyFormContainer}`}>
         <div className="col-md-6" id="storyFormWrapper">
           <form onSubmit={handleFormSubmit}>
-            <h2 className="mb-4">New Story</h2>
+            <h2 className="mb-4" id="storyForm-headers-titles">New Story</h2>
             <TextInputField
               id="title"
               placeholder="Title"
@@ -168,7 +172,7 @@ const StoryForm: React.FC = () => {
               onChange={handleDescription}
               remainingChars={state.remainingChars}
             />
-            <div className="mb-3 row" id="dataContainer">
+            <div className="mb-3 row">
               <label htmlFor="tags" className="col-sm-2 col-form-label">Tags</label>
               <div className="col-sm-8">
                 <input
@@ -191,26 +195,25 @@ const StoryForm: React.FC = () => {
               </div>
             </div>
             <div className="mb-3 row">
-            <div className="col-sm-2"></div>
-            <div className="col-sm-10">
-              <div className="tags-container">
-                {state.tags.map((tag, index) => (
-                  <span key={index} className="tagText">
-                    {tag}
-                    <button
-                      type="button"
-                      className="removeTagBtn"
-                      onClick={() => handleRemoveTag(index)}
-                    >X</button>
-                  </span>
-                ))}
+              <div className="col-sm-2"></div>
+              <div className="col-sm-10">
+                <div className="tags-container">
+                  {state.tags.map((tag, index) => (
+                    <span key={index} className="tagText">
+                      {tag}
+                      <button
+                        type="button"
+                        className="removeTagBtn"
+                        onClick={() => handleRemoveTag(index)}
+                      >X</button>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
             <button type="submit" className="storyForm_submit_btn">Submit</button>
           </form>
         </div>
-      </div>
     </div>
   );
 }

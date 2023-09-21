@@ -1,13 +1,12 @@
+import axios from "axios";
+import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import owlIcon from '../assets/owlIcon.png';
-import '../styles/Index.css'
-import searchIcon from '../assets/lupa.png'
 import Cookies from "universal-cookie";
-import DOMPurify from "dompurify";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import searchIcon from '../assets/lupa.png';
+import '../styles/Index.css';
+import { useTheme } from './ThemeContext';
+
 
 interface Story {
   id: number;
@@ -97,6 +96,7 @@ const StoryContainer: React.FC<{ story: Story;}> = ({ story }) => {
 };
 
 const Index: React.FC = () => {
+  
   const navigate = useNavigate();
 
   const [state, setState] = useState<UserStoriesStates>({
@@ -106,6 +106,9 @@ const Index: React.FC = () => {
     invertedColors: document.documentElement.classList.contains('dark-mode'),
     filter: '', 
   });
+
+  const { darkMode } = useTheme();
+  
 
   useEffect(() => {
     const cookies = new Cookies();
@@ -188,33 +191,12 @@ const Index: React.FC = () => {
       console.log(error);
     }
   };
-
-  const ToggleColorsButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-    return (
-      <button onClick={onClick} id='toggleColorBtn'>
-        {state.invertedColors ? (
-          <>
-          <FontAwesomeIcon icon={faSun} /> Change to Bright Mode
-            
-          </>
-        ) : (
-          <>
-          <FontAwesomeIcon icon={faMoon} /> Change to Dark Mode
-            
-          </>
-        )}
-      </button>
-    );
-  };
   
 
-  const mainContainerClass = state.invertedColors
-    ? 'invertedColors'
-    : '';
+  const index_mainContainerClass = darkMode ? 'dark-mode' : '';
 
   return (
-    <div className="mainDiv">
-      <ToggleColorsButton onClick={toggleColors} />
+    <div className={`Index_mainDiv ${index_mainContainerClass}`}>
       <WelcomeText />
       <SearchBar
         search={state.search}
@@ -223,7 +205,7 @@ const Index: React.FC = () => {
         filter={state.filter}
         onFilterChange={onFilterChange}
       />
-      <div className={mainContainerClass} id='mainStoriesContainer'>
+      <div className={index_mainContainerClass} id='index_mainContainerClass'>
         {state.stories.map((story) => (
           <StoryContainer key={story.id} story={story}  />
         ))}
