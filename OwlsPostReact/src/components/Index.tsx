@@ -6,6 +6,8 @@ import '../styles/Index.css'
 import searchIcon from '../assets/lupa.png'
 import Cookies from "universal-cookie";
 import DOMPurify from "dompurify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 interface Story {
   id: number;
@@ -23,11 +25,11 @@ interface UserStoriesStates {
   filter: string;
 }
 
-const WelcomeText: React.FC<{ invertedColors: boolean }> = ({ invertedColors }) => {
+const WelcomeText: React.FC<{ }> = ({ }) => {
   return (
     <div id="welcomeText">
-      <h2 className={invertedColors ? 'invertedColors' : ''}>Welcome to OwlsPost. Where Stories Come to Life!</h2>
-      <p className={invertedColors ? 'invertedColors' : ''}>
+      <h2 >Welcome to OwlsPost. Where Stories Come to Life!</h2>
+      <p >
         Are you ready to embark on a journey through the captivating world
         of storytelling?
       </p>
@@ -58,7 +60,7 @@ const SearchBar: React.FC<{
         </button>
       </form>
       <form onSubmit={onSubmit} className="searchBar">
-      <input
+        <input
           type="text"
           name="filter"
           id="filter"
@@ -74,24 +76,21 @@ const SearchBar: React.FC<{
   );
 };
 
-
-
-const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ story, invertedColors }) => {
+const StoryContainer: React.FC<{ story: Story;}> = ({ story }) => {
   const capitalizeFirstLetter = (str: string) => {
     return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }
 
-  const h1Class = invertedColors ? 'invertedColors' : '';
-  const pClass = invertedColors ? 'invertedColors' : '';
+
 
   return (
-    <div className='container' id='storyContainer'>
-      <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
-        <h1 className={h1Class}>{capitalizeFirstLetter(story.title)}</h1>
+    <div className='' id='index_storyContainer'>
+      <Link to={`/story/${story.id}/author/${story.userid}`} id='index_storyLink'>
+        <h1 className="index_story_title" >{capitalizeFirstLetter(story.title)}</h1>
       </Link>
-      <p className={pClass} id="index_story_description">{story.description}</p>
+      <p  id="index_story_description">{story.description}</p>
       <div  id='storyTags'>
-        <p className={pClass} >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
+        <p  >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
       </div>
     </div>
   );
@@ -104,7 +103,7 @@ const Index: React.FC = () => {
     search: '',
     userid: 0,
     stories: [],
-    invertedColors: false,
+    invertedColors: document.documentElement.classList.contains('dark-mode'),
     filter: '', 
   });
 
@@ -133,7 +132,13 @@ const Index: React.FC = () => {
   }, []);
 
   const toggleColors = () => {
-    setState({ ...state, invertedColors: !state.invertedColors });
+    const root = document.documentElement;
+    root.classList.toggle('dark-mode');
+    setState((prevState) => ({
+      ...prevState,
+      invertedColors: !prevState.invertedColors,
+    }));
+
   };
 
   const onSearchChange = (value: string) => {
@@ -176,32 +181,41 @@ const Index: React.FC = () => {
           ...state,
           stories: response.data,
           search: '',
-        filter: '',
+          filter: '',
         });
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
-  
 
   const ToggleColorsButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
       <button onClick={onClick} id='toggleColorBtn'>
-        <i className="fa-solid fa-eye-dropper"></i> Change Colors
+        {state.invertedColors ? (
+          <>
+          <FontAwesomeIcon icon={faSun} /> Change to Bright Mode
+            
+          </>
+        ) : (
+          <>
+          <FontAwesomeIcon icon={faMoon} /> Change to Dark Mode
+            
+          </>
+        )}
       </button>
     );
   };
+  
 
   const mainContainerClass = state.invertedColors
-    ? 'container invertedColors'
-    : 'container';
+    ? 'invertedColors'
+    : '';
 
   return (
     <div className="mainDiv">
       <ToggleColorsButton onClick={toggleColors} />
-      <WelcomeText invertedColors={state.invertedColors} />
+      <WelcomeText />
       <SearchBar
         search={state.search}
         onSearchChange={onSearchChange}
@@ -211,7 +225,7 @@ const Index: React.FC = () => {
       />
       <div className={mainContainerClass} id='mainStoriesContainer'>
         {state.stories.map((story) => (
-          <StoryContainer key={story.id} story={story} invertedColors={state.invertedColors} />
+          <StoryContainer key={story.id} story={story}  />
         ))}
       </div>
     </div>

@@ -151,8 +151,8 @@ const StoryPage: React.FC = () => {
     .replace(',', ' |');
 
   const mainContainerClass = story.invertedColors
-    ? 'container invertedColors'
-    : 'container';
+    ? 'invertedColors'
+    : '';
 
   const h1Class = story.invertedColors ? 'invertedColors' : '';
   const pClass = story.invertedColors ? 'invertedColors' : '';

@@ -1,34 +1,23 @@
 #mainStoriesContainer {
     padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-#toggleColorBtn {
-    background: transparent;
-    color: white;
+    border: 1px solid black;
     margin: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.448);
-    padding: 10px;
-    border-radius: 15px;
+    width: 99%;
     backdrop-filter: blur(20px);
 }
 
-#toggleColorBtn:hover {
-    padding-left: 20px;
-}
+
 
 #storyContainer {
     background: transparent;
     backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
+  
     margin-bottom: 30px;
     border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    padding: 10px;
-    box-shadow: 2px 2px black;
-    border-radius: 15px;
+
+
 }
 
 #storyLink {
@@ -59,21 +48,4 @@
     overflow-wrap: break-word;
 }
 
-  
-#mainStoriesContainer.invertedColors {
-    background-color: white;
-}
-
-#mainStoriesContainer h1 {
-    color: white;
-}
-
-#mainStoriesContainer.invertedColors h1, #mainStoriesContainer.invertedColors #chaptersLink, #mainStoriesContainer.invertedColors h2{
-    color: black;
-  }
-  
-  
-  #mainStoriesContainer.invertedColors p{
-    color: black;
-  }
   

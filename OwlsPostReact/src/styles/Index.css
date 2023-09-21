@@ -1,10 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Imbue:opsz,wght@10..100,100;10..100,200;10..100,300;10..100,400;10..100,500;10..100,600;10..100,700;10..100,800;10..100,900&display=swap');
 
-.mainDiv {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+:root {
+    --background-color-light: #fff; 
+    --text-color-light: black; 
+    --background-color-dark: transparent; 
+    --text-color-dark: #fff;
+    --input_background-color-light: gray;
+    --button-background-light: #8C1657;
+    --button-color-light: #f27405b1;
+  }
+  
+  .dark-mode {
+    --background-color-light: transparent;
+    --text-color-light: #fff;
+    --background-color-dark: transparent; 
+    --text-color-dark: #fff;
+  }
+
+  #toggleColorBtn {
+    margin: auto;
+    margin-top: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.448);
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    font-size: 22px;
+    font-weight: 600;
+    width: 15%;
 }
+
+  
+  
+  .mainDiv {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color-light); 
+    color: var(--text-color-light); 
+  }
 
 .searchContainer {
     width: 100%;
@@ -13,6 +45,7 @@
     flex-direction: row; 
     align-items: center; 
     padding: 0px 30px;
+   
 }
 
 .searchBar {
@@ -25,6 +58,7 @@
     border-radius: 60px;
     padding: 10px 20px;
     height: 50px;
+    background-color: var(--input_background-color-light);
 }
 
 .searchBar input {
@@ -84,10 +118,60 @@
     font-size: 36px; 
     line-height: 1.5;
     text-align: center; 
+    color: var(--text-color-light);
+}
+
+#index_storyContainer {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#index_storyLink {
+    color: var(--text-color-light);
+    text-decoration: none;
+}
+
+
+#storyLink:hover {
+    text-decoration: none;
+}
+
+#index_storyContainer #index_story_title {
+    font-family: 'Anton', sans-serif;
+    color: var(--text-color-light);
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    overflow-wrap: break-word; 
+}
+
+#index_storyContainer h1:hover {
+    font-style: italic;
+}
+
+#index_storyContainer {
+    backdrop-filter: blur(20px);
+}
+
+#index_storyContainer p {
+    font-size: 20px;
+    color: var(--text-color-light);
+    font-weight: 500;
+    overflow-wrap: break-word;
 }
 
 #index_story_description {
     border-bottom: 1px solid black;
+    color: var(--text-color-light);
+    padding-bottom: 10px;
+}
+
+.index_story_title{
+    
 }
 
 
