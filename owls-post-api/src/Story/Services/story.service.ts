@@ -18,8 +18,13 @@ export class StoryService {
         private readonly userService: UserService,
     ){}
 
-    // Register a new story
-    // TODO: Add validation to register story
+    /**
+     *  Function to register a new story to a logged in user
+     * It will only register the story if the token is validated
+     * @param storyDto 
+     * @param token 
+     * @returns 
+     */
     async registerStory(storyDto: StoryDTO, token: string): Promise<Story> {
         try {
             const user = await this.authService.verifyToken(token);
@@ -35,7 +40,10 @@ export class StoryService {
         }
     }
 
-    // Get all stories
+    /**
+     * Gets all the stories for the Index page
+     * @returns All Stories
+     */
     async getAllStories(): Promise<Story[]> {
         try {
             return this.storyRepository.query('SELECT * FROM stories ORDER BY RANDOM()');
@@ -44,7 +52,11 @@ export class StoryService {
         }
     }
 
-    // Get all stories of a user by user ID
+    /**
+     * Gets all the stories from a user
+     * @param userId 
+     * @returns ALL stories from a user
+     */
     async getUserStories(userId: number): Promise<Story[]> {
         const entityManager = this.storyRepository.manager;
         const query = `
@@ -63,7 +75,12 @@ export class StoryService {
         }
     }
 
-    // Get a story by user ID and story ID
+    /**
+     * Gets a determined story by its id and user id
+     * @param userId 
+     * @param id 
+     * @returns A story
+     */
     async getStoryById(userId: number, id: number): Promise<Story> {
         const entityManager = this.storyRepository.manager;
         const query = `SELECT *
@@ -80,7 +97,11 @@ export class StoryService {
         }
     }
 
-    // Get a story by story ID only
+    /**
+     * Gets a determined story by its
+     * @param id 
+     * @returns Story
+     */
     async getStoryOnlyByStoryId(id: number): Promise<Story> {
         const entityManager = this.storyRepository.manager;
         const query = `SELECT *
@@ -97,18 +118,32 @@ export class StoryService {
         }
     }
 
-    // Delete a story by user ID and story ID
-    // TODO: Add error and exception treatment and authentication to delete story
-    async deleteStory(userId: number, id: number): Promise<void> {
-        const entityManager = this.storyRepository.manager;
-        const query = `DELETE
-        FROM stories
-        WHERE userId = $1 AND stories.id = $2`;
+   /**
+    * Delete a story after passing user validation
+    * @param userId 
+    * @param id 
+    * @param token 
+    */
+    async deleteStory(userId: number, id: number, token: string): Promise<void> {
         try {
-            await entityManager.query(query, [userId, id]);
+            const user = await this.authService.verifyToken(token)
+            if(!user) {
+                throw new UnauthorizedException('Invalid Token or not authenticated user')
+            }
+            try {
+                const entityManager = this.storyRepository.manager;
+                const query = `DELETE
+                FROM stories
+                WHERE userId = $1 AND stories.id = $2`;
+                await entityManager.query(query, [userId, id]);
+            } catch (error) {
+                throw new Error("Failed to delete the story: " + error.message);
+            }
+
         } catch (error) {
-            throw new Error("Failed to delete the story: " + error.message);
+            throw new Error("Error in proceedment of deleting story: " + error.message);
         }
+          
     }
 
     // Get stories by title

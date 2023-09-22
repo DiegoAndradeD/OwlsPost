@@ -65,6 +65,11 @@ export class UserController {
      */
     @Post('userid/:userid/changeDescriptionTo')
     async changeDescription(@Body() body: {newDescription: string, userid: string}): Promise<void> {
-        return this.userService.changeDescription(body.newDescription, body.userid);
+        try {
+            return this.userService.changeDescription(body.newDescription, body.userid);
+        } catch (error) {
+            throw new HttpException('Error changing user description', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 }

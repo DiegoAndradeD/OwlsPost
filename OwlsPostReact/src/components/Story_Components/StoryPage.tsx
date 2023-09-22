@@ -124,14 +124,21 @@ const StoryPage: React.FC = () => {
   const handleStoryDelete = async () => {
     if (confirm('Are you sure you want to delete this story?')) {
       try {
-        await axios.delete(
+        const response = await axios.delete(
           `http://localhost:3000/story/user/${userid}/delete_story/${id}`,
           {
             headers: {
               'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken.access_token}`,
             },
           }
         );
+        if (response.status === 204) { 
+          navigate('/user_stories');
+          window.location.reload();
+        } else {
+          console.log('Failed to delete the story');
+        }
         navigate('/user_stories');
       } catch (error) {
         console.log(error);
