@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Chapter_Styles/ChapterForm.css';
 import { useTheme } from '../ThemeContext';
+import ReactQuill from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css';
 
 const AddChapterPage: React.FC = () => {
   const { darkMode } = useTheme();
@@ -14,20 +16,13 @@ const AddChapterPage: React.FC = () => {
     title: '',
     content: '',
     storyid: id,
-});
+  });
 
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleChange = (name: string, value: string) => {
     setChapter({
       ...chapter,
       [name]: value,
     });
-    if (e.target instanceof HTMLTextAreaElement) {
-      autoExpandTextarea(e.target);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,11 +46,6 @@ const AddChapterPage: React.FC = () => {
     }
   };
 
-  const autoExpandTextarea = (element: HTMLTextAreaElement) => {
-    element.style.height = 'auto';
-    element.style.height = element.scrollHeight + 'px';
-  };
-
   const renderForm = () => {
     return (
       <form onSubmit={handleSubmit}>
@@ -69,24 +59,20 @@ const AddChapterPage: React.FC = () => {
               placeholder="Title"
               name="title"
               value={chapter.title}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
           </div>
         </div>
         <div className="mb-3 row" id="dataContainer">
           <div className="col-sm-10">
-            <textarea
-              className="form-control"
-              id="description"
-              placeholder="Story Description"
-              rows={8}
-              name="content"
+            <ReactQuill
               value={chapter.content}
-              onChange={handleChange}
-            ></textarea>
+              onChange={(value) => handleChange('content', value)}
+              placeholder="Story Description"
+            />
           </div>
         </div>
-        <button type="submit" className="">
+        <button type="submit" className="ChapterForm_submitBtn">
           Submit
         </button>
       </form>

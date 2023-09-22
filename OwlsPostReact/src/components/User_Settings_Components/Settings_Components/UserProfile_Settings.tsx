@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css"; 
 import "../../../styles/UserSettings_Styles/UserProfile_Settings.css";
 import { Link, useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill"; // Import ReactQuill
+import ReactQuill from "react-quill"; 
 
 interface UserStates {
   profile_user_id: number;

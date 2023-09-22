@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/Chapter_Styles/ChapterPage.css';
 import { useTheme } from '../ThemeContext';
+import axios from 'axios';
 
 interface Chapter {
   id: number;
@@ -80,7 +80,10 @@ const ChapterPage: React.FC = () => {
     <div className={`ChapterPage_mainDiv ${ChapterPageContainer}`}>
       <div className="chapterContainer">
         <h2 id='chapterTitle'>{chapter.title}</h2>
-        <div className="chapter-content">{chapter.content}</div>
+        <div
+          className="chapter-content"
+          dangerouslySetInnerHTML={{ __html: chapter.content }} 
+        />
         <div className="chapter-navigation">
           {hasPrevChapter && (
             <a

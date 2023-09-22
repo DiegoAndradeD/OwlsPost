@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+ 
 }
 
 #storyFormWrapper {
@@ -10,7 +11,6 @@
   width: 100%;
   height: 886px;
   padding: 30px;
-
   box-shadow: 3px 3px rgba(0, 0, 0, 0.481);
   margin: auto;
   overflow: hidden;
@@ -26,22 +26,18 @@
   font-family: 'Anton', sans-serif;
 }
   
-label {
-  color: var(--text-color-light);
-}
+
 
 #storyFormWrapper form {
   margin: auto;
   width: 100%;
+
 }
 
-#storyFormWrapper form label  {
-  font-family: 'Anton', sans-serif;
-  font-size: 30px;
-}
 
 #storyFormWrapper form input,  #storyFormWrapper form textarea{
   border: 1px solid #111215;
+  width: 100%;
   border-bottom: 2px solid var(--border-color-light);
   color: var(--text-color-light);
   background-color: var(--Form-background-color-dark);
@@ -91,7 +87,7 @@ label {
 }
 
 .tagText {
-  color: white;
+  color: var(--text-color-light);
   font-size: 20px;
 }
 
@@ -100,7 +96,7 @@ label {
   width: 20px;
   height: 20px;
   color: red;
-  background-color: white;
+  background-color: var(--background-color-light);
 }
 
 #storyForm_CharsCounter {

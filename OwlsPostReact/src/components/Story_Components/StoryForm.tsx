@@ -28,8 +28,7 @@ const TextInputField: React.FC<{
 }> = ({ id, placeholder, value, onChange }) => {
   return (
     <div className="mb-3 row">
-      <label htmlFor={id} className="col-sm-2 col-form-label">{placeholder}</label>
-      <div className="col-sm-10">
+      <div className="">
         <input
           type="text"
           className="form-control"
@@ -52,8 +51,7 @@ const TextAreaField: React.FC<{
 }> = ({ id, placeholder, value, onChange, remainingChars }) => {
   return (
     <div className="mb-3 row">
-      <label htmlFor={id} className="col-sm-2 col-form-label">{placeholder}</label>
-      <div className="col-sm-10">
+      <div className="">
         <textarea
           className="form-control"
           id={id}
@@ -173,7 +171,6 @@ const StoryForm: React.FC = () => {
               remainingChars={state.remainingChars}
             />
             <div className="mb-3 row">
-              <label htmlFor="tags" className="col-sm-2 col-form-label">Tags</label>
               <div className="col-sm-8">
                 <input
                   type="text"
@@ -195,8 +192,8 @@ const StoryForm: React.FC = () => {
               </div>
             </div>
             <div className="mb-3 row">
-              <div className="col-sm-2"></div>
-              <div className="col-sm-10">
+              <div className=""></div>
+              <div className="">
                 <div className="tags-container">
                   {state.tags.map((tag, index) => (
                     <span key={index} className="tagText">
