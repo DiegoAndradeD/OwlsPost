@@ -1,4 +1,9 @@
-
+.UserFavorites_mainDiv {
+    background-color: var(--user-interface-background-color-light);
+    color: var(--user-interface-text-color-light);
+    height: 886px;
+    padding: 30px 30px;
+}
 
 .UserFavorites_wrapper {
     background: transparent;
@@ -19,7 +24,7 @@
 
 .UserFavorites_h1 {
     text-align: center;
-    color: white;
+    color: var(--user-interface-text-color-light);
     font-family: 'Imbue', serif;
 }
 
@@ -27,14 +32,11 @@
     padding: 10px;
     margin-bottom: 15px;
     margin: auto;
-
 }
 
 .favoriteStoriesContainer a {
     color: #038c3e;
     font-family: 'Anton', sans-serif;
-
-    
 }
 
 .favoriteStory a h1:hover {
@@ -42,6 +44,8 @@
     font-style: italic;
 }
 
-.favoriteStoriesContainer a p {
+.favoriteStoriesContainer p {
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: var(--user-interface-text-color-light);
 }

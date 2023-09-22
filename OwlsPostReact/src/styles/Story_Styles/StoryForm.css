@@ -1,126 +1,109 @@
-:root {
-    --storyForm-background-color-light: #fff; 
-    --storyForm-text-color-light: black; 
-    --storyForm-background-color-dark: #fff; 
-    --storyForm-text-color-dark: #fff;
-    --storyForm-input-background-color-light: gray;
-    --storyForm-button-background-light: rgb(33, 33, 237); 
-    --storyForm-button-color-light: #fff; 
-    --storyForm-button-background-dark: #050506; 
-    --storyForm-button-color-dark: #27EE52; 
-    --storyForm-border-color-light: #fff; 
-  }
-  
-  .dark-mode {
-    --storyForm-background-color-light: #fff;
-    --storyForm-text-color-light: #fff;
-    --storyForm-background-color-dark: #111215; 
-    --storyForm-text-color-dark: #fff;
-    --storyForm-border-color-light: #27EE52;
-  }
-  
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--storyForm-background-color-light);
-    color: var(--storyForm-text-color-light);
-  }
-  
-  .StoryForm_mainDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #storyFormWrapper {
-    background-color: var(--storyForm-background-color-dark);
-    width: 98%;
-    height: 846px;
-    padding: 30px;
-    border-radius: 30px;
-    box-shadow: 3px 3px rgba(0, 0, 0, 0.481);
-    margin: 20px auto;
-    overflow: hidden;
-  }
-  
-  #storyForm-headers-titles {
-    color: var(--storyForm-text-color-light);
-  }
-  
-  label {
-    color: var(--storyForm-text-color-light);
-  }
-  
-  #storyFormWrapper form {
-    margin: auto;
-    width: 100%;
-  }
-  
-  #storyFormWrapper form label  {
-    font-family: 'Anton', sans-serif;
-    font-size: 30px;
-  }
-  
-  #storyFormWrapper form input,  #storyFormWrapper form textarea{
-    border: 1px solid #111215;
-    border-bottom: 4px solid var(--storyForm-border-color-light);
-    color: var(--storyForm-text-color-light);
-    background-color: var(--storyForm-background-color-dark);
-  }
-  
-  #storyFormWrapper form input::placeholder, #storyFormWrapper form textarea::placeholder {
-    color: white;
-    font-family: 'Anton', sans-serif;
-  }
-  
-  #dataContainer {
-    display: flex;
-    align-self: center;
-    justify-content: space-around;
-  }
-  
-  #storyFormWrapper form .storyForm_submit_btn  {
-    font-family: 'Anton', sans-serif;
-    font-size: 20px;
-    margin-top: 30px;
-    width: 100%;
-    height: 45px;
-    border-radius: 15px;
-    color: var(--storyForm-button-color-light);
-    background-color: var(--storyForm-button-background-light);
-  }
-  
-  #storyFormWrapper form .storyForm_submit_btn.dark-mode {
-    background-color: var(--storyForm-button-background-dark);
-    color: var(--storyForm-button-color-dark);
-  }
-  
-  p {
-    color: white;
-  }
-  
-  .tags-container {
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: 5px;
-    align-items: center; 
-    flex-direction: row;
-  }
-  
-  .tagText {
-    color: white;
-    font-size: 20px;
-  }
-  
-  .removeTagBtn {
-    font-size: 15px;
-    width: 20px;
-    height: 20px;
-    color: red;
-    background-color: white;
-  }
 
-  #storyForm_CharsCounter {
-    color: var(--storyForm-text-color-light);
-  }
+.StoryForm_mainDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#storyFormWrapper {
+  background-color: var(--Form-background-color-dark);
+  width: 100%;
+  height: 886px;
+  padding: 30px;
+
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.481);
+  margin: auto;
+  overflow: hidden;
+}
+  
+#storyForm-headers-titles {
+  color: var(--text-color-light);
+}
+
+#storyFormTitles {
+  color: var(--text-color-light);
+  text-align: center;
+  font-family: 'Anton', sans-serif;
+}
+  
+label {
+  color: var(--text-color-light);
+}
+
+#storyFormWrapper form {
+  margin: auto;
+  width: 100%;
+}
+
+#storyFormWrapper form label  {
+  font-family: 'Anton', sans-serif;
+  font-size: 30px;
+}
+
+#storyFormWrapper form input,  #storyFormWrapper form textarea{
+  border: 1px solid #111215;
+  border-bottom: 2px solid var(--border-color-light);
+  color: var(--text-color-light);
+  background-color: var(--Form-background-color-dark);
+}
+
+#storyFormWrapper form input::placeholder, #storyFormWrapper form textarea::placeholder {
+  color: var(--text-color-light);
+  font-family: 'Anton', sans-serif;
+}
+
+#dataContainer {
+  display: flex;
+  align-self: center;
+  justify-content: space-around;
+}
+
+#storyFormWrapper form .storyForm_submit_btn  {
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  margin-top: 60px;
+  width: 25%;
+  height: 45px;
+  border-radius: 15px;
+  color: var(--Form-button-color-light);
+  background-color: var(--Form-button-background-light);
+
+}
+
+.storyForm_submit_btn:hover {
+  padding-left: 10px;
+  font-style: italic;
+  
+}
+
+#storyFormWrapper form .storyForm_submit_btn.dark-mode {
+  background-color: var(--Form-button-background-dark);
+  color: var(--Form-button-color-dark);
+}
+
+
+.tags-container {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 5px;
+  align-items: center; 
+  flex-direction: row;
+}
+
+.tagText {
+  color: white;
+  font-size: 20px;
+}
+
+.removeTagBtn {
+  font-size: 15px;
+  width: 20px;
+  height: 20px;
+  color: red;
+  background-color: white;
+}
+
+#storyForm_CharsCounter {
+  color: var(--text-color-light);
+}
   

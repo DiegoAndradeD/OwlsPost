@@ -1,16 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Imbue:opsz,wght@10..100,100;10..100,200;10..100,300;10..100,400;10..100,500;10..100,600;10..100,700;10..100,800;10..100,900&display=swap');
 
-#signupContainer {
-    margin-top: 50px;
+
+
+.Signup_mainDiv {
+    background-color: var(--background-color-light); 
+    color: var(--text-color-light); 
+    width: 100%;
+    height: 886px;
 }
 
 label {
     color: white;
 }
 
-h2 {
+#SignupFormTitle {
     text-align: center;
-    color: white;
+    color: var(--text-color-light);
     font-family: 'Anton', sans-serif;
     font-size: 46px;
 
@@ -20,10 +25,10 @@ h2 {
     padding: 10px;
     background: transparent;
     border-radius: 25px;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid var(--Form-border2-color-light);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);;
-
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,14 +48,14 @@ form {
     background: transparent;
     border: none;
     outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid var(--Form-border2-color-light);
     border-radius: 40px;
-    color: #fff;
+    color: var(--text-color-light);
     padding: 20px 45px 20px 20px;
 }
 
 .signup_inputField::placeholder {
-    color: #fff;
+    color: var(--text-color-light);
     
 }
 
@@ -66,6 +71,6 @@ form {
 }
 
 .mt-4 {
-    color: white;
-    filter: saturate(270%);
+    color: var(--text-color-light);
+ 
 }

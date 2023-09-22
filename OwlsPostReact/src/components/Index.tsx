@@ -1,8 +1,7 @@
 import axios from "axios";
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+import { Link } from "react-router-dom";
 import searchIcon from '../assets/lupa.png';
 import '../styles/Index.css';
 import { useTheme } from './ThemeContext';
@@ -97,7 +96,6 @@ const StoryContainer: React.FC<{ story: Story;}> = ({ story }) => {
 
 const Index: React.FC = () => {
   
-  const navigate = useNavigate();
 
   const [state, setState] = useState<UserStoriesStates>({
     search: '',
@@ -111,8 +109,6 @@ const Index: React.FC = () => {
   
 
   useEffect(() => {
-    const cookies = new Cookies();
-    const accessToken = cookies.get('accessToken');
 
     const fetchData = async () => {
       try {
@@ -134,15 +130,6 @@ const Index: React.FC = () => {
     fetchData();
   }, []);
 
-  const toggleColors = () => {
-    const root = document.documentElement;
-    root.classList.toggle('dark-mode');
-    setState((prevState) => ({
-      ...prevState,
-      invertedColors: !prevState.invertedColors,
-    }));
-
-  };
 
   const onSearchChange = (value: string) => {
     setState({ ...state, search: value });

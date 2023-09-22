@@ -1,6 +1,13 @@
+.UserProfile_mainDiv {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color-light); 
+    color: var(--text-color-light); 
+}
+
 .profile_wrapper {
     background: transparent;
-    width: 90%;
+    width: 98%;
     margin: 40px auto;
     border-radius: 10px;
     box-shadow: 2px 2px black;
@@ -17,16 +24,17 @@
     margin: 20px;
     border-radius: 15px;
     box-shadow: 1px 1px black;
+    list-style: none;
 }
 
 .profile_h1_text {
-    color: white;
+    color: var(--text-color-light); 
     font-size: 36px;
     font-family: 'Imbue', serif;
 }
 
 .profile_h2_text {
-    color: white;
+    color: var(--text-color-light); 
     font-size: 20px;
     font-weight: normal;
     margin-top: 10px;
@@ -78,4 +86,28 @@
 .profile_follow_btn:hover {
     font-style: italic;
     color: #F29F05;
+}
+
+#UserProfile_userDescription {
+    color: var(--text-color-light); 
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 26px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#UserProfile_storyLink {
+    color: var(--text-color-light);
+    text-decoration: none;
+}
+
+#UserProfile_storyLink:hover {
+    font-style: italic;
+}
+
+#profile_h2_text_description, #profile_h2_text_tags {
+    color: var(--text-color-light);
+    font-size: 22px;
 }

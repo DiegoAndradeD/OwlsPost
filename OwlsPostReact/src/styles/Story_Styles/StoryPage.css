@@ -1,3 +1,11 @@
+
+.StoryPage_mainDiv {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    min-height: 886px;
+    padding: 30px 30px;
+}
+
 #deleteBtn {
     background: #681713;
     color: white;
@@ -49,7 +57,7 @@
 
 .chaptersList li a {
     text-decoration: none;
-    color: white;
+    color: var(--text-color-light);
     font-size: 30px;
 }
 
@@ -71,7 +79,7 @@ a {
 }
 
 #authorUsername {
-    color: white;
+    color: var(--text-color-light);
     text-align: center;
     text-decoration: none;
     padding: 20px 0px;
@@ -84,7 +92,7 @@ a {
 
 #StoryPage_title{
     font-family: 'Anton', sans-serif;
-    color: white;
+    color: var(--text-color-light);
     cursor: pointer;
     overflow-wrap: break-word; 
 }

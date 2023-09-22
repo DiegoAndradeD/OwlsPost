@@ -1,6 +1,14 @@
+.UserSettings_mainDiv {
+  background-color: var(--background-color-light); 
+  color: var(--text-color-light); 
+  min-height: 886px;
+}
+
+
 .UserSettingsMainContainer {
-  background-color: #111215;
+  background-color: var(--Form-background-color-dark);
   width: 100%;
+  min-height: 886px;
 }
 
 
@@ -18,7 +26,7 @@
 
 #navbar_header_title {
   font-family: 'Oswald', sans-serif;
-  color: #fff;
+  color: var(--text-color-light); 
   font-size: 40px;
 
 }

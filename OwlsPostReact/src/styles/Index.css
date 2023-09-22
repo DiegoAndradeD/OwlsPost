@@ -1,21 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Imbue:opsz,wght@10..100,100;10..100,200;10..100,300;10..100,400;10..100,500;10..100,600;10..100,700;10..100,800;10..100,900&display=swap');
 
-:root {
-    --background-color-light: #fff; 
-    --text-color-light: black; 
-    --background-color-dark: transparent; 
-    --text-color-dark: #fff;
-    --input_background-color-light: gray;
-    --button-background-light: #8C1657;
-    --button-color-light: #f27405b1;
-}
-  
-.dark-mode {
-    --background-color-light: transparent;
-    --text-color-light: #fff;
-    --background-color-dark: transparent; 
-    --text-color-dark: #fff;
-}
+
 
 
 #index_mainContainerClass {
@@ -32,6 +17,7 @@
     flex-direction: column;
     background-color: var(--background-color-light); 
     color: var(--text-color-light); 
+    min-height: 886px;
 }
 
 .searchContainer {

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import '../../styles/User_Styles/UserProfile.css';
 import Cookies from "universal-cookie";
+import { useTheme } from '../ThemeContext'; 
 
 //Todo - block user to follow himself
 
@@ -31,6 +32,7 @@ interface UserStoriesStates {
 }
 
 const UserProfile: React.FC = () => {
+  const { darkMode } = useTheme();
 
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
@@ -168,10 +170,10 @@ const UserProfile: React.FC = () => {
     .toLocaleString()
     .replace(',', ' |');
 
-  
+    const UserProfile_mainContainerClass = darkMode ? 'dark-mode' : '';
 
   return (
-    <div>
+    <div className={`UserProfile_mainDiv ${UserProfile_mainContainerClass}`}>
       <div className="">
         <div className="profile_wrapper">
           <div className="profile_usernameContainer mb-4">
@@ -188,18 +190,18 @@ const UserProfile: React.FC = () => {
 
           </div>
           <div className="profile_created_atContainer">
-            <h1 className="profile_h1_text">Description: <p id="userDescription">{user.description}</p></h1>
+            <h1 className="profile_h1_text">Description: <p id="UserProfile_userDescription">{user.description}</p></h1>
           </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>
             <ul>
               {state.stories.map((story) => (
                 <li className="profile_storiesContainer" key={story.id}>
-                  <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
+                  <Link to={`/story/${story.id}/author/${story.userid}`} id='UserProfile_storyLink'>
                     <h2 className="profile_h2_text_title">{story.title}</h2>
                   </Link>
-                  <p>{story.description}</p>
-                  <p >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
+                  <p id="profile_h2_text_description">{story.description}</p>
+                  <p id="profile_h2_text_tags">Tags: {story.tags ? story.tags.join(', ') : ''} </p>
                 </li>
               ))}
             </ul>

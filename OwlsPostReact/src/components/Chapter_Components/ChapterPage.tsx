@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/Chapter_Styles/ChapterPage.css';
+import { useTheme } from '../ThemeContext';
 
 interface Chapter {
   id: number;
@@ -10,6 +11,7 @@ interface Chapter {
 }
 
 const ChapterPage: React.FC = () => {
+  const { darkMode } = useTheme();
   const { chapterId } = useParams<{ chapterId: string }>();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -72,29 +74,33 @@ const ChapterPage: React.FC = () => {
     }
   };
 
+  const ChapterPageContainer = darkMode ? 'dark-mode' : '';
+
   return (
-    <div className="chapterContainer">
-      <h2 id='chapterTitle'>{chapter.title}</h2>
-      <div className="chapter-content">{chapter.content}</div>
-      <div className="chapter-navigation">
-        {hasPrevChapter && (
-          <a
-            href={`/chapter/${prevChapterId}`}
-            className="prevChapterButton"
-            onClick={navigateToPrevChapter}
-          >
-            Previous Chapter
-          </a>
-        )}
-        {hasNextChapter && (
-          <a
-            href={`/chapter/${nextChapterId}`}
-            className="nextChapterButton"
-            onClick={navigateToNextChapter}
-          >
-            Next Chapter
-          </a>
-        )}
+    <div className={`ChapterPage_mainDiv ${ChapterPageContainer}`}>
+      <div className="chapterContainer">
+        <h2 id='chapterTitle'>{chapter.title}</h2>
+        <div className="chapter-content">{chapter.content}</div>
+        <div className="chapter-navigation">
+          {hasPrevChapter && (
+            <a
+              href={`/chapter/${prevChapterId}`}
+              className="prevChapterButton"
+              onClick={navigateToPrevChapter}
+            >
+              Previous Chapter
+            </a>
+          )}
+          {hasNextChapter && (
+            <a
+              href={`/chapter/${nextChapterId}`}
+              className="nextChapterButton"
+              onClick={navigateToNextChapter}
+            >
+              Next Chapter
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );

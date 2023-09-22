@@ -1,26 +1,10 @@
 
-:root {
-    --background-color-light: #fff; 
-    --text-color-light: black; 
-    --background-color-dark: transparent; 
-    --text-color-dark: #fff;
-    --input_background-color-light: gray;
-    --button-background-light: #8C1657;
-    --button-color-light: #f27405b1;
-}
-
-.dark-mode {
-    --background-color-light: transparent;
-    --text-color-light: #fff;
-    --background-color-dark: transparent; 
-    --text-color-dark: #fff;
-}
-
 .UserStories_mainDiv {
     display: flex;
     flex-direction: column;
     background-color: var(--background-color-light); 
     color: var(--text-color-light); 
+    min-height: 886px;
 }
 
 #userStories_mainContainerClass {
@@ -29,6 +13,7 @@
     width: 99%;
     margin: auto;
     margin-top: 50px;
+    
 
 }
 

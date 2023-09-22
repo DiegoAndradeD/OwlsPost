@@ -158,7 +158,7 @@ const StoryForm: React.FC = () => {
     <div className={`StoryForm_mainDiv ${storyFormContainer}`}>
         <div className="col-md-6" id="storyFormWrapper">
           <form onSubmit={handleFormSubmit}>
-            <h2 className="mb-4" id="storyForm-headers-titles">New Story</h2>
+            <h2 className="mb-4" id="storyFormTitles">New Story</h2>
             <TextInputField
               id="title"
               placeholder="Title"

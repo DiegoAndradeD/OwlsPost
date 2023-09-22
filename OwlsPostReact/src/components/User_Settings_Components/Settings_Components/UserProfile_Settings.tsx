@@ -199,10 +199,10 @@ const UserProfile_Settings: React.FC = () => {
                                 {story.stories.map((story) => (
                                     <li className="profile_storiesContainer" key={story.id} >
                                     <Link to={`/story/${story.id}/author/${story.userid}`} id='storyLink'>
-                                        <h2 className="profile_h2_text_title">{story.title}</h2>
+                                        <h2 className="profile_h2_text_UserProfileSettings_title">{story.title}</h2>
                                     </Link>
-                                    <p>{story.description}</p>
-                                    <p >Tags: {story.tags ? story.tags.join(', ') : ''} </p>
+                                    <p className="profile_h2_text_UserProfileSettings_description">{story.description}</p>
+                                    <p className="profile_h2_text_UserProfileSettings_tags">Tags: {story.tags ? story.tags.join(', ') : ''} </p>
                                     </li>
                                 ))}
                                 </ul>

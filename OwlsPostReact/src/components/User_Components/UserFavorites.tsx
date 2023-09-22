@@ -4,21 +4,19 @@ import Cookies from "universal-cookie"
 import '../../styles/User_Styles/FollowedUsers.css'
 import { Link } from "react-router-dom";
 import '../../styles/User_Styles/UserFavorites.css';
+import { useTheme } from '../ThemeContext';
+
 
 
 interface favoriteStories {
     stories: {story_title: string, storyid: number, story_description: string, author_id: number}[]
 }
 
-interface favoriteStory {
-    title: string;
-    id: number;
-    description: string;
-    author_id: number
-}
-
 
 const UserFavorites: React.FC = () => {
+
+    const { darkMode } = useTheme();
+
 
     const [favoriteStories, setFavoriteStories] = useState<favoriteStories> ({
         stories: []
@@ -46,13 +44,16 @@ const UserFavorites: React.FC = () => {
         fetchFollowedUsers()
     },[accessToken.id])
 
+    const UserFavoritesContainer = darkMode ? 'dark-mode' : '';
+
+
     return (
-        <div>
+        <div className={`UserFavorites_mainDiv ${UserFavoritesContainer}`}>
             <div className="container">
                 <div className="UserFavorites_wrapper">
                     <h1 className="UserFavorites_h1">Favorites: </h1>
                     <div className="favoriteStoriesContainer">
-                        {favoriteStories.stories.map((story, index) => (
+                        {favoriteStories.stories.map((story, _index) => (
                         <div className="favoriteStory" key={story.storyid}>
                             <Link to={`/story/${story.storyid}/author/${story.author_id}`}>
                                 <h1> {story.story_title} </h1>

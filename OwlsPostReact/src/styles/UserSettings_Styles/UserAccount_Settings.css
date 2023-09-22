@@ -1,18 +1,18 @@
 .acount_settings_container {
     padding: 20px;
     height: 92vh;
-    background-color: #111215;
+    background-color: var(--Form-background-color-dark);
 }
 
 #update_username_title, #update_email_title, #update_password_title {
-    color: white;
+    color: var(--text-color-light); 
     font-family: 'Oswald', sans-serif;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--text-color-light);
     padding-bottom: 5px;
 }
 
 #update_username_btn, #update_email_btn, #update_password_btn, #update_description_btn {
-    color: white;
+    color: white; 
     font-family: 'Oswald', sans-serif;
     font-size: 22px;
     background-color: #2d2e32;

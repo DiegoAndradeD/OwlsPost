@@ -1,8 +1,14 @@
+.FollowedUsers_mainDiv {
+    background-color: var(--user-interface-background-color-light);
+    color: var(--user-interface-text-color-light);
+    height: 886px;
+    padding: 30px 30px;
+}
+
 .FollowedUser_wrapper {
     background: transparent;
     width: 100%;
     margin: auto;
-    margin-top: 30px;
     text-align: center;
     border: 1px solid black;
     border-radius: 10px;
@@ -13,7 +19,7 @@
 }
 
 .FollowedUser_h1 {
-    color: white;
+    color: var(--user-interface-text-color-light);
     font-family: 'Imbue', serif;
 }
 
@@ -22,7 +28,6 @@
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
- 
 }
 
 .user-icon  {
@@ -51,4 +56,3 @@
     background-color: #2D3540;
     font-style: italic;
 }
-  

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Chapter_Styles/ChapterForm.css';
-
+import { useTheme } from '../ThemeContext';
 
 const AddChapterPage: React.FC = () => {
+  const { darkMode } = useTheme();
+
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -57,7 +59,7 @@ const AddChapterPage: React.FC = () => {
   const renderForm = () => {
     return (
       <form onSubmit={handleSubmit}>
-        <h2 className="mb-4">New Chapter</h2>
+        <h2 className="mb-4 text-center">New Chapter</h2>
         <div className="mb-3" id="dataContainer">
           <div className="col-sm-10">
             <input
@@ -91,10 +93,14 @@ const AddChapterPage: React.FC = () => {
     );
   };
 
+  const ChapterFormContainer = darkMode ? 'dark-mode' : '';
+
   return (
-    <div className="" id="chapterFormContainer">
-      <div className="col-md-6" id="chapterFormWrapper">
-        {renderForm()}
+    <div className={`ChapterForm_mainDiv ${ChapterFormContainer}`}>
+      <div className="" id="chapterFormContainer">
+        <div className="col-md-6" id="chapterFormWrapper">
+          {renderForm()}
+        </div>
       </div>
     </div>
   );

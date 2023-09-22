@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
-
+import { useTheme } from '../ThemeContext';
 import '../../styles//Authentication_styles/Login.css';
 
 interface LoginFormState {
@@ -15,6 +15,8 @@ interface LoginFormState {
 const sanitizeUsername = (username: string) => DOMPurify.sanitize(username);
 
 const LoginForm: React.FC = () => {
+  const { darkMode } = useTheme();
+
   const [state, setState] = useState<LoginFormState>({
     username: '',
     password: '',
@@ -56,39 +58,42 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const login_MainContainerClass = darkMode ? 'dark-mode' : '';
+
+
   return (
-    <div className="container" id="loginContainer">
-      <div className="row justify-content-center">
-        <div className="col-md-6" id="wrapper">
-          <form onSubmit={handleFormSubmit}>
-            <h2 className="mb-5">Login</h2>
-            <div className="mb-4">
-              <input
-              className='login_inputField'
-                type="text"
-                id="username"
-                placeholder="User Name"
-                value={state.username}
-                onChange={(e) => setState({ ...state, username: e.target.value })}
-              />
-            </div>
-
-            <div className="mb-4">
-              <input
-              className='login_inputField'
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={state.password}
-                onChange={(e) => setState({ ...state, password: e.target.value })}
-              />
-            </div>
-
-            <button type="submit" className="btn btn-primary" id="submitBtn">
-              Login
-            </button>
-          </form>
-          {state.message && <p className="alert alert-info">{state.message}</p>}
+    <div className={`Login_mainDiv ${login_MainContainerClass}`}>
+      <div className='container' id="loginContainer">
+        <div className="row justify-content-center">
+          <div className="col-md-6" id="wrapper">
+            <form onSubmit={handleFormSubmit}>
+              <h2 id='LoginFormTitle' className="mb-5">Login</h2>
+              <div className="mb-4">
+                <input
+                className='login_inputField'
+                  type="text"
+                  id="username"
+                  placeholder="User Name"
+                  value={state.username}
+                  onChange={(e) => setState({ ...state, username: e.target.value })}
+                />
+              </div>
+              <div className="mb-4">
+                <input
+                className='login_inputField'
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  value={state.password}
+                  onChange={(e) => setState({ ...state, password: e.target.value })}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" id="submitBtn">
+                Login
+              </button>
+            </form>
+            {state.message && <p className="alert alert-info">{state.message}</p>}
+          </div>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import PasswordChecklist from 'react-password-checklist';
 import '../../styles//Authentication_styles/Signup.css';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../ThemeContext';
 
 interface SignupFormState {
   username: string;
@@ -37,6 +38,8 @@ const InputField: React.FC<{
 };
 
 const SignupForm: React.FC = () => {
+  const { darkMode } = useTheme();
+
   const [state, setState] = useState<SignupFormState>({
     username: '',
     email: '',
@@ -87,62 +90,66 @@ const SignupForm: React.FC = () => {
     );
   };
 
+  const signup_MainContainerClass = darkMode ? 'dark-mode' : '';
+
   return (
-    <div className="container" id="signupContainer">
-      <div className="row justify-content-center">
-        <div className="col-md-6" id="wrapperSignup">
-          <form onSubmit={handleFormSubmit}>
-            <h2 className="mb-5">Signup</h2>
-            <InputField
-              id="username"
-              placeholder="User Name"
-              value={state.username}
-              onChange={(value) => setState({ ...state, username: value })}
-            />
-            <InputField
-              id="email"
-              placeholder="Email"
-              value={state.email}
-              onChange={(value) => setState({ ...state, email: value })}
-              type="email"
-              required
-            />
-            <InputField
-              id="password"
-              placeholder="Password"
-              value={state.password}
-              onChange={(value) => setState({ ...state, password: value })}
-              type="password"
-              required
-            />
-            <InputField
-              id="passwordAgain"
-              placeholder="Password Again"
-              value={state.passwordAgain}
-              onChange={(value) => setState({ ...state, passwordAgain: value })}
-              type="password"
-              required
-            />
-            <PasswordChecklist
-              className="mt-4"
-              rules={['minLength', 'specialChar', 'number', 'capital', 'match']}
-              minLength={5}
-              value={state.password}
-              valueAgain={state.passwordAgain}
-              onChange={(isValid: boolean) => {
-                if (isValid) {
-                  setState({ ...state, message: 'Strong Password' });
-                } else {
-                  setState({ ...state, message: 'Weak Password' });
-                }
-              }}
-            />
-            {state.message && <p className="alert alert-info mt-5">{state.message}</p>}
-            <button type="submit" className="btn btn-primary" id="submitBtn">
-              Signup
-            </button>
-          </form>
-          
+    <div className={`Signup_mainDiv ${signup_MainContainerClass}`}>
+      <div className="container" id="signupContainer">
+        <div className="row justify-content-center">
+          <div className="col-md-6" id="wrapperSignup">
+            <form onSubmit={handleFormSubmit}>
+              <h2 id='SignupFormTitle' className="mb-5">Signup</h2>
+              <InputField
+                id="username"
+                placeholder="User Name"
+                value={state.username}
+                onChange={(value) => setState({ ...state, username: value })}
+              />
+              <InputField
+                id="email"
+                placeholder="Email"
+                value={state.email}
+                onChange={(value) => setState({ ...state, email: value })}
+                type="email"
+                required
+              />
+              <InputField
+                id="password"
+                placeholder="Password"
+                value={state.password}
+                onChange={(value) => setState({ ...state, password: value })}
+                type="password"
+                required
+              />
+              <InputField
+                id="passwordAgain"
+                placeholder="Password Again"
+                value={state.passwordAgain}
+                onChange={(value) => setState({ ...state, passwordAgain: value })}
+                type="password"
+                required
+              />
+              <PasswordChecklist
+                className="mt-4"
+                rules={['minLength', 'specialChar', 'number', 'capital', 'match']}
+                minLength={5}
+                value={state.password}
+                valueAgain={state.passwordAgain}
+                onChange={(isValid: boolean) => {
+                  if (isValid) {
+                    setState({ ...state, message: 'Strong Password' });
+                  } else {
+                    setState({ ...state, message: 'Weak Password' });
+                  }
+                }}
+              />
+              {state.message && <p className="alert alert-info mt-5">{state.message}</p>}
+              <button type="submit" className="btn btn-primary" id="submitBtn">
+                Signup
+              </button>
+            </form>
+      
+          </div>
         </div>
       </div>
     </div>

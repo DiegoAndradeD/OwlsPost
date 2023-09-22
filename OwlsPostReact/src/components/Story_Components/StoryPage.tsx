@@ -6,6 +6,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import '../../styles/Story_Styles/StoryPage.css';
 import '../../styles/User_Styles/UserStories.css';
+import { useTheme } from '../ThemeContext';
+
 
 interface StoryStates {
   userId: number;
@@ -26,6 +28,8 @@ interface Chapter {
 }
 
 const StoryPage: React.FC = () => {
+  const { darkMode } = useTheme();
+
   const navigate = useNavigate();
   const { id, userid } = useParams<{ id: string; userid: string }>();
   const [story, setStory] = useState<StoryStates>({
@@ -135,10 +139,6 @@ const StoryPage: React.FC = () => {
     }
   };
 
-  const toggleColors = () => {
-    setStory({ ...story, invertedColors: !story.invertedColors });
-  };
-
   const capitalizeFirstLetter = (str: string) => {
     return str
       .split(' ')
@@ -225,11 +225,11 @@ const StoryPage: React.FC = () => {
     }
   };
 
+  const StoryPageContainer = darkMode ? 'dark-mode' : '';
+
+
   return (
-    <div>
-      <button onClick={toggleColors} id='toggleColorBtn'>
-        <i className='fa-solid fa-eye-dropper'></i>Change Colors
-      </button>
+    <div className={`StoryPage_mainDiv ${StoryPageContainer}`}>
       <div className={mainContainerClass} id='mainStoriesContainer'>
         <div key={story.id} className='container' id='storyContainer'>
         <div className='storyPage_title_favorite_container'>

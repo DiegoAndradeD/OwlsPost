@@ -1,3 +1,8 @@
+.ChapterPage_mainDiv {
+    color: var(--text-color-light); 
+    width: 100%;
+}
+
 .chapter-content {
     white-space: pre-wrap;
     margin-bottom: 20px;
@@ -6,8 +11,8 @@
 .chapterContainer {
     width: 90%;
     margin: auto;
-    background-color: white;
-    color: black;
+    background-color: var(--background-color-light); 
+    color: var(--text-color-light); 
     font-size: 30px;
     padding: 20px;
     font-weight: 500;
@@ -38,5 +43,5 @@
 }
 
 #chapterTitle {
-    color: black;
+    color: var(--text-color-light); 
 }

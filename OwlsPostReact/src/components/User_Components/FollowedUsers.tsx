@@ -1,19 +1,17 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
-import Cookies from "universal-cookie"
-import '../../styles//User_Styles/FollowedUsers.css'
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Cookies from "universal-cookie";
+import '../../styles//User_Styles/FollowedUsers.css';
+import { useTheme } from '../ThemeContext';
 
 interface FollowedUsers {
     usernames: {following_username: string, userid: number}[]
 }
 
-interface FollowedUser {
-    username: string;
-}
-
 const FollowedUsers: React.FC = () => {
+
+    const { darkMode } = useTheme();
 
     const [followedUsers, setFollowedUsers] = useState<FollowedUsers> ({
         usernames: []
@@ -43,9 +41,12 @@ const FollowedUsers: React.FC = () => {
         fetchFollowedUsers()
     },[accessToken.id])
 
+
+    const FollowedUsersContainer = darkMode ? 'dark-mode' : '';
+
     return (
-        <div>
-            <div className="container">
+        <div className={`FollowedUsers_mainDiv ${FollowedUsersContainer}`}>
+            <div className="">
                 <div className="FollowedUser_wrapper">
                     <h1 className="FollowedUser_h1">Following: </h1>
                     <div className="followedUsersContainer">

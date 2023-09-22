@@ -1,17 +1,15 @@
 .content {
     padding: 20px;
-    background-color: #111215;
+    background-color: var(--Form-background-color-dark);
     width: 100%;
 }
-
-
 
 .profile_settings_description_container {
     padding: 20px 0px;
 }
 
 .profile_settings_description_container h1{
-    color: white;
+    color: var(--text-color-light); 
     font-size: 26px;
     font-weight: 300;
     
@@ -29,9 +27,9 @@
 }
 
 .userSettings_profile_h1_text {
-    color: white;
+    color: var(--text-color-light); 
     font-family: 'Oswald', sans-serif;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--border-color-light);
     padding-bottom: 5px;
     margin-bottom: 25px;
     font-weight: 500;
@@ -39,7 +37,7 @@
 }
 
 #userDescription {
-    color: white;
+    color: var(--text-color-light); 
     padding-bottom: 5px;
     margin-bottom: 25px;
     margin-top: 20px;
@@ -49,17 +47,44 @@
 }
 
 #ProfileSettings_description {
-    background-color: #111215;
-    border: 1px solid #111215;
-    border-bottom: 4px solid #27EE52;
-    color: white;
+    background-color: var(--Form-background-color-dark);
+    border: 1px solid var(--Form-background-color-dark);
+    border-bottom: 2px solid var(--border-color-light);
+    color: var(--text-color-light); 
     width: 140%;
     margin-bottom: 10px;
 }
 
 #ProfileSettings_description::placeholder {
-    color: white;
+    color: var(--text-color-light); 
     font-family: 'Anton', sans-serif;
+}
+
+.profile_h2_text_UserProfileSettings_title {
+    font-family: 'Anton', sans-serif;
+    color: var(--text-color-light);
+    margin-top: 5px;
+    cursor: pointer;
+    overflow-wrap: break-word; 
+    text-align: center;
+}
+
+.profile_h2_text_UserProfileSettings_title:hover {
+    padding-left: 10px;
+}
+
+.profile_h2_text_UserProfileSettings_description {
+    font-size: 20px;
+    color: var(--text-color-light);
+    font-weight: 500;
+    overflow-wrap: break-word;
+}
+
+.profile_h2_text_UserProfileSettings_tags {
+    font-size: 20px;
+    color: var(--text-color-light);
+    font-weight: 500;
+    overflow-wrap: break-word;
 }
 
   
