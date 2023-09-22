@@ -189,9 +189,16 @@ const UserProfile: React.FC = () => {
             </button>
 
           </div>
-          <div className="profile_created_atContainer">
-            <h1 className="profile_h1_text">Description: <p id="UserProfile_userDescription">{user.description}</p></h1>
-          </div>
+          <div className="userSettings_profile_settings_description_container">
+                <h1 className="userSettings_profile_h1_text">
+                  Description:{" "}
+                  <div
+                    id="userDescription"
+                    className="user-description-rich-text"
+                    dangerouslySetInnerHTML={{ __html: user.description }}
+                  />
+                </h1>
+              </div>
           <h2 className="profile_h2_text">User Stories: </h2>
           <div>
             <ul>
