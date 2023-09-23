@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Follower } from "../Entities/follower.entity";
@@ -8,40 +8,63 @@ export class FollowerService {
 
     constructor(@InjectRepository(Follower) private readonly followerRepository: Repository<Follower>) {}
 
-    // Get all followers of a user by user ID
+    /**
+     * Get all followers of a user by its ID
+     * @param userid 
+     * @returns an array of user followers
+     */ 
     async getAllUserFollowers(userid: number): Promise<Follower[]> {
-        const entityManager = this.followerRepository.manager;
-        const query = `
-            SELECT u.username AS follower_username
-            FROM followers f
-            INNER JOIN users u ON f.followerid = u.id
-            WHERE f.followingid = $1;`;
-        const result = await entityManager.query(query, [userid]);
-        if (Array.isArray(result) && result.length > 0) {
-            return result;
+        try {
+            const entityManager = this.followerRepository.manager;
+            const query = `
+                SELECT u.username AS follower_username
+                FROM followers f
+                INNER JOIN users u ON f.followerid = u.id
+                WHERE f.followingid = $1;`;
+
+            const result = await entityManager.query(query, [userid]);
+
+            if (Array.isArray(result) && result.length > 0) {
+                return result;
+            }
+            return [];
+        } catch (error) {
+            throw new InternalServerErrorException('Error getting user followers');
         }
-        return [];
+        
     }
 
-    // Get all users that a user is following by user ID
+    /**
+     * Get all users that a user is following by user ID
+     * @param userid 
+     * @returns an array of followed users
+     */
     async getUserAllFollowing(userid: number): Promise<Follower[]> {
-        const entityManager = this.followerRepository.manager;
-        const query = `
-        SELECT u.username AS following_username, u.id as userid
-        FROM followers f
-        INNER JOIN users u ON f.followingid = u.id
-        WHERE f.followerid = $1`;
-        const result = await entityManager.query(query, [userid]);
-        if (Array.isArray(result) && result.length > 0) {
-            return result;
+        try {
+            const entityManager = this.followerRepository.manager;
+            const query = `
+            SELECT u.username AS following_username, u.id as userid
+            FROM followers f
+            INNER JOIN users u ON f.followingid = u.id
+            WHERE f.followerid = $1`;
+            const result = await entityManager.query(query, [userid]);
+            if (Array.isArray(result) && result.length > 0) {
+                return result;
+            }
+            return [];
+        } catch (error) {
+            throw new InternalServerErrorException('Error getting followed users');
         }
-        return [];
+        
     }
 
-    // Follow a user by user ID and the user to follow's ID
+    /**
+     * Function to follow a user by user ID and the user to follow's ID
+     * @param userid 
+     * @param to_follow_userid 
+     */
     async followUser(userid: number, to_follow_userid: number): Promise<void> {
         const isUserFollowing = await this.checkUserFollowing( userid, to_follow_userid);
-        console.log(isUserFollowing);
         if (isUserFollowing === 0) {
             const entityManager = this.followerRepository.manager;
             const query = `
@@ -66,20 +89,37 @@ export class FollowerService {
         }
     }
 
-    // Check if a user is following another user by user ID and the user to follow's ID
+    /**
+     * // Check if a user is following another user by user ID and the user to follow's ID
+     * @param userid 
+     * @param to_follow_userid 
+     * @returns 1 if the user is following, 0 if not
+     */
     async checkUserFollowing(userid: number, to_follow_userid: number): Promise<number> {
-        const entityManager = this.followerRepository.manager;
-        const query = `
-            SELECT COUNT(*)
-            FROM followers
-            WHERE followerid = $1
-            AND followingid = $2
-        `;
-        const result = await entityManager.query(query, [userid, to_follow_userid]);
-        return parseInt(result[0].count, 10);
+        if(!(userid === to_follow_userid)) {
+            try {
+                const entityManager = this.followerRepository.manager;
+                const query = `
+                    SELECT COUNT(*)
+                    FROM followers
+                    WHERE followerid = $1
+                    AND followingid = $2
+                `;
+                const result = await entityManager.query(query, [userid, to_follow_userid]);
+                return parseInt(result[0].count, 10);
+            } catch (error) {
+                throw new InternalServerErrorException('Error checking user to follow')
+            }
+        }
+        throw new UnauthorizedException('User cannot follow self');
+       
     }
 
-    // Update user's followers count
+    /**
+     * Update user's followers count
+     * @param to_follow_userid 
+     * @param userid 
+     */
     async updateUserFollowers(to_follow_userid: number, userid: number): Promise<void> {
         try {
             const entityManager = this.followerRepository.manager;
@@ -114,7 +154,11 @@ export class FollowerService {
         }
     }
 
-    // Unfollow a user by user ID and the user to unfollow's ID
+    /**
+     * Unfollow a user by user ID and the user to unfollow's ID
+     * @param userid 
+     * @param to_follow_userid 
+     */
     async unfollowUser(userid: number, to_follow_userid: number): Promise<void> {
         const entityManager = this.followerRepository.manager;
         const query = `

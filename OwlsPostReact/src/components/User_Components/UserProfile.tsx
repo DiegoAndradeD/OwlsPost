@@ -56,7 +56,6 @@ const UserProfile: React.FC = () => {
   const cookies = new Cookies();
   const accessToken = cookies.get('accessToken');
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -184,10 +183,11 @@ const UserProfile: React.FC = () => {
           </div>
           <div className="profile_followersCount_container">
             <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
-            <button className="profile_follow_btn" onClick={state.isFollowed === 0 ? handleFollowSubmit : handleUnfollowSubmit}>
+            {state.profile_user_id != accessToken.id && (
+              <button className="profile_follow_btn" onClick={state.isFollowed === 0 ? handleFollowSubmit : handleUnfollowSubmit}>
               {state.isFollowed === 0 ? 'Follow' : 'Unfollow'}
             </button>
-
+            )}
           </div>
           <div className="userSettings_profile_settings_description_container">
                 <h1 className="userSettings_profile_h1_text">
