@@ -234,6 +234,37 @@ const StoryPage: React.FC = () => {
 
   const StoryPageContainer = darkMode ? 'dark-mode' : '';
 
+  const renderFavoriteButton = () => {
+    const cookies = new Cookies();
+    const accessToken = cookies.get('accessToken');
+    if(accessToken.id != story.authorId) {
+      if (isStoryFavorited) {
+        return (
+          <button
+            onClick={handleRemoveFavoriteSubmit}
+            className='storyPage_removeFavorite_button'
+          >
+            <FontAwesomeIcon id='removeFavoriteBtn' icon={faHeartCircleMinus} />
+          </button>
+        );
+      } else {
+        return (
+          <button
+            onClick={handleAddFavoriteSubmit}
+            className='storyPage_addFavorite_button'
+            disabled={isStoryFavorited}
+          >
+            {isStoryFavorited ? (
+              <FontAwesomeIcon icon={faHeartCircleMinus} />
+            ) : (
+              <FontAwesomeIcon icon={faHeartCirclePlus} />
+            )}
+          </button>
+        );
+      }
+    }
+  };
+
 
   return (
     <div className={`StoryPage_mainDiv ${StoryPageContainer}`}>
@@ -245,22 +276,7 @@ const StoryPage: React.FC = () => {
               {capitalizeFirstLetter(story.title)}
             </h1>
           </Link>
-          {isStoryFavorited ? (
-            <button
-              onClick={handleRemoveFavoriteSubmit}
-              className='storyPage_removeFavorite_button'
-            >
-              <FontAwesomeIcon id='removeFavoriteBtn' icon={faHeartCircleMinus} />
-            </button>
-          ) : (
-            <button
-              onClick={handleAddFavoriteSubmit}
-              className='storyPage_addFavorite_button'
-              disabled={isStoryFavorited}
-            >
-              {isStoryFavorited ? <FontAwesomeIcon icon={faHeartCircleMinus} />: <FontAwesomeIcon icon={faHeartCirclePlus} />}
-            </button>
-          )}
+          {renderFavoriteButton()}
         </div>
           <Link to={`/getUserProfile/${story.authorId}`}>
             <h3 className="h1Class" id='authorUsername'>

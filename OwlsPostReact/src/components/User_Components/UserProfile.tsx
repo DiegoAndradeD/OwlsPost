@@ -67,7 +67,6 @@ const UserProfile: React.FC = () => {
             },
           }
         );
-        console.log(response.data)
         setUser({
           profile_user_id: response.data.id,
           username: response.data.username,
@@ -119,13 +118,8 @@ const UserProfile: React.FC = () => {
   }, [userid, user.profile_user_id]);
   
   
-
-      
-
   const handleFollowSubmit = async () => {
     if (accessToken) {
-      console.log(accessToken.id) 
-      console.log(user.profile_user_id) 
       try {
         const response = await axios.post(
           `http://localhost:3000/follower/userid/${accessToken.id}/to_follow_userid/${user.profile_user_id}`,
@@ -145,8 +139,6 @@ const UserProfile: React.FC = () => {
 
   const handleUnfollowSubmit = async () => {
     if (accessToken) {
-      console.log(accessToken.id) 
-      console.log(user.profile_user_id) 
       try {
         const response = await axios.delete(
           `http://localhost:3000/follower/userid/${accessToken.id}/to_unfollow_userid/${user.profile_user_id}`,
@@ -183,7 +175,7 @@ const UserProfile: React.FC = () => {
           </div>
           <div className="profile_followersCount_container">
             <h1 className="profile_h1_text">Followers: {user.followers_count}</h1>
-            {state.profile_user_id != accessToken.id && (
+            {state.profile_user_id !== undefined && accessToken?.id !== undefined && state.profile_user_id !== accessToken.id && (
               <button className="profile_follow_btn" onClick={state.isFollowed === 0 ? handleFollowSubmit : handleUnfollowSubmit}>
               {state.isFollowed === 0 ? 'Follow' : 'Unfollow'}
             </button>
