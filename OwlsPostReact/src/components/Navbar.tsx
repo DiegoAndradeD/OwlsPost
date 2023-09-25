@@ -1,11 +1,11 @@
+import { faBookOpen, faFilePen, faGear, faHeart, faMoon, faRightFromBracket, faSun, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import owlIcon from '../assets/owlIcon.png';
 import '../styles/Navbar.css';
-import Cookies from 'universal-cookie';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookOpen, faFilePen, faGear, faHeart, faMoon, faRightFromBracket, faStar, faSun, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from './ThemeContext';
 
 
