@@ -255,9 +255,7 @@ const StoryPage: React.FC = () => {
   const StoryPageContainer = darkMode ? 'dark-mode' : '';
 
   const renderFavoriteButton = () => {
-    const cookies = new Cookies();
-    const accessToken = cookies.get('accessToken');
-    if(accessToken.id != story.authorId) {
+    if(accessToken && accessToken.id != story.authorId) {
       if (isStoryFavorited) {
         return (
           <button

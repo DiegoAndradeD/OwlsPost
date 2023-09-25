@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChapterService } from "../Services/chapter.service";
 import { Chapter } from "../Entities/chapter.entity";
 import { ChapterDto } from "../Dto/chapter.dto";
 import { AuthService } from 'src/Auth/Services/auth.service';
+import { blob } from 'stream/consumers';
 
 @Controller('chapter')
 export class ChapterController {
@@ -55,6 +56,24 @@ export class ChapterController {
             const token = this.authService.getTokenAuthHeader(authHeader)
             const deleteChapter =  this.chapterService.deleteChapter(storyid, id, await token);
             res.status(204).json(deleteChapter); 
+        } catch (error) {
+            if (error instanceof UnauthorizedException) {
+                res.status(HttpStatus.UNAUTHORIZED).json({error: error.message});
+            } else {
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: error.message});
+            }
+        }
+
+    }
+
+    @Put('/update/:storyid/update_chapter/:id')
+    async updateChapterById(@Param('storyid') storyid: number, @Param('id') id: number, @Req() req: Request,
+    @Res() res: Response, @Body() body: {title: string, content: string}) {
+        try {
+            const authHeader = req.headers.authorization;
+            const token = this.authService.getTokenAuthHeader(authHeader)
+            const updateChapter =  this.chapterService.updateChapter(body.title, body.content, storyid, id, await token);
+            res.status(200).json(updateChapter); 
         } catch (error) {
             if (error instanceof UnauthorizedException) {
                 res.status(HttpStatus.UNAUTHORIZED).json({error: error.message});

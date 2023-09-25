@@ -19,10 +19,11 @@ const ChapterPage: React.FC = () => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [storyId, setStoryId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedChapter, setEditedChapter] = useState<Chapter | null>(null);
 
   const cookies = new Cookies();
-  const accessToken = cookies.get('accessToken');;
+  const accessToken = cookies.get('accessToken');
 
   const navigate = useNavigate();
 
@@ -55,60 +56,86 @@ const ChapterPage: React.FC = () => {
     }
   }, [storyId]);
 
-  if (!chapter || chapters.length === 0) {
-    return <div>Loading...</div>;
-  }
+  const handleEditButtonClick = () => {
+    setIsEditing(true);
+    setEditedChapter(chapter);
+  };
 
-  const currentIndex = chapters.findIndex((c) => c.id.toString() === chapterId);
-  const nextIndex = currentIndex + 1;
-  const prevIndex = currentIndex - 1;
-
-  const hasNextChapter = nextIndex < chapters.length;
-  const hasPrevChapter = prevIndex >= 0;
-
-  const nextChapterId = hasNextChapter ? chapters[nextIndex].id : null;
-  const prevChapterId = hasPrevChapter ? chapters[prevIndex].id : null;
-
-  const navigateToNextChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    if (nextChapterId) {
-      window.location.href = `/chapter/${nextChapterId}`;
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "title" | "content"
+  ) => {
+    if (editedChapter) {
+      setEditedChapter({
+        ...editedChapter,
+        [field]: e.target.value,
+      });
     }
   };
 
-  const navigateToPrevChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    if (prevChapterId) {
-      window.location.href = `/chapter/${prevChapterId}`;
+  const handleChapterUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editedChapter) {
+      try {
+        const response = await axios.put(
+          `http://localhost:3000/chapter/update/${editedChapter.storyid}/update_chapter/${editedChapter.id}`,
+          {
+            title: editedChapter.title,
+            content: editedChapter.content,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken.access_token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          setIsEditing(false);
+          setChapter(editedChapter);
+        } else {
+          setError('Failed to update the chapter');
+        }
+      } catch (error: any) {
+        if (error.response) {
+          setError('An error occurred. Please try again later');
+        } else {
+          setError('Network error. Please check your internet connection');
+        }
+      }
     }
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    setEditedChapter(null);
   };
 
   const handleChapterDelete = async () => {
-    
-    if (confirm('Are you sure you want to delete this chapter?')) {
+    if (chapter && confirm('Are you sure you want to delete this chapter?')) {
       try {
         const response = await axios.delete(
           `http://localhost:3000/chapter/story/${chapter.storyid}/delete_chapter/${chapter.id}`,
           {
             headers: {
               'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken.access_token}`,
+              Authorization: `Bearer ${accessToken.access_token}`,
             },
           }
         );
-        if (response.status === 204) { 
+        if (response.status === 204) {
           navigate('/user_stories');
           window.location.reload();
         } else {
-          setError('Failed to delete the story');
+          setError('Failed to delete the chapter');
         }
         navigate('/user_stories');
       } catch (error: any) {
-          if(error.response) {
-            setError('An error occurred. Please try again later');          
-          } else {
-            setError('Network error. Please check your internet connection');
-          }
+        if (error.response) {
+          setError('An error occurred. Please try again later');
+        } else {
+          setError('Network error. Please check your internet connection');
+        }
       }
     }
   };
@@ -116,18 +143,39 @@ const ChapterPage: React.FC = () => {
   const renderAuthorNavbar = () => {
     if (accessToken && accessToken.id === Number(authorid)) {
       return (
-        <div >
+        <div>
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="#">Chapter Menu</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a className="navbar-brand" href="#">
+              Chapter Menu
+            </a>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item active">
-                  <button className="nav-link" id='' onClick={handleChapterDelete}>
-                  Delete Chapter
-                </button>
+                  {isEditing ? (
+                    <button type="button" className="nav-link" onClick={cancelEditing}>
+                      Cancel Edit
+                    </button>
+                  ) : (
+                    <button type="button" className="nav-link" onClick={handleEditButtonClick}>
+                      Edit Chapter
+                    </button>
+                  )}
+                </li>
+                <li className="nav-item">
+                  <button className="nav-link" onClick={handleChapterDelete}>
+                    Delete Chapter
+                  </button>
                 </li>
               </ul>
             </div>
@@ -144,33 +192,51 @@ const ChapterPage: React.FC = () => {
     <div className={`ChapterPage_mainDiv ${ChapterPageContainer}`}>
       {renderAuthorNavbar()}
       {error && <div className="error-message">{error}</div>}
-      <div className="chapterContainer">
-        <h2 id='chapterTitle'>{chapter.title}</h2>
-        <div
-          className="chapter-content"
-          dangerouslySetInnerHTML={{ __html: chapter.content }} 
-        />
-        <div className="chapter-navigation">
-          {hasPrevChapter && (
-            <a
-              href={`/chapter/${prevChapterId}`}
-              className="prevChapterButton"
-              onClick={navigateToPrevChapter}
-            >
-              Previous Chapter
-            </a>
-          )}
-          {hasNextChapter && (
-            <a
-              href={`/chapter/${nextChapterId}`}
-              className="nextChapterButton"
-              onClick={navigateToNextChapter}
-            >
-              Next Chapter
-            </a>
-          )}
+      {isEditing ? (
+        <div className="chapter-edit-form">
+          <h2 className="edit-form-title">Edit Chapter</h2>
+          <form onSubmit={handleChapterUpdate}>
+            <div className="form-group">
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={editedChapter?.title || ''}
+                onChange={(e) => handleInputChange(e, 'title')}
+                className="edit-form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <textarea
+                id="content"
+                name="content"
+                value={editedChapter?.content || ''}
+                rows={40}
+                onChange={(e) => handleInputChange(e, 'content')}
+                className="edit-form-textarea"
+                required
+              />
+            </div>
+            <div className="edit-form-buttons">
+              <button type="submit" className="edit-form-save-button">
+                Save
+              </button>
+              <button type="button" onClick={cancelEditing} className="edit-form-cancel-button">
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-      </div>
+      ) : (
+        <div className="chapterContainer">
+          <h2 id="chapterTitle">{chapter?.title ?? 'Loading...'}</h2>
+          <div
+            className="chapter-content"
+            dangerouslySetInnerHTML={{ __html: chapter?.content || 'Loading...' }}
+          />
+        </div>
+      )}
     </div>
   );
 };

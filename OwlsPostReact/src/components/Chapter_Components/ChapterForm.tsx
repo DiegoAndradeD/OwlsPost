@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Chapter_Styles/ChapterForm.css';
 import { useTheme } from '../ThemeContext';
-import ReactQuill from 'react-quill'; 
-import 'react-quill/dist/quill.snow.css';
 import Cookies from 'universal-cookie';
 
 const AddChapterPage: React.FC = () => {
@@ -12,7 +10,7 @@ const AddChapterPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const cookies = new Cookies();
-  const accessToken = cookies.get('accessToken');;
+  const accessToken = cookies.get('accessToken');
 
   const [error, setError] = useState<string | null>(null);
 
@@ -22,10 +20,19 @@ const AddChapterPage: React.FC = () => {
     storyid: id,
   });
 
-  const handleChange = (name: string, value: string) => {
+  const contentTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    if (contentTextareaRef.current) {
+      contentTextareaRef.current.style.height = 'auto';
+      contentTextareaRef.current.style.height = contentTextareaRef.current.scrollHeight + 'px';
+    }
+  }, [chapter.content]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setChapter({
       ...chapter,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -43,15 +50,14 @@ const AddChapterPage: React.FC = () => {
         }
       );
 
-      if (response.status === 201) { 
+      if (response.status === 201) {
         navigate('/user_stories');
       } else {
         setError('Failed to register the chapter');
       }
-
     } catch (error: any) {
-      if(error.response) {
-        if(error.response.status === 401) {
+      if (error.response) {
+        if (error.response.status === 401) {
           setError('Unauthorized. Please log in');
           navigate('/login');
         } else {
@@ -60,7 +66,6 @@ const AddChapterPage: React.FC = () => {
       } else {
         setError('Network error. Please check your internet connection');
       }
-      
     }
   };
 
@@ -77,16 +82,19 @@ const AddChapterPage: React.FC = () => {
               placeholder="Title"
               name="title"
               value={chapter.title}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              onChange={handleChange}
             />
           </div>
         </div>
         <div className="mb-3 row" id="dataContainer">
           <div className="col-sm-10">
-            <ReactQuill
-              value={chapter.content}
-              onChange={(value) => handleChange('content', value)}
+            <textarea
+              className="form-control"
               placeholder="Story Description"
+              name="content"
+              value={chapter.content}
+              onChange={handleChange}
+              ref={contentTextareaRef}
             />
           </div>
         </div>

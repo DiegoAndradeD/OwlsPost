@@ -92,4 +92,25 @@ export class ChapterService {
         }
           
     }
+
+    async updateChapter(title: string, content: string, storyid: number, id: number, token: string): Promise<void> {
+        try {
+            const user = await this.authService.verifyToken(token)
+            if(!user) {
+                throw new UnauthorizedException('Invalid Token or not authenticated user')
+            }
+            try {
+                const entityManager = this.chapterRepository.manager;
+                const query = `UPDATE chapters SET title = $1, content = $2
+                WHERE storyid = $3 AND id = $4`;
+                await entityManager.query(query, [title, content, storyid, id]);
+            } catch (error) {
+                throw new Error("Failed to delete the chapter: " + error.message);
+            }
+
+        } catch (error) {
+            throw new Error("Error in proceedment updating chapter: " + error.message);
+        }
+          
+    }
 }
