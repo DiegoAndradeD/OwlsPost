@@ -8,6 +8,7 @@ import authConfig from "src/Auth/auth.config";
 import * as jwt from 'jsonwebtoken';
 import { AuthService } from "src/Auth/Services/auth.service";
 import { ReturnUserDto } from "../Dto/returnUser.dto";
+import { authUserDto } from "../Dto/authUser.dto";
 
 @Injectable()
 export class UserService {
@@ -152,10 +153,10 @@ export class UserService {
      * @param token 
      * @returns user
      */
-    async findUserByToken(token: string): Promise<ReturnUserDto | null> {
+    async findUserByToken(token: string): Promise<authUserDto | null> {
         try {
             const user = await this.userRepository.findOne({ where: {token} });
-            return user ? new ReturnUserDto(user) : null;
+            return user ? new authUserDto(user) : null;
         } catch (error) {
             console.error('Error search user by token:', error);
             throw new NotFoundException('User not found');

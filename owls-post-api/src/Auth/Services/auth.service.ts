@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import authConfig from '../auth.config';
 import * as jwt from 'jsonwebtoken';
 import { ReturnUserDto } from "src/User/Dto/returnUser.dto";
+import { authUserDto } from "src/User/Dto/authUser.dto";
 
 @Injectable()
 export class AuthService {
@@ -34,16 +35,16 @@ export class AuthService {
         }
     }
 
-    async verifyToken(token: string): Promise<ReturnUserDto | null> {
+    async verifyToken(token: string): Promise<boolean | null> {
         try {
             const user = await this.userService.findUserByToken(token);
-            if (!user) {
+            if (!user && user.token != token) {
                 throw new UnauthorizedException('Invalid Token');
             }
 
             const decodedToken = jwt.verify(token, authConfig.jwtSecret);
             if (decodedToken) {
-                return user;
+                return true;
             } else {
                 throw new UnauthorizedException('Token JWT Invalid');
             }

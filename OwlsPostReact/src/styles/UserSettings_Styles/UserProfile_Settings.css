@@ -55,6 +55,11 @@
     margin-bottom: 10px;
 }
 
+.user-description-textarea {
+    margin-top: 10px;
+    width: 100%;
+}
+
 #ProfileSettings_description::placeholder {
     color: var(--text-color-light); 
     font-family: 'Anton', sans-serif;

@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
-import "react-quill/dist/quill.snow.css"; 
-import "../../../styles/UserSettings_Styles/UserProfile_Settings.css";
-import { Link, useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill"; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import '../../../styles/UserSettings_Styles/UserProfile_Settings.css';
 
 interface UserStates {
   profile_user_id: number;
@@ -32,23 +32,25 @@ interface UserStoriesStates {
 
 const UserProfile_Settings: React.FC = () => {
   const cookies = new Cookies();
-  const accessToken = cookies.get("accessToken");
+  const accessToken = cookies.get('accessToken');
 
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
-  const [description, setDescription] = useState(""); // Use description for rich text content
-  const [isUpdateDescriptionFormVisible, setIsUpdateDescriptionFormVisible] =
-    useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [description, setDescription] = useState('');
+  const [originalDescription, setOriginalDescription] = useState('');
+
+  const [textareaHeight, setTextareaHeight] = useState('auto'); // Estado para controlar a altura da textarea
 
   const [user, setUser] = useState<UserStates>({
     profile_user_id: 0,
-    username: "",
-    email: "",
+    username: '',
+    email: '',
     created_at: new Date(),
     followers_count: 0,
-    description: "",
+    description: '',
   });
 
   const [story, setStory] = useState<UserStoriesStates>({
@@ -107,79 +109,38 @@ const UserProfile_Settings: React.FC = () => {
 
   const formattedDate = new Date(user.created_at)
     .toLocaleString()
-    .replace(",", " |");
+    .replace(',', ' |');
 
-  // Function to update the user's username
+  const adjustTextareaHeight = () => {
+    const textarea = document.getElementById('user-description-textarea');
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`; 
+      setTextareaHeight(`${textarea.scrollHeight}px`);
+    }
+  };
+
   const handleDescriptionUpdate = async () => {
     const formData = new FormData();
-    formData.append("newDescription", description);
-    formData.append("userid", accessToken.id);
-    console.log(description);
+    formData.append('newDescription', description);
+    formData.append('userid', accessToken.id);
+
     try {
       const response = await axios.post(
         `http://localhost:3000/user/userid/${accessToken.id}/changeDescriptionTo`,
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
-      window.location.reload();
+
+      setOriginalDescription(description);
+      setIsEditingDescription(false);
     } catch (error) {
       setError('Error updating user description');
-
     }
-  };
-
-  const updateDesciptionForm = () => {
-    return (
-      <div>
-        <button
-          id="userSettings_update_description_btn"
-          onClick={() =>
-            setIsUpdateDescriptionFormVisible(!isUpdateDescriptionFormVisible)
-          }
-        >
-          Change Description
-        </button>
-        {isUpdateDescriptionFormVisible && (
-          <div className="quill-editor-container">
-            <ReactQuill
-              className="quill-editor"
-              value={description}
-              onChange={(value) => setDescription(value)}
-              modules={{
-                toolbar: [
-                  [{ header: "1" }, { header: "2" }],
-                  ["bold", "italic", "underline", "strike"],
-                  [{ align: [] }],
-                  ["link"],
-                  ["clean"],
-                ],
-              }}
-              formats={[
-                "header",
-                "bold",
-                "italic",
-                "underline",
-                "strike",
-                "align",
-                "link",
-              ]}
-            />
-            <button
-              type="button"
-              className="btn btn-primary"
-              id="update_description_btn_submit"
-              onClick={handleDescriptionUpdate}
-            >
-              Update
-            </button>
-          </div>
-        )}
-      </div>
-    );
   };
 
   return (
@@ -189,7 +150,9 @@ const UserProfile_Settings: React.FC = () => {
           <div className="">
             <div className="userSettings_profile_wrapper">
               <div className="userSettings_profile_usernameContainer mb-4">
-                <h1 className="userSettings_profile_h1_text">{user.username}</h1>
+                <h1 className="userSettings_profile_h1_text">
+                  {user.username}
+                </h1>
               </div>
               <div className="userSettings_profile_created_atContainer">
                 <h1 className="userSettings_profile_h1_text">
@@ -203,17 +166,45 @@ const UserProfile_Settings: React.FC = () => {
               </div>
               <div className="userSettings_profile_settings_description_container">
                 <h1 className="userSettings_profile_h1_text">
-                  Description:{" "}
-                  <div
-                    id="userDescription"
-                    className="user-description-rich-text"
-                    dangerouslySetInnerHTML={{ __html: user.description }}
-                  />
+                  Description:{' '}
+                  {isEditingDescription ? (
+                    <textarea
+                      id="user-description-textarea"
+                      className="user-description-textarea"
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                        adjustTextareaHeight(); 
+                      }}
+                      style={{ height: textareaHeight }} 
+                    />
+                  ) : (
+                    <div
+                      id="userDescription"
+                      className="user-description-rich-text"
+                      dangerouslySetInnerHTML={{ __html: originalDescription }}
+                    />
+                  )}
                 </h1>
-                {updateDesciptionForm()}
+                {isEditingDescription ? (
+                  <button
+                    className="btn btn-primary"
+                    id="update_description_btn_submit"
+                    onClick={handleDescriptionUpdate}
+                  >
+                    Update
+                  </button>
+                ) : (
+                  <button
+                    id="userSettings_update_description_btn"
+                    onClick={() => setIsEditingDescription(true)}
+                  >
+                    Edit Description
+                  </button>
+                )}
               </div>
 
-              <h2 className="userSettings_profile_h2_text">User Stories: </h2>
+              <h2 className="userSettings_profile_h2_text">User Stories:</h2>
               <div className="AllStoriesContainer">
                 <ul>
                   {story.stories.map((story) => (
@@ -230,7 +221,7 @@ const UserProfile_Settings: React.FC = () => {
                         {story.description}
                       </p>
                       <p className="profile_h2_text_UserProfileSettings_tags">
-                        Tags: {story.tags ? story.tags.join(", ") : ""}
+                        Tags: {story.tags ? story.tags.join(', ') : ''}
                       </p>
                     </li>
                   ))}
