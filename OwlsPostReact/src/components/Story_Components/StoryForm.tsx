@@ -69,6 +69,8 @@ const TextAreaField: React.FC<{
 const StoryForm: React.FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
+  const [error, setError] = useState<string | null>(null);
+
 
   const [state, setState] = useState<StoryFormState>({
     title: '',
@@ -139,13 +141,21 @@ const StoryForm: React.FC = () => {
         },
       });
       if (response.status === 201) { 
-        console.log('Story registered successfully');
         navigate('/user_stories');
       } else {
-        console.log('Failed to register the story');
+        setError('Failed to register the story');
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if(error.response) {
+        if(error.response.status === 401) {
+          setError('Unauthorized. Please log in');
+          navigate('/login');
+        } else {
+          setError('An error occurred. Please try again later');
+        }
+      } else {
+        setError('Network error. Please check your internet connection');
+      }
     }
     navigate('/user_stories');
   }

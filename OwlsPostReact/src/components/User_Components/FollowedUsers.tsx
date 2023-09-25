@@ -12,6 +12,7 @@ interface FollowedUsers {
 const FollowedUsers: React.FC = () => {
 
     const { darkMode } = useTheme();
+    const [error, setError] = useState<string | null>(null);
 
     const [followedUsers, setFollowedUsers] = useState<FollowedUsers> ({
         usernames: []
@@ -32,9 +33,8 @@ const FollowedUsers: React.FC = () => {
                 setFollowedUsers({
                     usernames: response.data,
                   });
-                console.log(response.data)
             } catch (error) {
-                console.log(error);
+                setError('Error Fetching Followed Users');
             }
         }
 

@@ -9,9 +9,12 @@ import Cookies from 'universal-cookie';
 
 const AddChapterPage: React.FC = () => {
   const { darkMode } = useTheme();
-
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const cookies = new Cookies();
+  const accessToken = cookies.get('accessToken');;
+
+  const [error, setError] = useState<string | null>(null);
 
   const [chapter, setChapter] = useState({
     title: '',
@@ -28,11 +31,7 @@ const AddChapterPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const cookies = new Cookies();
-      const accessToken = cookies.get('accessToken');;
-      console.log(chapter);
       const response = await axios.post(
         `http://localhost:3000/chapter/${id}/add-chapter`,
         chapter,
@@ -43,14 +42,25 @@ const AddChapterPage: React.FC = () => {
           },
         }
       );
+
       if (response.status === 201) { 
-        console.log('Chapter registered successfully');
         navigate('/user_stories');
       } else {
-        console.log('Failed to register the chapter');
+        setError('Failed to register the chapter');
       }
-    } catch (error) {
-      console.error(error);
+
+    } catch (error: any) {
+      if(error.response) {
+        if(error.response.status === 401) {
+          setError('Unauthorized. Please log in');
+          navigate('/login');
+        } else {
+          setError('An error occurred. Please try again later');
+        }
+      } else {
+        setError('Network error. Please check your internet connection');
+      }
+      
     }
   };
 
@@ -93,6 +103,7 @@ const AddChapterPage: React.FC = () => {
     <div className={`ChapterForm_mainDiv ${ChapterFormContainer}`}>
       <div className="" id="chapterFormContainer">
         <div className="col-md-6" id="chapterFormWrapper">
+          {error && <div className="error-message">{error}</div>}
           {renderForm()}
         </div>
       </div>

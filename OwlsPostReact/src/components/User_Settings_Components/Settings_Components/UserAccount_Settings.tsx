@@ -27,6 +27,7 @@ interface UpdateUserState {
 const UserAccount_Settings: React.FC = () => {
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   //States to handle the visibility of each form
   const [isUsernameFormVisible, setUsernameFormVisible] = useState(false);
@@ -77,7 +78,7 @@ const UserAccount_Settings: React.FC = () => {
           followers_count: response.data.followers_count,
         });
       } catch (error) {
-        console.log(error);
+        setError('Error fetching user data');
       }
     };
 
@@ -112,7 +113,8 @@ const UserAccount_Settings: React.FC = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      setError('Error logging out');
+
     }
   };
 
@@ -125,13 +127,12 @@ const UserAccount_Settings: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response.data);
-  
       if (response.status === 200) {
         successCallback(response.data);
       }
     } catch (error) {
-      console.error(error);
+      setError('Error sedding request to: ' + url);
+
     }
   };
   

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../ThemeContext';
 import '../../styles//Authentication_styles/Login.css';
 
+
 interface LoginFormState {
   username: string;
   password: string;
@@ -16,6 +17,7 @@ const sanitizeUsername = (username: string) => DOMPurify.sanitize(username);
 
 const LoginForm: React.FC = () => {
   const { darkMode } = useTheme();
+  
 
   const [state, setState] = useState<LoginFormState>({
     username: '',
@@ -40,7 +42,6 @@ const LoginForm: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response)
 
       const { access_token: token, username, id } = response.data;
       const cookieData = {

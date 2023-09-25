@@ -6,17 +6,14 @@ import { Link } from "react-router-dom";
 import '../../styles/User_Styles/UserFavorites.css';
 import { useTheme } from '../ThemeContext';
 
-
-
 interface favoriteStories {
     stories: {story_title: string, storyid: number, story_description: string, author_id: number}[]
 }
 
-
 const UserFavorites: React.FC = () => {
 
     const { darkMode } = useTheme();
-
+    const [error, setError] = useState<string | null>(null);
 
     const [favoriteStories, setFavoriteStories] = useState<favoriteStories> ({
         stories: []
@@ -26,7 +23,7 @@ const UserFavorites: React.FC = () => {
     const accessToken = cookies.get('accessToken');
 
     useEffect(() => {
-        const fetchFollowedUsers = async () => {
+        const fetchFavoriteStories = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/favorite/get_user/${accessToken.id}/favoriteStories`, {
                     headers: {
@@ -37,11 +34,12 @@ const UserFavorites: React.FC = () => {
                     stories: response.data,
                   });
             } catch (error) {
-                console.log(error);
+                setError('Error fetching favorites stories');
+
             }
         }
 
-        fetchFollowedUsers()
+        fetchFavoriteStories()
     },[accessToken.id])
 
     const UserFavoritesContainer = darkMode ? 'dark-mode' : '';

@@ -41,6 +41,9 @@ const StoryContainer: React.FC<{ story: Story; invertedColors: boolean }> = ({ s
 };
 
 const UserStories: React.FC = () => {
+    const [error, setError] = useState<string | null>(null);
+    const cookies = new Cookies();
+    const accessToken = cookies.get('accessToken');
     const [state, setState] = useState<UserStoriesStates>({
         userId: 0,
         stories: [],
@@ -50,9 +53,6 @@ const UserStories: React.FC = () => {
     const { darkMode } = useTheme();
 
     useEffect(() => {
-        const cookies = new Cookies();
-        const accessToken = cookies.get('accessToken');
-
         if (accessToken) {
             const fetchData = async () => {
                 try {
@@ -61,24 +61,19 @@ const UserStories: React.FC = () => {
                             'Content-Type': 'application/json',
                         },
                     });
-                    console.log(response.data);
                     setState({
                         ...state,
                         userId: accessToken.id,
                         stories: response.data,
                     });
                 } catch (error) {
-                    console.log(error);
+                    setError('Error fetching user stories');
                 }
             };
 
             fetchData();
         }
     }, []);
-
-    const toggleColors = () => {
-        setState({ ...state, invertedColors: !state.invertedColors });
-    };
 
     const userStories_mainContainerClass = darkMode ? 'dark-mode' : '';
 

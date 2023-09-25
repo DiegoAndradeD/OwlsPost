@@ -34,6 +34,8 @@ const UserProfile_Settings: React.FC = () => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken");
 
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const [description, setDescription] = useState(""); // Use description for rich text content
@@ -58,7 +60,6 @@ const UserProfile_Settings: React.FC = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log(accessToken.id);
       try {
         const response = await axios.get(
           `http://localhost:3000/user/getUserById/${accessToken.id}`,
@@ -68,7 +69,6 @@ const UserProfile_Settings: React.FC = () => {
             },
           }
         );
-        console.log(response.data);
         setUser({
           profile_user_id: response.data.id,
           username: response.data.username,
@@ -92,12 +92,13 @@ const UserProfile_Settings: React.FC = () => {
               stories: storyResponse.data,
             }));
           } catch (error) {
-            console.log(error);
+            setError('Error fetching user stories');
           }
         };
         fetchUserStories();
       } catch (error) {
-        console.log(error);
+        setError('Error fetching user data');
+
       }
     };
 
@@ -126,7 +127,8 @@ const UserProfile_Settings: React.FC = () => {
       );
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      setError('Error updating user description');
+
     }
   };
 

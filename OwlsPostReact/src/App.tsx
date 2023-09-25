@@ -33,7 +33,7 @@ const App: React.FC = () => {
         <Route path='user_stories' element={<UserStories />}/>
         <Route path='/story/:id/author/:userid' element={<StoryPage />}/>
         <Route path='/add-chapter/:id' element={<AddChapterPage />}/>
-        <Route path='/chapter/:chapterId' element={<ChapterPage />}/>
+        <Route path='/author/:authorid/chapter/:chapterId' element={<ChapterPage />}/>
         <Route path='/getUserProfile/:userid' element={<UserProfile/>}/>
         <Route path='/getFollowedUsers' element={<FollowedUsers/>}/>
         <Route path='/getUserFavorites' element={<UserFavorites/>}/>

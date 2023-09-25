@@ -148,7 +148,6 @@ const SignupForm: React.FC = () => {
                 Signup
               </button>
             </form>
-      
           </div>
         </div>
       </div>

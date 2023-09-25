@@ -36,6 +36,7 @@ const UserProfile: React.FC = () => {
 
   const { userid } = useParams<{ userid: string }>();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const [user, setUser] = useState<UserProfileStates>({
     profile_user_id: 0,
@@ -90,12 +91,12 @@ const UserProfile: React.FC = () => {
               stories: storyResponse.data,
             }));
           } catch (error) {
-            console.log(error);
+            setError('Error fetching user stories');
           }
         };
         fetchUserStories();
       } catch (error) {
-        console.log(error);
+        setError('Error fetching user data');
       }
     };
 
@@ -106,10 +107,9 @@ const UserProfile: React.FC = () => {
         {
           headers: { 'Content-Type': 'application/json' },
         });
-        console.log(response.data)
         setState({...state, isFollowed: response.data})
       } catch (error) {
-        console.log(error);
+        setError('Error getting follow information');
       }
     };
   };
@@ -127,10 +127,9 @@ const UserProfile: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
           }
         );
-        console.log(response);
         window.location.reload();
       } catch (error) {
-        console.log(error);
+        setError('Error to follow user');
       }
     } else {
       navigate('login');
@@ -146,10 +145,9 @@ const UserProfile: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
           }
         );
-        console.log(response);
         window.location.reload();
       } catch (error) {
-        console.log(error);
+        setError('Error to unfollow user');
       }
     } else {
       navigate('login');

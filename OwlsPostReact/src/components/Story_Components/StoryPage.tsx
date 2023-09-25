@@ -29,9 +29,10 @@ interface Chapter {
 
 const StoryPage: React.FC = () => {
   const { darkMode } = useTheme();
-
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { id, userid } = useParams<{ id: string; userid: string }>();
+
   const [story, setStory] = useState<StoryStates>({
     userId: 0,
     username: '',
@@ -43,6 +44,7 @@ const StoryPage: React.FC = () => {
     created_at: new Date(),
     tags: [],
   });
+
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [accessToken, setAccessToken] = useState<any>(null);
   const [isStoryFavorited, setIsStoryFavorited] = useState(false); 
@@ -87,7 +89,7 @@ const StoryPage: React.FC = () => {
 
         setChapters(chaptersResponse.data);
       } catch (error) {
-        console.log(error);
+        setError('Error fetching story')
       }
     };
 
@@ -112,7 +114,7 @@ const StoryPage: React.FC = () => {
           setIsStoryFavorited(false);
         }
       } catch (error) {
-        console.log(error);
+        setError('Error fetching favorite status')
       }
     };
 
@@ -140,8 +142,17 @@ const StoryPage: React.FC = () => {
           console.log('Failed to delete the story');
         }
         navigate('/user_stories');
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        if(error.response) {
+          if(error.response.status === 401) {
+            setError('Unauthorized. Please log in');
+            navigate('/login');
+          } else {
+            setError('An error occurred. Please try again later');
+          }
+        } else {
+          setError('Network error. Please check your internet connection');
+        }
       }
     }
   };
@@ -187,7 +198,7 @@ const StoryPage: React.FC = () => {
         <ul className='chaptersList'>
           {chapters.map((chapter, index) => (
             <li key={chapter.id} className={h1Class}>
-              <Link id='chaptersLink' to={`/chapter/${chapter.id}`}>
+              <Link id='chaptersLink' to={`/author/${story.authorId}/chapter/${chapter.id}`}>
                 Chapter {index + 1}: {chapter.title}
               </Link>
             </li>
@@ -227,8 +238,17 @@ const StoryPage: React.FC = () => {
       );
       setIsStoryFavorited(true);
       window.location.reload();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if(error.response) {
+        if(error.response.status === 401) {
+          setError('Unauthorized. Please log in');
+          navigate('/login');
+        } else {
+          setError('An error occurred. Please try again later');
+        }
+      } else {
+        setError('Network error. Please check your internet connection');
+      }
     }
   };
 
