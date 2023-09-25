@@ -5,6 +5,7 @@ import '../../styles/Chapter_Styles/ChapterForm.css';
 import { useTheme } from '../ThemeContext';
 import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
+import Cookies from 'universal-cookie';
 
 const AddChapterPage: React.FC = () => {
   const { darkMode } = useTheme();
@@ -29,6 +30,8 @@ const AddChapterPage: React.FC = () => {
     e.preventDefault();
 
     try {
+      const cookies = new Cookies();
+      const accessToken = cookies.get('accessToken');;
       console.log(chapter);
       const response = await axios.post(
         `http://localhost:3000/chapter/${id}/add-chapter`,
@@ -36,11 +39,16 @@ const AddChapterPage: React.FC = () => {
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
           },
         }
       );
-      console.log(response.data);
-      navigate('/user_stories');
+      if (response.status === 201) { 
+        console.log('Chapter registered successfully');
+        navigate('/user_stories');
+      } else {
+        console.log('Failed to register the chapter');
+      }
     } catch (error) {
       console.error(error);
     }

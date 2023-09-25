@@ -197,7 +197,7 @@ const StoryPage: React.FC = () => {
     );
   };
 
-  //TODO - Not permit user to favorite his own story
+
   const handleAddFavoriteSubmit = async () => {
     try {
       await axios.post(

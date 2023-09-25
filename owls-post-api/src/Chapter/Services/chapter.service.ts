@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { Chapter } from "../Entities/chapter.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ChapterDto } from "../Dto/chapter.dto";
+import { AuthService } from "src/Auth/Services/auth.service";
 
 @Injectable()
 export class ChapterService {
 
-    constructor(@InjectRepository(Chapter) private readonly chapterRepository: Repository<Chapter>) {}
+    constructor(@InjectRepository(Chapter) private readonly chapterRepository: Repository<Chapter>, private readonly authService: AuthService,) {}
 
     // Get all chapters
     async getAllChapters(): Promise<Chapter[]> {
@@ -19,12 +20,17 @@ export class ChapterService {
     }
 
     // Add a new chapter
-    async addChapter(chapterDto: ChapterDto): Promise<Chapter> {
-        const entityManager = this.chapterRepository.manager;
-        const query = `INSERT INTO chapters (title, content, storyid)
-        VALUES
-        ($1, $2, $3);`;
+    async addChapter(chapterDto: ChapterDto, token: string): Promise<Chapter> {
         try {
+            const user = await this.authService.verifyToken(token);
+            if(!user) {
+                throw new UnauthorizedException('Invalid Token or not authenticated user')
+            }
+
+            const entityManager = this.chapterRepository.manager;
+            const query = `INSERT INTO chapters (title, content, storyid)
+            VALUES
+            ($1, $2, $3);`;
             return await entityManager.query(query, [chapterDto.title, chapterDto.content, chapterDto.storyid]);
         } catch (error) {
             throw new Error("Failed to add chapter");
@@ -63,5 +69,27 @@ export class ChapterService {
         } catch (error) {
             throw new NotFoundException(`Chapter with ID ${id} not found`);
         }
+    }
+
+    async deleteChapter(storyid: number, id: number, token: string): Promise<void> {
+        try {
+            const user = await this.authService.verifyToken(token)
+            if(!user) {
+                throw new UnauthorizedException('Invalid Token or not authenticated user')
+            }
+            try {
+                const entityManager = this.chapterRepository.manager;
+                const query = `DELETE
+                FROM chapters
+                WHERE storyid = $1 AND id = $2`;
+                await entityManager.query(query, [storyid, id]);
+            } catch (error) {
+                throw new Error("Failed to delete the chapter: " + error.message);
+            }
+
+        } catch (error) {
+            throw new Error("Error in proceedment of deleting chapter: " + error.message);
+        }
+          
     }
 }
