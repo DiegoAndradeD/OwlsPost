@@ -111,6 +111,34 @@ const ChapterPage: React.FC = () => {
     setEditedChapter(null);
   };
 
+  if (!chapter || chapters.length === 0) {
+    return <div>Loading...</div>;
+  }
+
+  const currentIndex = chapters.findIndex((c) => c.id.toString() === chapterId);
+  const nextIndex = currentIndex + 1;
+  const prevIndex = currentIndex - 1;
+
+  const hasNextChapter = nextIndex < chapters.length;
+  const hasPrevChapter = prevIndex >= 0;
+
+  const nextChapterId = hasNextChapter ? chapters[nextIndex].id : null;
+  const prevChapterId = hasPrevChapter ? chapters[prevIndex].id : null;
+
+  const navigateToNextChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (nextChapterId) {
+      window.location.href = `/author/${authorid}/chapter/${nextChapterId}`;
+    }
+  };
+
+  const navigateToPrevChapter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (prevChapterId) {
+      window.location.href = `/author/${authorid}/chapter/${prevChapterId}`;
+    }
+  };
+
   const handleChapterDelete = async () => {
     if (chapter && confirm('Are you sure you want to delete this chapter?')) {
       try {
@@ -230,12 +258,32 @@ const ChapterPage: React.FC = () => {
         </div>
       ) : (
         <div className="chapterContainer">
-          <h2 id="chapterTitle">{chapter?.title ?? 'Loading...'}</h2>
-          <div
-            className="chapter-content"
-            dangerouslySetInnerHTML={{ __html: chapter?.content || 'Loading...' }}
-          />
+        <h2 id='chapterTitle'>{chapter.title}</h2>
+        <div
+          className="chapter-content"
+          dangerouslySetInnerHTML={{ __html: chapter.content }} 
+        />
+        <div className="chapter-navigation">
+          {hasPrevChapter && (
+            <a
+              href={`/author/${authorid}/chapter/${prevChapterId}`}
+              className="prevChapterButton"
+              onClick={navigateToPrevChapter}
+            >
+              Previous Chapter
+            </a>
+          )}
+          {hasNextChapter && (
+            <a
+              href={`/author/${authorid}/chapter/${nextChapterId}`}
+              className="nextChapterButton"
+              onClick={navigateToNextChapter}
+            >
+              Next Chapter
+            </a>
+          )}
         </div>
+      </div>
       )}
     </div>
   );
