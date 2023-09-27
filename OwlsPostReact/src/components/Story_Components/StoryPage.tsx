@@ -213,9 +213,11 @@ const StoryPage: React.FC = () => {
     try {
       await axios.post(
         `http://localhost:3000/favorite/user/${accessToken.id}/addStory/${story.id}/toFavorites`,
+        {},
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
           },
         }
       );
@@ -233,6 +235,7 @@ const StoryPage: React.FC = () => {
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
           },
         }
       );

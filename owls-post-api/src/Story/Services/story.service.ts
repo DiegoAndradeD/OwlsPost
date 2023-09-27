@@ -25,13 +25,8 @@ export class StoryService {
      * @param token 
      * @returns 
      */
-    async registerStory(storyDto: StoryDTO, token: string): Promise<Story> {
+    async registerStory(storyDto: StoryDTO): Promise<Story> {
         try {
-            const user = await this.authService.verifyToken(token);
-            if(!user) {
-                throw new UnauthorizedException('Invalid Token or not authenticated user')
-            }
-
             return this.storyRepository.save({
                 ...storyDto,
             });
@@ -124,26 +119,16 @@ export class StoryService {
     * @param id 
     * @param token 
     */
-    async deleteStory(userId: number, id: number, token: string): Promise<void> {
+    async deleteStory(userId: number, id: number): Promise<void> {
         try {
-            const user = await this.authService.verifyToken(token)
-            if(!user) {
-                throw new UnauthorizedException('Invalid Token or not authenticated user')
-            }
-            try {
-                const entityManager = this.storyRepository.manager;
-                const query = `DELETE
-                FROM stories
-                WHERE userId = $1 AND stories.id = $2`;
-                await entityManager.query(query, [userId, id]);
-            } catch (error) {
-                throw new Error("Failed to delete the story: " + error.message);
-            }
-
+            const entityManager = this.storyRepository.manager;
+            const query = `DELETE
+            FROM stories
+            WHERE userId = $1 AND stories.id = $2`;
+            await entityManager.query(query, [userId, id]);
         } catch (error) {
-            throw new Error("Error in proceedment of deleting story: " + error.message);
+            throw new Error("Failed to delete the story: " + error.message);
         }
-          
     }
 
     // Get stories by title

@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
 import { AuthService } from 'src/Auth/Services/auth.service';
+import { AuthMiddleware } from 'src/Auth/auth.middleware';
 
 @Controller('story')
 export class StoryController {
@@ -24,14 +25,12 @@ export class StoryController {
 
     // Register a new story
     @Post('add_story')
+    @UseGuards(AuthMiddleware)
     async registerStory(@Body() storyDto: StoryDTO, @Req() req: Request,
                        @Res() res: Response): Promise<void> {
         try {
-            const authHeader = req.headers.authorization;
-            const token = this.authService.getTokenAuthHeader(authHeader);
-            const story = await this.storyService.registerStory(storyDto, await token);
-            res.status(201).json(story);
-
+            const story = await this.storyService.registerStory(storyDto);
+            res.status(HttpStatus.CREATED).json(story);
         } catch (error) {
             console.error('Error registering story:', error);
             if (error instanceof BadRequestException) {
@@ -81,13 +80,12 @@ export class StoryController {
 
     // Delete a story by user ID and story ID
     @Delete('user/:userId/delete_story/:id')
+    @UseGuards(AuthMiddleware)
     async deleteStoryById(@Param('userId') userId: number, @Param('id') id: number, @Req() req: Request,
     @Res() res: Response) {
         try {
-            const authHeader = req.headers.authorization;
-            const token = this.authService.getTokenAuthHeader(authHeader)
-            const deleteStory =  this.storyService.deleteStory(userId, id, await token);
-            res.status(204).json(deleteStory); 
+            const deleteStory =  this.storyService.deleteStory(userId, id);
+            res.status(HttpStatus.NO_CONTENT).json(deleteStory); 
         } catch (error) {
             if (error instanceof UnauthorizedException) {
                 res.status(HttpStatus.UNAUTHORIZED).json({error: error.message});

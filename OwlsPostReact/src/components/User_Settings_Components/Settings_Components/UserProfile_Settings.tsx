@@ -126,12 +126,13 @@ const UserProfile_Settings: React.FC = () => {
     formData.append('userid', accessToken.id);
 
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:3000/user/userid/${accessToken.id}/changeDescriptionTo`,
         formData,
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
           },
         }
       );

@@ -35,26 +35,6 @@ export class AuthService {
         }
     }
 
-    async verifyToken(token: string): Promise<boolean | null> {
-        try {
-            const user = await this.userService.findUserByToken(token);
-            if (!user && user.token != token) {
-                throw new UnauthorizedException('Invalid Token');
-            }
-
-            const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-            if (decodedToken) {
-                return true;
-            } else {
-                throw new UnauthorizedException('Token JWT Invalid');
-            }
-        } catch (error) {
-            console.error('Error verifying token', error);
-            throw new UnauthorizedException('Invalid Token');
-        }
-    }
-
-
     async checkUserRegistration(id: string, username: string): Promise<boolean> {
         try {
           if (!id || !username) {
@@ -73,14 +53,8 @@ export class AuthService {
         }
       }
 
-    async changeUsername(newUsername: string, userid: string, token: string): Promise<void> {
+    async changeUsername(newUsername: string, userid: string): Promise<void> {
     try {
-        const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-
-        if (!decodedToken) {
-        throw new UnauthorizedException('Not Authorized');
-        }
-
         if (!newUsername || typeof newUsername !== 'string') {
         throw new BadRequestException('Invalid new username');
         }
@@ -92,14 +66,9 @@ export class AuthService {
     }
     }
 
-    async changeEmail(newEmail: string, userid: string, token: string): Promise<void> {
+    //TODO - CHECK IF EMAIL IS NOT ALREADY REGISTERED
+    async changeEmail(newEmail: string, userid: string): Promise<void> {
     try {
-        const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-
-        if (!decodedToken) {
-        throw new UnauthorizedException('Not Authorized');
-        }
-
         if (!newEmail || typeof newEmail !== 'string') {
         throw new BadRequestException('Invalid new email');
         }
@@ -111,14 +80,8 @@ export class AuthService {
     }
     }
 
-    async changePassword(newPassword: string, userid: string, token: string): Promise<void> {
+    async changePassword(newPassword: string, userid: string): Promise<void> {
     try {
-        const decodedToken = jwt.verify(token, authConfig.jwtSecret);
-
-        if (!decodedToken) {
-        throw new UnauthorizedException('Not Authorized');
-        }
-
         if (!newPassword || typeof newPassword !== 'string') {
         throw new BadRequestException('Invalid new password');
         }
@@ -132,23 +95,6 @@ export class AuthService {
         throw new UnauthorizedException('Not Authorized');
     }
     }
-
-    async getTokenAuthHeader(authHeader: any) {
-        if (!authHeader) {
-          console.log('Missing authorization header');
-          throw new UnauthorizedException('Missing authorization header');
-        }
-  
-        const parts = authHeader.split(' ');
-  
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-          console.log('Invalid authorization header format');
-          throw new UnauthorizedException('Invalid authorization header format');
-        }
-  
-        const token = parts[1];
-        return token;
-      }
 
     
 

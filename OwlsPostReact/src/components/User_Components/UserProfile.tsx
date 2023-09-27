@@ -5,7 +5,7 @@ import '../../styles/User_Styles/UserProfile.css';
 import Cookies from "universal-cookie";
 import { useTheme } from '../ThemeContext'; 
 
-//Todo - block user to follow himself
+
 
 interface UserProfileStates {
   profile_user_id: number;
@@ -119,39 +119,39 @@ const UserProfile: React.FC = () => {
   
   
   const handleFollowSubmit = async () => {
-    if (accessToken) {
-      try {
-        const response = await axios.post(
-          `http://localhost:3000/follower/userid/${accessToken.id}/to_follow_userid/${user.profile_user_id}`,
-          {
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-        window.location.reload();
-      } catch (error) {
-        setError('Error to follow user');
-      }
-    } else {
-      navigate('login');
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/follower/userid/${accessToken.id}/to_follow_userid/${user.profile_user_id}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken.access_token}`,
+          },
+        }
+      );
+      window.location.reload();
+    } catch (error) {
+      setError('Error to follow user');
     }
   };
 
   const handleUnfollowSubmit = async () => {
-    if (accessToken) {
       try {
         const response = await axios.delete(
           `http://localhost:3000/follower/userid/${accessToken.id}/to_unfollow_userid/${user.profile_user_id}`,
           {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json', 
+              Authorization: `Bearer ${accessToken.access_token}`, 
+            },    
           }
         );
         window.location.reload();
       } catch (error) {
         setError('Error to unfollow user');
       }
-    } else {
-      navigate('login');
-    }
+   
   };
 
 

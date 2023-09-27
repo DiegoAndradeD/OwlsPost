@@ -20,13 +20,8 @@ export class ChapterService {
     }
 
     // Add a new chapter
-    async addChapter(chapterDto: ChapterDto, token: string): Promise<Chapter> {
+    async addChapter(chapterDto: ChapterDto): Promise<Chapter> {
         try {
-            const user = await this.authService.verifyToken(token);
-            if(!user) {
-                throw new UnauthorizedException('Invalid Token or not authenticated user')
-            }
-
             const entityManager = this.chapterRepository.manager;
             const query = `INSERT INTO chapters (title, content, storyid)
             VALUES
@@ -71,12 +66,8 @@ export class ChapterService {
         }
     }
 
-    async deleteChapter(storyid: number, id: number, token: string): Promise<void> {
+    async deleteChapter(storyid: number, id: number): Promise<void> {
         try {
-            const user = await this.authService.verifyToken(token)
-            if(!user) {
-                throw new UnauthorizedException('Invalid Token or not authenticated user')
-            }
             try {
                 const entityManager = this.chapterRepository.manager;
                 const query = `DELETE
@@ -93,12 +84,8 @@ export class ChapterService {
           
     }
 
-    async updateChapter(title: string, content: string, storyid: number, id: number, token: string): Promise<void> {
+    async updateChapter(title: string, content: string, storyid: number, id: number): Promise<void> {
         try {
-            const user = await this.authService.verifyToken(token)
-            if(!user) {
-                throw new UnauthorizedException('Invalid Token or not authenticated user')
-            }
             try {
                 const entityManager = this.chapterRepository.manager;
                 const query = `UPDATE chapters SET title = $1, content = $2

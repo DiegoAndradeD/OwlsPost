@@ -1,10 +1,11 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChapterService } from "../Services/chapter.service";
 import { Chapter } from "../Entities/chapter.entity";
 import { ChapterDto } from "../Dto/chapter.dto";
 import { AuthService } from 'src/Auth/Services/auth.service';
 import { blob } from 'stream/consumers';
+import { AuthMiddleware } from 'src/Auth/auth.middleware';
 
 @Controller('chapter')
 export class ChapterController {
@@ -19,12 +20,11 @@ export class ChapterController {
 
     // Add a new chapter to a story by ID
     @Post(':id/add-chapter')
+    @UseGuards(AuthMiddleware)
     async addChapter(@Body() chapterDto: ChapterDto, @Req() req: Request, @Res() res: Response): Promise<void> {
         try {
-            const authHeader = req.headers.authorization;
-            const token = this.authService.getTokenAuthHeader(authHeader);
-            const chapter = await this.chapterService.addChapter(chapterDto, await token);
-            res.status(201).json(chapter);
+            const chapter = await this.chapterService.addChapter(chapterDto);
+            res.status(HttpStatus.CREATED).json(chapter);
         } catch (error) {
             if(error instanceof BadRequestException) {
                 res.status(HttpStatus.BAD_REQUEST).json({error: error.message});
@@ -49,13 +49,12 @@ export class ChapterController {
     }
 
     @Delete('story/:storyid/delete_chapter/:id')
+    @UseGuards(AuthMiddleware)
     async deleteChapterById(@Param('storyid') storyid: number, @Param('id') id: number, @Req() req: Request,
     @Res() res: Response) {
         try {
-            const authHeader = req.headers.authorization;
-            const token = this.authService.getTokenAuthHeader(authHeader)
-            const deleteChapter =  this.chapterService.deleteChapter(storyid, id, await token);
-            res.status(204).json(deleteChapter); 
+            const deleteChapter =  this.chapterService.deleteChapter(storyid, id);
+            res.status(HttpStatus.NO_CONTENT).json(deleteChapter); 
         } catch (error) {
             if (error instanceof UnauthorizedException) {
                 res.status(HttpStatus.UNAUTHORIZED).json({error: error.message});
@@ -67,13 +66,12 @@ export class ChapterController {
     }
 
     @Put('/update/:storyid/update_chapter/:id')
+    @UseGuards(AuthMiddleware)
     async updateChapterById(@Param('storyid') storyid: number, @Param('id') id: number, @Req() req: Request,
     @Res() res: Response, @Body() body: {title: string, content: string}) {
         try {
-            const authHeader = req.headers.authorization;
-            const token = this.authService.getTokenAuthHeader(authHeader)
-            const updateChapter =  this.chapterService.updateChapter(body.title, body.content, storyid, id, await token);
-            res.status(200).json(updateChapter); 
+            const updateChapter =  this.chapterService.updateChapter(body.title, body.content, storyid, id);
+            res.status(HttpStatus.OK).json(updateChapter); 
         } catch (error) {
             if (error instanceof UnauthorizedException) {
                 res.status(HttpStatus.UNAUTHORIZED).json({error: error.message});

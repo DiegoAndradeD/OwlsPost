@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, InternalServerErrorException, Param, Post } from "@nestjs/common";
+import { Controller, Delete, Get, InternalServerErrorException, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
+import { Request, Response } from 'express';
 import { FollowerService } from "../Services/follower.service";
 import { Follower } from "../Entities/follower.entity";
+import { AuthMiddleware } from "src/Auth/auth.middleware";
 
 @Controller('follower')
 export class FollowerController {
@@ -30,7 +32,8 @@ export class FollowerController {
     }
 
     // Follow a user by user ID and the user to follow's ID
-    @Post('userid/:userid/to_follow_userid/:to_follow_userid')
+    @Put('userid/:userid/to_follow_userid/:to_follow_userid')
+    @UseGuards(AuthMiddleware)
     async followUser(
         @Param('userid') userid: number,
         @Param('to_follow_userid') to_follow_userid: number
@@ -59,6 +62,7 @@ export class FollowerController {
 
     // Unfollow a user by user ID and the user to unfollow's ID
     @Delete('userid/:userid/to_unfollow_userid/:to_follow_userid')
+    @UseGuards(AuthMiddleware)
     async unfollowAuthor(
         @Param('userid') userid: number,
         @Param('to_follow_userid') to_follow_userid: number

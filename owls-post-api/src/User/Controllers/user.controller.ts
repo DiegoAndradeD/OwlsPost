@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, InternalServerErrorException, Param, Post, HttpException, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, InternalServerErrorException, Param, Post, HttpException, NotFoundException, UseGuards, Put } from "@nestjs/common";
 import { UserService } from "../Services/user.service";
 import { UserDTO } from "../Dto/user.dto";
 import { User } from "../Entities/user.entity";
 import { ReturnUserDto } from "../Dto/returnUser.dto";
+import { AuthMiddleware } from "src/Auth/auth.middleware";
 
 @Controller('user')
 export class UserController {
@@ -63,7 +64,8 @@ export class UserController {
      * @param body 
      * @returns 
      */
-    @Post('userid/:userid/changeDescriptionTo')
+    @Put('userid/:userid/changeDescriptionTo')
+    @UseGuards(AuthMiddleware)
     async changeDescription(@Body() body: {newDescription: string, userid: string}): Promise<void> {
         try {
             return this.userService.changeDescription(body.newDescription, body.userid);

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { UserService } from 'src/User/Services/user.service';
 import { SignInDTO } from '../Dto/signInDto.dto';
@@ -6,6 +6,7 @@ import { AuthService } from '../Services/auth.service';
 import authConfig from '../auth.config';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import { AuthMiddleware } from '../auth.middleware';
 
 
 @Controller('auth')
@@ -45,7 +46,6 @@ export class AuthController {
                 httpOnly: true,
                 maxAge: maxAgeInMilliseconds,
             });
-
             // Respond with token and user data
             res.json({ access_token: token, username: user.username, id: user.id });
         } catch (error) {
@@ -88,30 +88,15 @@ export class AuthController {
     }
 
     @Post('change-username')
+    @UseGuards(AuthMiddleware)
     async changeUsername(
       @Body() body: { newUsername: string; userid: string },
       @Req() req: Request,
       @Res() res: Response,
     ): Promise<void> {
       try {
-        const authHeader = req.headers.authorization;
-  
-        if (!authHeader) {
-          console.log('Missing authorization header');
-          throw new UnauthorizedException('Missing authorization header');
-        }
-  
-        const parts = authHeader.split(' ');
-  
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-          console.log('Invalid authorization header format');
-          throw new UnauthorizedException('Invalid authorization header format');
-        }
-  
-        const token = parts[1];
-  
-        await this.authService.changeUsername(body.newUsername, body.userid, token);
-  
+        await this.authService.changeUsername(body.newUsername, body.userid);
+
         res.status(HttpStatus.OK).json({ message: 'Username changed successfully' });
       } catch (error) {
         console.error(error);
@@ -120,25 +105,15 @@ export class AuthController {
     }
   
     @Post('change-email')
+    @UseGuards(AuthMiddleware)
     async changeEmail(
       @Body() body: { newEmail: string; userid: string },
       @Req() req: Request,
       @Res() res: Response,
     ): Promise<void> {
       try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-          throw new UnauthorizedException('Missing authorization header');
-        }
   
-        const parts = authHeader.split(' ');
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-          throw new UnauthorizedException('Invalid authorization header format');
-        }
-  
-        const token = parts[1];
-  
-        await this.authService.changeEmail(body.newEmail, body.userid, token);
+        await this.authService.changeEmail(body.newEmail, body.userid);
   
         res.status(HttpStatus.OK).json({ message: 'Email changed successfully' });
       } catch (error) {
@@ -148,25 +123,15 @@ export class AuthController {
     }
   
     @Post('change-password')
+    @UseGuards(AuthMiddleware)
     async changePassword(
       @Body() body: { newPassword: string; userid: string },
       @Req() req: Request,
       @Res() res: Response,
     ): Promise<void> {
       try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-          throw new UnauthorizedException('Missing authorization header');
-        }
   
-        const parts = authHeader.split(' ');
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-          throw new UnauthorizedException('Invalid authorization header format');
-        }
-  
-        const token = parts[1];
-  
-        await this.authService.changePassword(body.newPassword, body.userid, token);
+        await this.authService.changePassword(body.newPassword, body.userid);
   
         res.status(HttpStatus.OK).json({ message: 'Password changed successfully' });
       } catch (error) {

@@ -1,6 +1,7 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
+import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, UseGuards } from "@nestjs/common";
 import { Favorite } from "../Entity/favorite.entity";
 import { FavoriteService } from "../Service/favorite.service";
+import { AuthMiddleware } from "src/Auth/auth.middleware";
 
 
 @Controller('favorite')
@@ -29,6 +30,7 @@ export class FavoriteController {
     }
 
     @Post('user/:userid/addStory/:storyid/toFavorites')
+    @UseGuards(AuthMiddleware)
     async addStoryToFavorites(@Param('userid') userid: number, @Param('storyid') storyid: number): Promise<Favorite> {
         try {
             return this.favoriteService.addStoryToFavorites(userid, storyid);
@@ -39,6 +41,7 @@ export class FavoriteController {
     }
 
     @Delete('user/:userid/deleteStory/:storyid/fromFavorites')
+    @UseGuards(AuthMiddleware)
     async removeStoryFromFavorites(@Param('userid') userid: number, @Param('storyid') storyid: number): Promise<Favorite> {
         try {
             return this.favoriteService.removeStoryFromFavorites(userid, storyid);
