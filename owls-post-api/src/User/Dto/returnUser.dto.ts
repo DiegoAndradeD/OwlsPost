@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Follower } from "src/Follower/Entities/follower.entity";
 import { User } from "../Entities/user.entity";
 

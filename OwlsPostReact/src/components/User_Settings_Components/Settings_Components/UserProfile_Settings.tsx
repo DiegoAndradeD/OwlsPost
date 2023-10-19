@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import ReactQuill from 'react-quill';
+import React, { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import '../../../styles/UserSettings_Styles/UserProfile_Settings.css';
 
 interface UserStates {
@@ -42,7 +41,7 @@ const UserProfile_Settings: React.FC = () => {
   const [description, setDescription] = useState('');
   const [originalDescription, setOriginalDescription] = useState('');
 
-  const [textareaHeight, setTextareaHeight] = useState('auto'); // Estado para controlar a altura da textarea
+  const [textareaHeight, setTextareaHeight] = useState('auto'); 
 
   const [user, setUser] = useState<UserStates>({
     profile_user_id: 0,
@@ -185,7 +184,9 @@ const UserProfile_Settings: React.FC = () => {
                       className="user-description-rich-text"
                       dangerouslySetInnerHTML={{ __html: originalDescription }}
                     />
+                    
                   )}
+                  <h3>{user.description}</h3>
                 </h1>
                 {isEditingDescription ? (
                   <button

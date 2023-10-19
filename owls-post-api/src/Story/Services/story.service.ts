@@ -3,8 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ILike, Repository } from "typeorm";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
-import { AuthService } from "src/Auth/Services/auth.service";
-import { UserService } from "src/User/Services/user.service";
+import { AuthService } from "../../Auth/Services/auth.service";
+import { UserService } from "../../User/Services/user.service";
 import * as jwt from 'jsonwebtoken';
 import authConfig from "src/Auth/auth.config";
 

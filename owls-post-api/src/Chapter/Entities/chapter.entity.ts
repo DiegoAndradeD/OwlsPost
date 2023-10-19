@@ -1,4 +1,4 @@
-import { Story } from "src/Story/Entities/story.entity";
+import { Story } from "../../Story/Entities/story.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { UserService } from "src/User/Services/user.service";
+import { UserService } from "../../User/Services/user.service";
 import * as bcrypt from 'bcrypt';
 import authConfig from '../auth.config';
 import * as jwt from 'jsonwebtoken';

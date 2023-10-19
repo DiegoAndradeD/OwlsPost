@@ -1,10 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, InternalServerErrorException, Param, Post, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { StoryService } from "../Services/story.service";
 import { Story } from "../Entities/story.entity";
 import { StoryDTO } from "../Dto/story.dto";
-import { AuthService } from 'src/Auth/Services/auth.service';
-import { AuthMiddleware } from 'src/Auth/auth.middleware';
+import { AuthService } from '../../Auth/Services/auth.service';
+import { AuthMiddleware } from '../../Auth/auth.middleware';
 
 @Controller('story')
 export class StoryController {

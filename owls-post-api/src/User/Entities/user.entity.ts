@@ -1,4 +1,7 @@
-import { Follower } from "src/Follower/Entities/follower.entity";
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable prettier/prettier */
+import { Follower } from "../../Follower/Entities/follower.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'users'})

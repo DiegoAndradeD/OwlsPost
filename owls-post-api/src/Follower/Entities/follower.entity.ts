@@ -1,4 +1,5 @@
-import { User } from "src/User/Entities/user.entity";
+/* eslint-disable prettier/prettier */
+import { User } from "../../User/Entities/user.entity";
 import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'followers'})

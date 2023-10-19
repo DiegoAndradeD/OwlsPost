@@ -1,5 +1,5 @@
-import { Chapter } from "src/Chapter/Entities/chapter.entity";
-import { User } from "src/User/Entities/user.entity";
+import { Chapter } from "../../Chapter/Entities/chapter.entity";
+import { User } from "../../User/Entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'stories'})

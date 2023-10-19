@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsEmail, IsInt, IsOptional, IsString } from "class-validator";
 
 export class UserDTO {

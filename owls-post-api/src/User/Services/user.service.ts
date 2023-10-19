@@ -1,10 +1,13 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../Entities/user.entity";
 import { Repository } from "typeorm";
 import { UserDTO } from "../Dto/user.dto";
 import * as bcrypt from 'bcrypt';
-import authConfig from "src/Auth/auth.config";
+import authConfig from "../../Auth/auth.config";
 import * as jwt from 'jsonwebtoken';
 import { AuthService } from "src/Auth/Services/auth.service";
 import { ReturnUserDto } from "../Dto/returnUser.dto";
@@ -12,6 +15,7 @@ import { authUserDto } from "../Dto/authUser.dto";
 
 @Injectable()
 export class UserService {
+    module: any;
 
     
     constructor(
@@ -46,9 +50,8 @@ export class UserService {
                 throw new ConflictException('Username or email already in use')
             }
             throw new InternalServerErrorException('Error registering user.')
-        }
-        
-    }
+        };
+    };
 
     /**
      * Gets all users

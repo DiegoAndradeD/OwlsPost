@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, HttpStatus, InternalServerErrorException, Param, Post, HttpException, NotFoundException, UseGuards, Put } from "@nestjs/common";
 import { UserService } from "../Services/user.service";
 import { UserDTO } from "../Dto/user.dto";
 import { User } from "../Entities/user.entity";
 import { ReturnUserDto } from "../Dto/returnUser.dto";
-import { AuthMiddleware } from "src/Auth/auth.middleware";
+import { AuthMiddleware } from "../../Auth/auth.middleware";
 
 @Controller('user')
 export class UserController {
